@@ -14,16 +14,45 @@ public class Game {
     public static void main(String[] args) {
         level = new ArrayList<>();
         parseLevel();
-        printBoard();
-        //startGame();
+        startGame();
 
     }
 
     private static void startGame() {
+
+        while(true) {
+            printBoard();
+            ArrayList<Integer> position = selectPiece();
+            if(position.isEmpty()) {
+                System.out.println("Invalid Position");
+                continue;
+            }
+
+        }
+
+
+
+    }
+
+    private static ArrayList<Integer> selectPiece() {
+        ArrayList<Integer> pos = new ArrayList<>();
+
+        //ask user to input which piece to select
         Scanner myObj = new Scanner(System.in);  // Create a Scanner object
-        System.out.println("Select piece (X):");
-        String xpos = myObj.nextLine();  // Read user input
-        System.out.println("X is: " + xpos);  // Output user input
+        System.out.println("Select piece (Line):");
+        int xpos = myObj.nextInt();  // Read user input
+
+        System.out.println("Select piece (Col):");
+        int ypos = myObj.nextInt();
+
+        if(xpos <= 0 || xpos > level.size()+1 || ypos <= 0 || ypos > level.size()+1) return pos;
+        else {
+            pos.add(ypos);
+            pos.add(xpos);
+        }
+
+
+        return pos;
     }
 
     private static void printBoard() {
