@@ -2,22 +2,12 @@
 
 ## Projeto 1 - Temática 1: Métodos de Pesquisa Heurística para Resolução de Jogo do Tipo Solitário 
 Um jogo do tipo solitário caracteriza-se pelo tipo de tabuleiro e de peças, pelas regras de movimentação
-das peças (operadores/jogadas possíveis) e pelas condições de terminação do jogo com derrota
-(impossibilidade de resolver, número máximo de movimentos foi atingido, tempo limite foi atingido) ou
-vitória (solitário resolvido) e com a respetiva pontuação. Tipicamente, no caso de vitória é atribuída uma
-pontuação dependendo do número de movimentos, recursos gastos, bónus recolhidos e/ou tempo
+das peças (operadores/jogadas possíveis) e pelas condições de terminação do jogo com derrota (impossibilidade de resolver, número máximo de movimentos foi atingido, tempo limite foi atingido) ou vitória (solitário resolvido) e com a respetiva pontuação. Tipicamente, no caso de vitória é atribuída uma pontuação dependendo do número de movimentos, recursos gastos, bónus recolhidos e/ou tempo
 despendido.
-Para além de implementar um jogo do tipo solitário para um jogador humano, o programa deve ser capaz
-de resolver diferentes versões/quadros desse jogo, utilizando métodos de pesquisa adequados, focando na
-comparação entre métodos de pesquisa não informada (pesquisa primeiro em largura, primeiro em
-profundidade, aprofundamento progressivo, custo uniforme) e métodos de pesquisa heurística (pesquisa
-gulosa, A*), com diferentes funções heurísticas. Os métodos aplicados devem ser comparados a diversos
-níveis, com ênfase para a qualidade da solução obtida, número de operações analisadas e tempo despendido
-para obter a solução.
-A aplicação deve ter uma visualização em modo de texto ou gráfico para mostrar a evolução do tabuleiro
-e realizar a comunicação com o utilizador/jogador. Deve permitir um modo de jogo em que o PC resolve
-o solitário sozinho utilizando o método e sua configuração selecionado pelo utilizador. Poderá também,
-opcionalmente, permitir um modo de jogo Humano em que o utilizador pode resolver o jogo,
+
+Para além de implementar um jogo do tipo solitário para um jogador humano, o programa deve ser capaz de resolver diferentes versões/quadros desse jogo, utilizando métodos de pesquisa adequados, focando na comparação entre métodos de pesquisa não informada (pesquisa primeiro em largura, primeiro em profundidade, aprofundamento progressivo, custo uniforme) e métodos de pesquisa heurística (pesquisa gulosa, A*), com diferentes funções heurísticas. Os métodos aplicados devem ser comparados a diversos níveis, com ênfase para a qualidade da solução obtida, número de operações analisadas e tempo despendido para obter a solução.
+
+A aplicação deve ter uma visualização em modo de texto ou gráfico para mostrar a evolução do tabuleiro e realizar a comunicação com o utilizador/jogador. Deve permitir um modo de jogo em que o PC resolve o solitário sozinho utilizando o método e sua configuração selecionado pelo utilizador. Poderá também, opcionalmente, permitir um modo de jogo Humano em que o utilizador pode resolver o jogo,
 eventualmente pedindo “dicas” ao PC. 
 
 ## Checkpoint1
