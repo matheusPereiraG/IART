@@ -9,7 +9,7 @@ Para além de implementar um jogo do tipo solitário para um jogador humano, o p
 A aplicação deve ter uma visualização em modo de texto ou gráfico para mostrar a evolução do tabuleiro e realizar a comunicação com o utilizador/jogador. Deve permitir um modo de jogo em que o PC resolve o solitário sozinho utilizando o método e sua configuração selecionado pelo utilizador. Poderá também, opcionalmente, permitir um modo de jogo Humano em que o utilizador pode resolver o jogo,
 eventualmente pedindo “dicas” ao PC. 
 
-## Checkpoint1
+## Checkpoint 1
 ------
 Cada grupo deve submeter no Moodle uma breve apresentação (máx. 5 slides), em formato PDF, que será
 utilizada na aula para analisar, em conjunto com o docente, o andamento do trabalho. A apresentação deve
@@ -28,3 +28,17 @@ restrições rígidas, funções de avaliação);
 4. Trabalho de implementação já realizado (linguagem de programação, ambiente de desenvolvimento, estruturas de dados, estrutura 
 de ficheiros, entre outros);
 
+## Entrega Final 1
+------
+
+Cada grupo deve submeter no Moodle dois ficheiros: uma apresentação (máx. 10 slides), em formato PDF, e o código implementado, devidamente comentado, incluindo um ficheiro “readme.txt” com instruções sobre como o compilar, executar e utilizar. Com base na apresentação submetida, os estudantes devem realizar uma demonstração (cerca de 10 minutos) do trabalho, na aula prática, ou em outro período a designar pelos docentes da disciplina.
+O ficheiro com a apresentação final deve incluir, para além do já referido para a entrega intercalar (checkpoint), detalhes sobre:
+
+5. A abordagem (heurísticas, funções de avaliação, operadores, …);
+
+6. Algoritmos implementados (algoritmos de pesquisa, minimax, metaheurísticas);
+
+7. Resultados experimentais, recorrendo a tabelas/gráficos apropriados e comparando os diversos métodos, heurísticas, algoritmos e respetivas parametrizações para diferentes cenários/problemas;
+
+####A apresentação deve incluir um slide de conclusões e outro de referências consultadas e materiais utilizados (software, sítios web,
+artigos científicos, …).
