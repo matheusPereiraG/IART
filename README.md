@@ -40,5 +40,4 @@ O ficheiro com a apresentação final deve incluir, para além do já referido p
 
 7. Resultados experimentais, recorrendo a tabelas/gráficos apropriados e comparando os diversos métodos, heurísticas, algoritmos e respetivas parametrizações para diferentes cenários/problemas;
 
-####A apresentação deve incluir um slide de conclusões e outro de referências consultadas e materiais utilizados (software, sítios web,
-artigos científicos, …).
+#### A apresentação deve incluir um slide de conclusões e outro de referências consultadas e materiais utilizados (software, sítios web, artigos científicos, …).
