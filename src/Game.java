@@ -14,6 +14,7 @@ import java.util.Scanner;
 
 public class Game {
     private static ArrayList<ArrayList<String>> level;
+    private static Graph graph;
 
     public static void main(String[] args) {
         level = new ArrayList<>();
@@ -23,6 +24,9 @@ public class Game {
     }
 
     private static void startGame() {
+        //build graph
+        initGraph();
+
 
         while(true) {
             printBoard();
@@ -32,7 +36,32 @@ public class Game {
                 continue;
             }
 
+
         }
+
+
+
+    }
+
+    private static void initGraph() {
+        graph = new Graph();
+
+        int numPieces = Utils.getNumberOfPieces(level);
+        int numVertex = 1; //we started counting the root node
+
+        //how much nodes do i need to init?
+        for(int i = 0; i < numPieces+1; i++) {
+            //the total number of states is given by the formula "(4^k *n) +1", k ∈ [0...n+1] where n is the number of pieces
+            numVertex += (Math.pow(4,i) * numPieces);
+        }
+
+        //init nodes
+        for(int j = 0; j < numVertex; j++) {
+            Node newNode = new Node(j);
+            graph.addNode(newNode);
+        }
+
+        System.out.println(numVertex);
 
 
 

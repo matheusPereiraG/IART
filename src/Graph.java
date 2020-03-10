@@ -1,11 +1,18 @@
 import java.util.ArrayList;
+import java.util.List;
 
 public class Graph {
-    private ArrayList<Node> vertex;
+    List<Node> nodes;
 
+    public Graph(List<Node> nodes) {
+        this.nodes = nodes;
+    }
 
-    public Graph(int numVertex) { //graph gets build given number of selectable cells
-        //number of nodes =
+    public Graph(){
+        this.nodes = new ArrayList<>();
+    }
 
+    public void addNode(Node newNode){
+        nodes.add(newNode);
     }
 }
