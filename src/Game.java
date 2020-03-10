@@ -7,6 +7,10 @@ import java.util.Scanner;
 //comparação  entre  métodos  de  pesquisa  não  informada (pesquisa  primeiro  em  largura,
 //primeiro  em profundidade,  aprofundamento  progressivo,  custo  uniforme)  e  métodos  de  pesquisa  heurística
 // (pesquisa gulosa, A*), com diferentes funções heurísticas.
+//0: Finish validMove(), checkGameOver(), movePiece()
+//1: Start by making a Graph with nodes and edges
+//2: apply algorithms like DFS and BFS
+//3: apply the A* algorithm
 
 public class Game {
     private static ArrayList<ArrayList<String>> level;
@@ -47,6 +51,8 @@ public class Game {
 
         if(xpos <= 0 || xpos > level.size()+1 || ypos <= 0 || ypos > level.size()+1) return pos;
         else {
+            //check if its a valid piece too
+            String piece = level.get(xpos-1).get(ypos-1);
             pos.add(ypos);
             pos.add(xpos);
         }
