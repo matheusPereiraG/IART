@@ -62,7 +62,7 @@ public class Game {
     }
 
     private static void printBoard() {
-        Utils.clearScreen();
+        //Utils.clearScreen();
         printHeader();
         //for(ArrayList<String> line: level) {
         for(int i = 0; i < level.size(); i++){
@@ -70,7 +70,7 @@ public class Game {
             printCol(i);
             for(String cell: level.get(i)) {
                 System.out.print("|  ");
-                if(cell.equals("B")) System.out.print("   ");
+                if(cell.equals(".")) System.out.print("   ");
                 else System.out.print(cell + "  ");
             }
             System.out.println();
@@ -104,7 +104,7 @@ public class Game {
             while (myReader.hasNextLine()) {
                 String data = myReader.nextLine();
                 ArrayList<String> line = new ArrayList<>();
-                String[] cells = data.split("-");
+                String[] cells = data.split(" ");
                 for(String cell: cells)
                     line.add(cell);
                 level.add(line);
