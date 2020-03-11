@@ -38,9 +38,6 @@ public class Game {
 
 
         }
-
-
-
     }
 
     private static void initGraph() {
@@ -56,15 +53,43 @@ public class Game {
         }
 
         //init nodes
-        for(int j = 0; j < numVertex; j++) {
-            Node newNode = new Node(j);
-            graph.addNode(newNode);
+        for(int j = 1; j < numVertex; j = j+5) { //i think the leaves have children too
+            Node newParentNode = new Node(j);
+
+            Node newChildNodeUp = new Node(j+1);
+            Node newChildNodeDown = new Node(j+2);
+            Node newChildNodeLeft = new Node(j+3);
+            Node newChildNodeRight = new Node(j+4);
+
+            Edge e1 = new Edge(newParentNode,newChildNodeUp,'U');
+            Edge e2 = new Edge(newParentNode,newChildNodeDown,'D');
+            Edge e3 = new Edge(newParentNode,newChildNodeLeft,'L');
+            Edge e4 = new Edge(newParentNode,newChildNodeRight,'R');
+
+            graph.addNode(newParentNode);
+            graph.addNode(newChildNodeDown);
+            graph.addNode(newChildNodeLeft);
+            graph.addNode(newChildNodeRight);
+            graph.addNode(newChildNodeUp);
+
+            newParentNode.addEdge(e1);
+            newParentNode.addEdge(e2);
+            newParentNode.addEdge(e3);
+            newParentNode.addEdge(e4);
         }
 
-        System.out.println(numVertex);
+        //init root node
+        Node rootNode = new Node(0); //(0,1(parent),2,3,4,5,6(parent),7,8,9,10
+        graph.addNode(rootNode);
+        for(int k= 1; k <= numPieces; k= k+5) {
+            Node childNode = graph.getNode(k);
+            Edge e = new Edge(rootNode,childNode,'n'); //null action
+            rootNode.addEdge(e);
+        }
 
-
-
+        for(int t = 0; t < graph.getNodes().size(); t++) {
+            graph.getNode(t).printInfo();
+        }
     }
 
     private static ArrayList<Integer> selectPiece() {
@@ -124,7 +149,6 @@ public class Game {
             System.out.print("―");
         System.out.println();
     }
-
 
     private static void parseLevel(){
         try {
