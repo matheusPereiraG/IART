@@ -51,6 +51,9 @@ public class Game {
             //the total number of states is given by the formula "(4^k *n) +1", k ∈ [0...n+1] where n is the number of pieces
             numVertex += (Math.pow(4,i) * numPieces);
         }
+        //init root node
+        Node rootNode = new Node(0); //(0,1(parent),2,3,4,5,6(parent),7,8,9,10
+        graph.addNode(rootNode);
 
         //init nodes
         for(int j = 1; j < numVertex; j = j+5) { //i think the leaves have children too
@@ -78,9 +81,6 @@ public class Game {
             newParentNode.addEdge(e4);
         }
 
-        //init root node
-        Node rootNode = new Node(0); //(0,1(parent),2,3,4,5,6(parent),7,8,9,10
-        graph.addNode(rootNode);
         for(int k= 1; k <= numPieces; k= k+5) {
             Node childNode = graph.getNode(k);
             Edge e = new Edge(rootNode,childNode,'n'); //null action
