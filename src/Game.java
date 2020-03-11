@@ -81,11 +81,15 @@ public class Game {
             newParentNode.addEdge(e4);
         }
 
-        for(int k= 1; k <= numPieces; k= k+5) {
-            Node childNode = graph.getNode(k);
-            Edge e = new Edge(rootNode,childNode,'n'); //null action
-            rootNode.addEdge(e);
-        }
+        //TODO: connect root to the different pieces nodes
+        for(int k= 0; k < numPieces; k++)
+            for(int t = 1; t < numPieces*3;t= t+5) {
+                Node childNode = graph.getNode(t);
+                Edge e = new Edge(rootNode,childNode,'n'); //null action
+                rootNode.addEdge(e);
+            }
+
+
 
         for(int t = 0; t < graph.getNodes().size(); t++) {
             graph.getNode(t).printInfo();
