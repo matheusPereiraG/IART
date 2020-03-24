@@ -18,13 +18,14 @@ public class Game {
     private static ArrayList<Level> levels;
     private static Graph graph;
     private static int currLevel;
+    private static int NUM_LEVELS = 1;
 
     Game() {
         levels = new ArrayList<>();
-
-        //parseLevel("lvl1.txt");
-        //startGame();
-
+        currLevel = 0;
+        for(int i=1; i<=NUM_LEVELS; i++){
+            levels.add(new Level("level" + i + ".txt"));
+        }
     }
 
     public void start(){
@@ -54,11 +55,8 @@ public class Game {
 
         while(true) {
             Printer.board(levels.get(currLevel));
-            ArrayList<Integer> position = selectPiece();
-            if(position.isEmpty()) {
-                System.out.println("Invalid Position");
-                continue;
-            }
+            Position pos = selectPiece();
+
         }
     }
 
@@ -160,8 +158,8 @@ public class Game {
         */
     }
 
-    private static ArrayList<Integer> selectPiece() {
-        ArrayList<Integer> pos = new ArrayList<>();
+    private static Position selectPiece() {
+        Position pos;
 
         //ask user to input which piece to select
         Scanner myObj = new Scanner(System.in);  // Create a Scanner object
@@ -171,16 +169,23 @@ public class Game {
         System.out.println("Select piece (Col):");
         int ypos = myObj.nextInt();
 
-        if(xpos <= 0 || xpos > level.size()+1 || ypos <= 0 || ypos > level.size()+1) return pos;
-        else {
-            //check if its a valid piece too
-            String piece = level.get(xpos-1).get(ypos-1);
-            pos.add(ypos);
-            pos.add(xpos);
+        if(xpos <= 0 || xpos > levels.get(currLevel).getHeight() || ypos <= 0 || ypos > levels.get(currLevel).getWidth()){
+            System.out.println("Error: Invalid position!");
+            System.out.println();
+            return selectPiece();
         }
 
+        //check if its a valid piece too
+        pos = new Position(xpos, ypos);
+        for(Piece piece : levels.get(currLevel).getAllPieces()){
+            if(piece.getPos().equals(pos)){
+                return pos;
+            }
+        }
 
-        return pos;
+        System.out.println("Error: Invalid position!");
+        System.out.println();
+        return selectPiece();
     }
 /*
     private static void printBoard() {

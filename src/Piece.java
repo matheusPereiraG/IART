@@ -2,30 +2,16 @@ import java.util.Objects;
 
 public class Piece {
 
-    private int x;
-    private int y;
+    private Position pos;
     private int numSteps;
 
     public Piece(int x, int y, int numSteps) {
-        this.x = x;
-        this.y = y;
+        this.pos = new Position(x,y);
         this.numSteps = numSteps;
     }
 
-    public int getX() {
-        return x;
-    }
-
-    public void setX(int x) {
-        this.x = x;
-    }
-
-    public int getY() {
-        return y;
-    }
-
-    public void setY(int y) {
-        this.y = y;
+    public Position getPos() {
+        return pos;
     }
 
     public int getNumSteps() {
@@ -39,18 +25,9 @@ public class Piece {
     @Override
     public String toString() {
         return "Piece{" +
-                "x=" + x +
-                ", y=" + y +
+                "x=" + pos.getX() +
+                ", y=" + pos.getY() +
                 ", numSteps=" + numSteps +
                 '}';
-    }
-
-    @Override
-    public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
-        Piece piece = (Piece) o;
-        return x == piece.x &&
-                y == piece.y;
     }
 }
