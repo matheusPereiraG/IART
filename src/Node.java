@@ -2,15 +2,20 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class Node {
-    public int id;
+    public Piece chosenPiece;
     public List<Edge> children;
 
     public ArrayList<ArrayList<String>> stateOfTheBoard;
-    //need to add sequence of actions?
+    public ArrayList<Piece> seqChosenPieces; //sequence of chosen pieces till this node
 
 
-    public Node(int id) {
-        this.id = id;
+    public Node(Piece p) {
+        this.chosenPiece = p;
+        children = new ArrayList<>();
+    }
+
+    public Node(){
+        this.chosenPiece = null;
         children = new ArrayList<>();
     }
 
@@ -18,12 +23,24 @@ public class Node {
         children.add(newEdge);
     }
 
-    public int getId() {
-        return id;
+    public Piece getChosenPiece() {
+        return chosenPiece;
     }
 
     public List<Edge> getChildren() {
         return children;
+    }
+
+    public ArrayList<Piece> getSeqChosenPieces() {
+        return seqChosenPieces;
+    }
+
+    public void addToSequence(Piece p){
+        if(this.seqChosenPieces == null) {
+            this.seqChosenPieces = new ArrayList<>();
+            this.seqChosenPieces.add(p);
+        }
+        else this.seqChosenPieces.add(p);
     }
 
     public ArrayList<ArrayList<String>> getStateOfTheBoard() {
@@ -31,15 +48,19 @@ public class Node {
     }
 
     public void printInfo(){
-        System.out.println("Node ID: " + this.id);
+        System.out.println();
+        if(this.chosenPiece != null)
+                System.out.println("Node Piece: " + this.chosenPiece.toString());
+        else System.out.println("ROOT NODE");
 
         if(!children.isEmpty()) {
             System.out.println("Children: ");
             for(Edge e: this.children){
-                System.out.println("Child Node ID: " + e.getChild().getId());
+                System.out.println("Child Node Piece: " + e.getChild().getChosenPiece().toString());
                 System.out.println("Edge Action: " + e.getAction());
             }
         }
+        System.out.println();
 
     }
 }

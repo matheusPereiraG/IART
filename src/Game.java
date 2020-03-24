@@ -1,6 +1,7 @@
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.util.ArrayList;
+import java.util.List;
 import java.util.Scanner;
 
 //TODO:
@@ -27,7 +28,6 @@ public class Game {
         //build graph
         initGraph();
 
-
         while(true) {
             printBoard();
             ArrayList<Integer> position = selectPiece();
@@ -35,26 +35,47 @@ public class Game {
                 System.out.println("Invalid Position");
                 continue;
             }
-
-
         }
     }
 
     private static void initGraph() {
         graph = new Graph();
 
-        int numPieces = Utils.getNumberOfPieces(level);
-        int numVertex = 1; //we started counting the root node
+        ArrayList<Piece> pieces = Utils.getlvlPieces(level);
+        int numVertex = 1;
 
-        //how much nodes do i need to init?
-        for(int i = 0; i < numPieces+1; i++) {
-            //the total number of states is given by the formula "(4^k *n) +1", k ∈ [0...n+1] where n is the number of pieces
-            numVertex += (Math.pow(4,i) * numPieces);
-        }
         //init root node
-        Node rootNode = new Node(0); //(0,1(parent),2,3,4,5,6(parent),7,8,9,10
+        Node rootNode = new Node();
+
+        for(int k= 0; k < pieces.size(); k++) {
+            Node childNode = new Node(pieces.get(k));
+            Edge e = new Edge(rootNode,childNode,'n'); //null action
+            rootNode.addEdge(e);
+            childNode.addToSequence(pieces.get(k));
+            graph.addNode(childNode);
+        }
+
         graph.addNode(rootNode);
 
+
+        //now for each different piece generate all other outcomes depending on the selected piece
+        for(int i = 0; i < rootNode.getChildren().size(); i++) {
+            Node childNode = rootNode.getChildren().get(i).getChild();
+
+            List<Piece> pieceSequence = childNode.getSeqChosenPieces();
+
+            ArrayList<Piece> possibleOutcomes = Utils.getPossibleOutcomes(pieces,pieceSequence); //returns list of pieces there are yet to be selected
+        
+            //for(int j = 0; j < )
+
+        }
+
+
+
+        for(int t = 0; t < graph.getNodes().size(); t++) {
+            graph.getNode(t).printInfo();
+        }
+/*
         //init nodes
         for(int j = 1; j < numVertex; j = j+5) { //i think the leaves have children too
             Node newParentNode = new Node(j);
@@ -75,25 +96,22 @@ public class Game {
             graph.addNode(newChildNodeRight);
             graph.addNode(newChildNodeUp);
 
+            //TODO: set adj vertexes
+
             newParentNode.addEdge(e1);
             newParentNode.addEdge(e2);
             newParentNode.addEdge(e3);
             newParentNode.addEdge(e4);
         }
 
-        //TODO: connect root to the different pieces nodes
-        for(int k= 0; k < numPieces; k++)
-            for(int t = 1; t < numPieces*3;t= t+5) {
-                Node childNode = graph.getNode(t);
-                Edge e = new Edge(rootNode,childNode,'n'); //null action
-                rootNode.addEdge(e);
-            }
+
 
 
 
         for(int t = 0; t < graph.getNodes().size(); t++) {
             graph.getNode(t).printInfo();
         }
+        */
     }
 
     private static ArrayList<Integer> selectPiece() {

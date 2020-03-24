@@ -3,6 +3,7 @@ import java.util.List;
 
 public class Graph {
     List<Node> nodes;
+    //private Map<Node, List<Node>> adjVertices;
 
     public Graph(List<Node> nodes) {
         this.nodes = nodes;
