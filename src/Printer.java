@@ -82,6 +82,16 @@ public class Printer {
         boardLineBreak(level.getWidth());
     }
 
+    public static void compactBoard(Level level) {
+
+        for(int i = 0; i < level.getHeight(); i++){
+            for(String cell: level.getLine(i)) {
+                System.out.print(" " + cell );
+            }
+            System.out.println();
+        }
+    }
+
     private static void boardCol(int colNum) {
         System.out.print(colNum +1 + " ");
 

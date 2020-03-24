@@ -43,7 +43,7 @@ public class Game {
                 break;
             }
 
-            
+
             switch (option) {
                 case 1:
                     startGameHuman();
@@ -70,6 +70,7 @@ public class Game {
     private static void startGameHuman() {
         while(!levels.get(currLevel).isFinish()) {
             Printer.board(levels.get(currLevel));
+            //Printer.compactBoard(levels.get(currLevel));
             levels.get(currLevel).selectPiece();
         }
         Printer.board((levels.get(currLevel)));
