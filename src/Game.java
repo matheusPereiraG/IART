@@ -65,8 +65,30 @@ public class Game {
             List<Piece> pieceSequence = childNode.getSeqChosenPieces();
 
             ArrayList<Piece> possibleOutcomes = Utils.getPossibleOutcomes(pieces,pieceSequence); //returns list of pieces there are yet to be selected
-        
-            //for(int j = 0; j < )
+
+            //now for each outcome generate 4 actions
+            for(int j = 0; j < possibleOutcomes.size();j++) {
+                Node newChildNode1 = new Node(possibleOutcomes.get(j));
+                Node newChildNode2 = new Node(possibleOutcomes.get(j));
+                Node newChildNode3 = new Node(possibleOutcomes.get(j));
+                Node newChildNode4 = new Node(possibleOutcomes.get(j));
+
+                Edge e1 = new Edge(childNode,newChildNode1,'U');
+                Edge e2 = new Edge(childNode,newChildNode2,'D');
+                Edge e3 = new Edge(childNode,newChildNode3,'L');
+                Edge e4 = new Edge(childNode,newChildNode4,'R');
+
+                childNode.addEdge(e1);
+                childNode.addEdge(e2);
+                childNode.addEdge(e3);
+                childNode.addEdge(e4);
+
+                graph.addNode(newChildNode1);
+                graph.addNode(newChildNode2);
+                graph.addNode(newChildNode3);
+                graph.addNode(newChildNode4);
+
+            }
 
         }
 
