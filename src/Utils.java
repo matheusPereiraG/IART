@@ -26,10 +26,9 @@ public class Utils {
     public static ArrayList<Piece> getPossibleOutcomes(ArrayList<Piece> pieces, List<Piece> pieceSequence) {
         ArrayList<Piece> possiblePieces = new ArrayList<>();
 
-        for(int i=0; i < pieces.size(); i++)
-            for(int j=0; j < pieceSequence.size(); j++) {
-                if(!pieces.get(i).equals(pieceSequence)) possiblePieces.add(pieces.get(i));
-            }
+        for(int i = 0; i < pieces.size(); i++) {
+            if(!pieceSequence.contains(pieces.get(i))) possiblePieces.add(pieces.get(i));
+        }
 
         return possiblePieces;
     }
