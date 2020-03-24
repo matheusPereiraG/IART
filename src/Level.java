@@ -8,6 +8,7 @@ public class Level {
     private static String name;
     private static int width;
     private static int height;
+    private ArrayList<Piece> pieces;
 
     Level(String name){
         this.name = name;
@@ -62,7 +63,8 @@ public class Level {
         return height;
     }
 
-    public static ArrayList<Piece> getlvlPieces() {
+    public ArrayList<Piece> getAllPieces() {
+        /*
         ArrayList<Piece> lvlPieces = new ArrayList<>();
         for(int i= 0; i < level.size(); i++)
             for(int j = 0; j < level.get(i).size(); j++) {
@@ -72,6 +74,8 @@ public class Level {
                     lvlPieces.add(newPiece);
                 }
             }
-        return lvlPieces;
+            */
+
+        return pieces;
     }
 }

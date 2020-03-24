@@ -65,7 +65,7 @@ public class Game {
     private static void initGraph() {
         graph = new Graph();
 
-        ArrayList<Piece> pieces = Utils.getlvlPieces(level);
+        ArrayList<Piece> pieces = levels.get(currLevel).getAllPieces();
         int numVertex = 1;
 
         //init root node
