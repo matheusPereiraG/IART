@@ -14,22 +14,44 @@ import java.util.Scanner;
 //3: apply the A* algorithm
 
 public class Game {
-    private static ArrayList<ArrayList<String>> level;
+    private static ArrayList<Level> levels;
     private static Graph graph;
+    private static int currLevel;
 
-    public static void main(String[] args) {
-        level = new ArrayList<>();
-        parseLevel();
-        startGame();
+    Game() {
+        levels = new ArrayList<>();
+
+        //parseLevel("lvl1.txt");
+        //startGame();
 
     }
 
-    private static void startGame() {
+    public void start(){
+        Printer.headline();
+        int option = Printer.mainMenu();
+        switch (option){
+            case 1:
+                startGame1();
+                break;
+            case 2:
+                break;
+            case 3:
+                break;
+            case 4:
+                break;
+            case 5:
+                break;
+            case 6:
+                break;
+        }
+    }
+
+    private static void startGame1() {
         //build graph
         initGraph();
 
         while(true) {
-            printBoard();
+            Printer.board(levels.get(currLevel));
             ArrayList<Integer> position = selectPiece();
             if(position.isEmpty()) {
                 System.out.println("Invalid Position");
@@ -158,7 +180,7 @@ public class Game {
 
         return pos;
     }
-
+/*
     private static void printBoard() {
         //Utils.clearScreen();
         printHeader();
@@ -171,8 +193,10 @@ public class Game {
                 if(cell.equals(".")) System.out.print("   ");
                 else System.out.print(cell + "  ");
             }
+            System.out.print("|  ");
             System.out.println();
         }
+        printLineBreak();
     }
 
     private static void printCol(int colNum) {
@@ -189,14 +213,14 @@ public class Game {
 
     private static void printLineBreak() {
         System.out.print("  ");
-        for(int i = 0; i < level.size()*6; i++)
+        for(int i = 0; i < level.size()*(6+1); i++)
             System.out.print("―");
         System.out.println();
     }
 
-    private static void parseLevel(){
+    private static void parseLevel(String levelName){
         try {
-            File myObj = new File("lvl1.txt");
+            File myObj = new File(levelName);
             Scanner myReader = new Scanner(myObj);
             while (myReader.hasNextLine()) {
                 String data = myReader.nextLine();
@@ -214,5 +238,5 @@ public class Game {
 
 
     }
-
+*/
 }
