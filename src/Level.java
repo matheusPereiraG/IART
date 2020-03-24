@@ -11,11 +11,33 @@ public class Level {
     private int width;
     private int height;
     private ArrayList<Piece> pieces;
+    private boolean finish;
+
+    public boolean isFinish() {
+        return finish;
+    }
+
+    enum Direction{
+        NULL,
+        UP,
+        DOWN,
+        LEFT,
+        RIGHT
+    }
+
+    Level(){ //contrutor do nivel 0 (vazio)
+        level = new ArrayList<>();
+        name = "level0";
+        width = 0;
+        height = 0;
+        pieces = new ArrayList<>();
+        finish = true;
+    }
 
     Level(String name) {
         this.name = name;
+        finish = false;
         level = new ArrayList<>();
-
 
         //open file
         try {
@@ -68,5 +90,176 @@ public class Level {
     public ArrayList<Piece> getAllPieces() {
 
         return pieces;
+    }
+
+    private void setHouse(Position pos, String data){
+        level.get(pos.getY()-1).set(pos.getX()-1, data);
+    }
+
+    public void selectPiece(){
+
+        Position pos = Printer.selectPiece();
+        for(Piece piece : pieces){
+            if(piece.getPos().equals(pos)){
+                selectDirection(pos);
+                return;
+            }
+        }
+
+        System.out.println("Error: Invalid position!");
+        System.out.println();
+        selectPiece();
+    }
+
+    public void selectDirection(Position pos){
+        switch (Printer.selectDirection()){
+            case 1:
+                expandPiece(pos, Direction.UP);
+                break;
+            case 2:
+                expandPiece(pos, Direction.DOWN);
+                break;
+            case 3:
+                expandPiece(pos, Direction.LEFT);
+                break;
+            case 4:
+                expandPiece(pos, Direction.RIGHT);
+                break;
+            default:
+                break;
+        }
+    }
+
+    private void expandPiece(Position pos, Direction dir){
+        Piece currPiece;
+        for(Piece piece : pieces){
+            if(piece.getPos().equals(pos)){
+                currPiece = piece;
+
+                switch (dir){
+                    case UP:
+                        expandPieceUP(currPiece);
+                        break;
+                    case DOWN:
+                        expandPieceDOWN(currPiece);
+                        break;
+                    case LEFT:
+                        expandPieceLEFT(currPiece);
+                        break;
+                    case RIGHT:
+                        expandPieceRIGHT(currPiece);
+                        break;
+                    default:
+                        break;
+                }
+                pieces.remove(piece);
+                break;
+            }
+        }
+
+    }
+
+    private void expandPieceUP(Piece piece) {
+        //coloca a casa da peca a #
+        Position pos = new Position(piece.getPos().getX(), piece.getPos().getY());
+        setHouse(pos, "#");
+
+        //comaca a expansao
+        pos = new Position(pos.getX(), pos.getY()-1);
+
+        for(int i=0; i<piece.getNumSteps(); i++){
+
+            if(pos.getY() > 0) {//testa se esta dentro do tabuleiro
+                if (level.get(pos.getY()-1).get(pos.getX()-1).equals(".")) { //testa se esta vazio
+                    setHouse(pos, "#");
+                    pos = new Position(pos.getX(), pos.getY()-1);
+                } else if (level.get(pos.getY()-1).get(pos.getX()-1).equals("W")) { //testa se acabou o jogo
+                    setHouse(pos, "#");
+                    finish = true;
+                    return;
+                } else { //posicao ocupada
+                    i--;
+                    pos = new Position(pos.getX(), pos.getY()-1);
+                }
+            }
+        }
+    }
+
+    private void expandPieceDOWN(Piece piece) {
+        //coloca a casa da peca a #
+        Position pos = new Position(piece.getPos().getX(), piece.getPos().getY());
+        setHouse(pos, "#");
+
+        //comaca a expansao
+        pos = new Position(pos.getX(), pos.getY()+1);
+
+        for(int i=0; i<piece.getNumSteps(); i++){
+
+            if(pos.getY() < height) {//testa se esta dentro do tabuleiro
+                if (level.get(pos.getY()-1).get(pos.getX()-1).equals(".")) { //testa se esta vazio
+                    setHouse(pos, "#");
+                    pos = new Position(pos.getX(), pos.getY()+1);
+                } else if (level.get(pos.getY()-1).get(pos.getX()-1).equals("W")) { //testa se acabou o jogo
+                    setHouse(pos, "#");
+                    finish = true;
+                    return;
+                } else { //posicao ocupada
+                    i--;
+                    pos = new Position(pos.getX(), pos.getY()+1);
+                }
+            }
+        }
+    }
+
+    private void expandPieceRIGHT(Piece piece) {
+        //coloca a casa da peca a #
+        Position pos = new Position(piece.getPos().getX(), piece.getPos().getY());
+        setHouse(pos, "#");
+
+        //comaca a expansao
+        pos = new Position(pos.getX()+1, pos.getY());
+
+        for(int i=0; i<piece.getNumSteps(); i++){
+
+            if(pos.getX() < width) {//testa se esta dentro do tabuleiro
+                if (level.get(pos.getY()-1).get(pos.getX()-1).equals(".")) { //testa se esta vazio
+                    setHouse(pos, "#");
+                    pos = new Position(pos.getX()+1, pos.getY());
+                } else if (level.get(pos.getY()-1).get(pos.getX()-1).equals("W")) { //testa se acabou o jogo
+                    setHouse(pos, "#");
+                    finish = true;
+                    return;
+                } else { //posicao ocupada
+                    i--;
+                    pos = new Position(pos.getX()+1, pos.getY());
+                }
+            }
+        }
+    }
+
+    private void expandPieceLEFT(Piece piece) {
+        //coloca a casa da peca a #
+        Position pos = new Position(piece.getPos().getX(), piece.getPos().getY());
+        setHouse(pos, "#");
+
+        //comaca a expansao
+        pos = new Position(pos.getX()-1, pos.getY());
+
+        for(int i=0; i<piece.getNumSteps(); i++){
+
+            if(pos.getX() > 0) {//testa se esta dentro do tabuleiro
+                if (level.get(pos.getY()-1).get(pos.getX()-1).equals(".")) { //testa se esta vazio
+                    setHouse(pos, "#");
+                    pos = new Position(pos.getX()-1, pos.getY());
+                } else if (level.get(pos.getY()-1).get(pos.getX()-1).equals("W")) { //testa se acabou o jogo
+                    setHouse(pos, "#");
+                    finish = true;
+                    return;
+                } else { //posicao ocupada
+                    i--;
+                    pos = new Position(pos.getX()-1, pos.getY());
+                }
+            }
+        }
     }
 }

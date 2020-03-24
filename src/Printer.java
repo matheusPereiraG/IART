@@ -1,3 +1,4 @@
+import javax.swing.plaf.synth.SynthOptionPaneUI;
 import java.util.ArrayList;
 import java.util.InputMismatchException;
 import java.util.Scanner;
@@ -18,6 +19,7 @@ public class Printer {
         System.out.println("4. Computador joga 'aprofundamento progressivo'.");
         System.out.println("5. Computador joga 'heuristica: pesquisa gulosa'.");
         System.out.println("6. Computador joga 'heuristica: A*'.");
+        System.out.println("0. Sair do jogo.");
         System.out.println();
         System.out.println("Intruduza a sua opção:");
 
@@ -32,13 +34,34 @@ public class Printer {
             System.out.println();
             option = mainMenu();
         }
-        if (option < 1 || option > 6){
+        if (option < 0 || option > 6){
             System.out.println("Input inválido.");
             System.out.println();
             System.out.println();
             option = mainMenu();
         }
         return option;
+    }
+
+    public static int selectLevel(int numLevels) {
+        System.out.println();
+        System.out.println("Selecione o nivel que deseja jogar (1-" + numLevels + "):");
+
+        Scanner scanner = new Scanner(System.in);
+        int level;
+        try {
+            level = scanner.nextInt();
+        }
+        catch (InputMismatchException e){
+            System.out.println("Input inválido.");
+            level = selectLevel(numLevels);
+        }
+        if (level < 0 || level > numLevels){
+            System.out.println("Input inválido.");
+            level = selectLevel(numLevels);
+        }
+        return level;
+
     }
 
     public static void board(Level level) {
@@ -78,4 +101,62 @@ public class Printer {
         System.out.println();
     }
 
+    public static Position selectPiece() {
+        Position pos;
+        int xpos;
+        int ypos;
+        Scanner myObj = new Scanner(System.in);  // Create a Scanner object
+
+        try {
+            System.out.println("Select piece (Line):");
+            xpos = myObj.nextInt();  // Read user input
+
+            System.out.println("Select piece (Col):");
+            ypos = myObj.nextInt();
+            return new Position(xpos, ypos);
+        }
+        catch (InputMismatchException e){
+            System.out.println("Input inválido.");
+            System.out.println();
+            System.out.println();
+            pos = selectPiece();
+        }
+
+        return pos;
+    }
+
+    public static int selectDirection() {
+        int dir;
+        Scanner myObj = new Scanner(System.in);
+        try {
+            System.out.println("Select direction");
+            System.out.println("1.Up; 2.Down; 3.Left; 4.Right.");
+            System.out.println("Your option:");
+            dir = myObj.nextInt();
+        }
+        catch (InputMismatchException e){
+            System.out.println("Input inválido.");
+            System.out.println();
+            System.out.println();
+            dir = selectDirection();
+        }
+
+        if(dir<1 || dir>4){
+            System.out.println("Input inválido.");
+            System.out.println();
+            System.out.println();
+            dir = selectDirection();
+        }
+
+        return dir;
+    }
+
+    public static void youWon(int level) {
+        System.out.println();
+        System.out.println("::::::::::::::::::::::::");
+        System.out.println("::  CONGRATULATIONS!  ::");
+        System.out.println("::  YOU WON LEVEL "+ level +"   ::");
+        System.out.println("::::::::::::::::::::::::");
+        System.out.println();
+    }
 }

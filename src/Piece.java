@@ -25,9 +25,9 @@ public class Piece {
     @Override
     public String toString() {
         return "Piece{" +
-                "x=" + pos.getX() +
-                ", y=" + pos.getY() +
-                ", numSteps=" + numSteps +
-                '}';
+                "x=" + pos.getX() + "," +
+                "y=" + pos.getY() + "," +
+                "numSteps=" + numSteps +
+                "}";
     }
 }
