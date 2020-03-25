@@ -6,10 +6,16 @@ import java.util.Queue;
 public class SolveSearch {
     Level level;
     Queue<NewNode> nodesWaiting;
+    private boolean debug;
 
     SolveSearch(Level level) {
         this.level = level;
         nodesWaiting = new LinkedList<>();
+        this.debug = false;
+    }
+
+    public void debugMode(){
+        this.debug = true;
     }
 
     public NewNode breadthFirstSearch() {
@@ -31,7 +37,9 @@ public class SolveSearch {
                 for (Piece piece : pieces) { //percorre todas as pecas
                     for (int j = 0; j < 4; j++) { // percorre as 4 direcoes possiveis
                         NewNode node = new NewNode(dad, piece, direction = changeDirection(direction), 1);
-                        Printer.nodeInfo(node);
+                        if(this.debug) {
+                            Printer.nodeInfo(node);
+                        }
                         if (node.getState().isFinish()) {
                             return node;
                         }

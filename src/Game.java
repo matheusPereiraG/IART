@@ -85,6 +85,8 @@ public class Game {
 
     private static void startGameComputer(){
         search = new SolveSearch(levels.get(currLevel));
+
+        //search.debugMode();
         NewNode node = search.breadthFirstSearch();
 
         Printer.solution(node);
