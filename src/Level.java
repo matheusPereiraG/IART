@@ -117,6 +117,10 @@ public class Level implements Cloneable{
         return pieces;
     }
 
+    public int getNumPieces(){
+        return pieces.size();
+    }
+
     private void setHouse(Position pos, String data){
         level.get(pos.getY()-1).set(pos.getX()-1, data);
     }

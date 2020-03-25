@@ -7,6 +7,8 @@ import java.util.Scanner;
 public class Printer {
 
     public static void headline(){
+        System.out.println();
+        System.out.println();
         System.out.println("::::::::::::::::::::::::::::::::::");
         System.out.println("::             ZHED             ::");
         System.out.println("::::::::::::::::::::::::::::::::::");
@@ -166,7 +168,7 @@ public class Printer {
         System.out.println();
         System.out.println("::::::::::::::::::::::::::::::::::");
         System.out.println("::       CONGRATULATIONS!       ::");
-        System.out.println("::       YOU WON LEVEL "+ level +"       ::");
+        System.out.println("::       YOU WON LEVEL "+ level +"        ::");
         System.out.println("::::::::::::::::::::::::::::::::::");
         System.out.println();
     }

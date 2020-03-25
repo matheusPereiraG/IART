@@ -54,7 +54,7 @@ public class Game {
                     startGameComputerDepthFirst();
                     break;
                 case 4:
-                    //startGameComputer();
+                    startGameComputerIterativeDeepening();
                     break;
                 case 5:
                     //startGameComputer();
@@ -82,6 +82,8 @@ public class Game {
         search = new SolveSearch(levels.get(currLevel));
         search.debbugMode();
         NewNode node = search.breadthFirstSearch();
+        if(levels.get(currLevel).isFinish())
+            Printer.youWon(currLevel);
         Printer.solution(node);
     }
 
@@ -89,6 +91,18 @@ public class Game {
         search = new SolveSearch(levels.get(currLevel));
         search.debbugMode();
         NewNode node = search.depthFirstSearch();
+        if(levels.get(currLevel).isFinish())
+            Printer.youWon(currLevel);
+        Printer.solution(node);
+
+    }
+
+    private static void startGameComputerIterativeDeepening(){
+        search = new SolveSearch(levels.get(currLevel));
+        search.debbugMode();
+        NewNode node = search.iterativeDeepeningSearch();
+        if(levels.get(currLevel).isFinish())
+            Printer.youWon(currLevel);
         Printer.solution(node);
 
     }
