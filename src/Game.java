@@ -32,6 +32,13 @@ public class Game {
     }
 
     public void start(){
+
+
+        //tests
+        graph = new Graph(levels.get(currLevel));
+        graph.initGraph();
+
+        /*
         while(!end) {
             Printer.headline();
             int option = Printer.mainMenu();
@@ -65,6 +72,8 @@ public class Game {
                     break;
             }
         }
+        */
+
     }
 
     private static void startGameHuman() {
