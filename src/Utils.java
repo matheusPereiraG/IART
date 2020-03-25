@@ -15,6 +15,8 @@ public class Utils {
     public static ArrayList<Piece> getPossibleOutcomes(ArrayList<Piece> pieces, List<Piece> pieceSequence) {
         ArrayList<Piece> possiblePieces = new ArrayList<>();
 
+        if(pieceSequence.isEmpty()) return possiblePieces;
+
         for(int i = 0; i < pieces.size(); i++) {
             if(!pieceSequence.contains(pieces.get(i))) possiblePieces.add(pieces.get(i));
         }

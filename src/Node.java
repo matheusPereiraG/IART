@@ -12,15 +12,21 @@ public class Node {
     public Node(Piece p) {
         this.chosenPiece = p;
         children = new ArrayList<>();
+        seqChosenPieces = new ArrayList<>();
     }
 
     public Node(){
         this.chosenPiece = null;
         children = new ArrayList<>();
+        seqChosenPieces = new ArrayList<>();
     }
 
     public void addEdge(Edge newEdge){
         children.add(newEdge);
+    }
+
+    public void setSeqChosenPieces(ArrayList<Piece> seqChosenPieces) {
+        this.seqChosenPieces = seqChosenPieces;
     }
 
     public Piece getChosenPiece() {
@@ -60,6 +66,7 @@ public class Node {
                 System.out.println("Edge Action: " + e.getAction());
             }
         }
+        else System.out.print("LEAF NODE");
         System.out.println();
 
     }
