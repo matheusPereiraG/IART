@@ -1,5 +1,6 @@
 import java.lang.reflect.Array;
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
 
 public class Utils {
@@ -12,7 +13,7 @@ public class Utils {
 
 
 
-    public static ArrayList<Piece> getPossibleOutcomes(ArrayList<Piece> pieces, List<Piece> pieceSequence) {
+    public static ArrayList<Piece> getPossibleOutcomes(ArrayList<Piece> pieces, HashSet<Piece> pieceSequence) {
         ArrayList<Piece> possiblePieces = new ArrayList<>();
 
         for(int i = 0; i < pieces.size(); i++) {

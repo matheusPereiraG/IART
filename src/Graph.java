@@ -1,4 +1,5 @@
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
 
 public class Graph {
@@ -26,7 +27,7 @@ public class Graph {
             Node childNode = new Node();
             Edge e = new Edge(rootNode,childNode,'n'); //null action
             childNode.setChosenPiece(pieces.get(k));
-            ArrayList<Piece> rootList = rootNode.getSeqChosenPieces();
+            HashSet<Piece> rootList = rootNode.getSeqChosenPieces();
             childNode.addToSequence(rootList);
             rootNode.addEdge(e);
             addNode(childNode);
@@ -50,7 +51,7 @@ public class Graph {
             for(Node n: leafs) n.printSequence();
 
             for(int i = 0; i < leafs.size(); i++) {
-                ArrayList<Piece> pieceSequence = leafs.get(i).getSeqChosenPieces();
+                HashSet<Piece> pieceSequence = leafs.get(i).getSeqChosenPieces();
                 ArrayList<Piece> possibleOutcomes = Utils.getPossibleOutcomes(pieces,pieceSequence);
                 //System.out.println(possibleOutcomes.size());
 

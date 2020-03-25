@@ -1,4 +1,5 @@
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
 
 public class Node {
@@ -8,23 +9,19 @@ public class Node {
     private Piece chosenPiece;
 
     private ArrayList<ArrayList<String>> stateOfTheBoard;
-    private ArrayList<Piece> seqChosenPieces; //sequence of chosen pieces including the piece of this node
+    private HashSet<Piece> seqChosenPieces; //sequence of chosen pieces including the piece of this node
 
 
     public Node() {
         this.NodeID = ++count;
         this.children = new ArrayList<>();
-        this.seqChosenPieces = new ArrayList<>();
+        this.seqChosenPieces = new HashSet<>();
         this.seqChosenPieces.clear();
+
     }
 
     public void addEdge(Edge newEdge) {
         this.children.add(newEdge);
-    }
-
-    public void setSeqChosenPieces(ArrayList<Piece> seqChosenPieces) {
-        this.seqChosenPieces.clear();
-        for(Piece p: seqChosenPieces) this.seqChosenPieces.add(p);
     }
 
 
@@ -32,17 +29,22 @@ public class Node {
         return this.children;
     }
 
-    public ArrayList<Piece> getSeqChosenPieces() {
+    public HashSet<Piece> getSeqChosenPieces() {
         return this.seqChosenPieces;
     }
 
-    public void addToSequence(ArrayList<Piece> parentList) {
-        ArrayList<Piece> aux = parentList;
+    public void addToSequence(HashSet<Piece> parentList) {
+        HashSet<Piece> aux = parentList;
         if(parentList.isEmpty()) this.seqChosenPieces.add(this.chosenPiece);
         else {
             aux.add(this.chosenPiece);
             this.setSeqChosenPieces(aux);
         }
+    }
+
+    private void setSeqChosenPieces(HashSet<Piece> aux) {
+        this.seqChosenPieces.clear();
+        this.seqChosenPieces = aux;
     }
 
 
