@@ -1,11 +1,8 @@
 import java.io.File;
 import java.io.FileNotFoundException;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Objects;
-import java.util.Scanner;
+import java.util.*;
 
-public class Level {
+public class Level implements Cloneable{
     private ArrayList<ArrayList<String>> level;
     private String name;
     private int width;
@@ -73,6 +70,34 @@ public class Level {
         }
     }
 
+    @Override
+    public Object clone() throws CloneNotSupportedException{
+        Level l = (Level)super.clone();
+
+        ArrayList<ArrayList<String>> levelClone = new ArrayList<>();
+
+        for (ArrayList<String> strings : this.level) {
+            Iterator<String> iterator = strings.iterator();
+            ArrayList<String> temp = new ArrayList<>();
+            while (iterator.hasNext()) {
+                temp.add(iterator.next());
+            }
+            levelClone.add(temp);
+        }
+
+        l.level = levelClone;
+
+        ArrayList<Piece> piecesClone = new ArrayList<>();
+        for (Piece piece : this.pieces) {
+            piecesClone.add((Piece) piece.clone());
+        }
+
+        l.pieces = piecesClone;
+
+        return l;
+
+    }
+
 
 
     public ArrayList<String> getLine(int i){
@@ -130,9 +155,10 @@ public class Level {
         }
     }
 
-    private void expandPiece(Position pos, Direction dir){
+    public void expandPiece(Position pos, Direction dir){
         Piece currPiece;
-        for(Piece piece : pieces){
+        ArrayList<Piece> tempPieces = new ArrayList<>(pieces);
+        for(Piece piece : tempPieces){
             if(piece.getPos().equals(pos)){
                 currPiece = piece;
 
@@ -152,10 +178,11 @@ public class Level {
                     default:
                         break;
                 }
-                pieces.remove(piece);
+                tempPieces.remove(piece);
                 break;
             }
         }
+        pieces = new ArrayList<>(tempPieces);
 
     }
 

@@ -16,7 +16,7 @@ import java.util.Scanner;
 
 public class Game {
     private static ArrayList<Level> levels;
-    private static Graph graph;
+    private static SolveSearch search;
     private static int currLevel;
     private static int NUM_LEVELS = 1;
     private static boolean end;
@@ -80,10 +80,10 @@ public class Game {
 
 
     private static void startGameComputer(){
-        graph = new Graph(levels.get(currLevel));
-        graph.initGraph();
+        search = new SolveSearch(levels.get(currLevel));
+        NewNode node = search.breadthFirstSearch();
 
-        Printer.board(levels.get(currLevel));
+        Printer.solution(node);
     }
 
 }

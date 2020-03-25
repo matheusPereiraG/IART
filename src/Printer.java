@@ -169,4 +169,36 @@ public class Printer {
         System.out.println("::::::::::::::::::::::::");
         System.out.println();
     }
+
+    public static void nodeInfo(NewNode node){
+
+        if (!node.isRoot()){
+            System.out.println();
+            System.out.println("Node: " + node);
+            System.out.println("Dad: " + node.getDad());
+            System.out.println("Last piece: " + node.getLastPiece());
+            System.out.println("Last operator: " + node.getLastOperator());
+            System.out.println("Depth: " + node.getDepth());
+            System.out.println("Cost: " + node.getCost());
+            System.out.println("State:");
+
+            compactBoard(node.getState());
+            node = node.getDad();
+        }
+        else {
+            System.out.println();
+            System.out.println("Root node:");
+            compactBoard(node.getState());
+        }
+    }
+
+    public static void solution(NewNode node){
+        NewNode currNode = node;
+        nodeInfo(currNode);
+        do{
+            currNode = currNode.getDad();
+            nodeInfo(currNode);
+        }while (!currNode.isRoot());
+
+    }
 }
