@@ -14,6 +14,8 @@ public class Level implements Cloneable{
         return finish;
     }
 
+    public void finish() { this.finish = true; }
+
     enum Direction{
         NULL,
         UP,

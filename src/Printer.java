@@ -1,8 +1,6 @@
 import javax.swing.*;
 import javax.swing.plaf.synth.SynthOptionPaneUI;
-import java.util.ArrayList;
-import java.util.InputMismatchException;
-import java.util.Scanner;
+import java.util.*;
 
 public class Printer {
 
@@ -190,7 +188,7 @@ public class Printer {
         }
         else {
             System.out.println();
-            System.out.println("Root node:");
+            System.out.println("Root node: " + node);
             compactBoard(node.getState());
         }
     }
@@ -213,5 +211,27 @@ public class Printer {
             nodeInfo(currNode);
         }while (!currNode.isRoot());
 
+    }
+
+    public static void printNodesQueue(Queue<NewNode> nodesWaiting){
+        System.out.println();
+        System.out.println("::::::::::::::::::::::");
+        System.out.println("::   nodes wating   ::");
+
+        for (NewNode node : nodesWaiting)
+            System.out.println(":: "+node+" ::");
+        System.out.println("::::::::::::::::::::::");
+        System.out.println();
+    }
+
+    public static void printNodesStack(Stack<NewNode> nodesWaiting){
+        System.out.println();
+        System.out.println("::::::::::::::::::::::");
+        System.out.println("::   nodes wating   ::");
+
+        for (NewNode node : nodesWaiting)
+            System.out.println(":: "+node+" ::");
+        System.out.println("::::::::::::::::::::::");
+        System.out.println();
     }
 }

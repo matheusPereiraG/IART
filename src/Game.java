@@ -1,9 +1,5 @@
-import java.io.File;
-import java.io.FileNotFoundException;
-import java.lang.reflect.Array;
 import java.util.ArrayList;
-import java.util.List;
-import java.util.Scanner;
+
 
 //TODO:
 //comparação  entre  métodos  de  pesquisa  não  informada (pesquisa  primeiro  em  largura,
@@ -16,9 +12,9 @@ import java.util.Scanner;
 
 public class Game {
     private static ArrayList<Level> levels;
-    private static SolveSearch search;
     private static int currLevel;
     private static int NUM_LEVELS = 1;
+    private static boolean DEBBUG = true;
 
     Game() {
         levels = new ArrayList<>();
@@ -43,27 +39,41 @@ public class Game {
                 return;
 
             levels.get(currLevel).reset();
-            switch (option) {
-                case 1:
-                    startGameHuman();
-                    break;
-                case 2:
-                    startGameComputerBreadthFirst();
-                    break;
-                case 3:
-                    startGameComputerDepthFirst();
-                    break;
-                case 4:
-                    startGameComputerIterativeDeepening();
-                    break;
-                case 5:
-                    //startGameComputer();
-                    break;
-                case 6:
-                    //startGameComputer();
-                    break;
-            }
+
+            if(option==1)
+                startGameHuman();
+            else if (option < 5)
+                startSolveSearch(option);
+            else startHeuristics(option);
         }
+    }
+
+    private void startHeuristics(int option) {
+
+    }
+
+    private void startSolveSearch(int option) {
+        SolveSearch search = new SolveSearch(levels.get(currLevel));
+        search.debbugMode(DEBBUG);
+        NewNode node;
+
+        switch (option) {
+            case 2:
+                node = search.breadthFirstSearch();
+                break;
+            case 3:
+                node = search.depthFirstSearch();
+                break;
+            case 4:
+                node = search.iterativeDeepeningSearch();
+                break;
+            default:
+                return;
+        }
+
+        if(levels.get(currLevel).isFinish())
+            Printer.youWon(currLevel);
+        Printer.solution(node);
     }
 
     private static void startGameHuman() {
@@ -75,36 +85,4 @@ public class Game {
         Printer.board((levels.get(currLevel)));
         Printer.youWon(currLevel);
     }
-
-
-
-    private static void startGameComputerBreadthFirst(){
-        search = new SolveSearch(levels.get(currLevel));
-        search.debbugMode();
-        NewNode node = search.breadthFirstSearch();
-        if(levels.get(currLevel).isFinish())
-            Printer.youWon(currLevel);
-        Printer.solution(node);
-    }
-
-    private static void startGameComputerDepthFirst(){
-        search = new SolveSearch(levels.get(currLevel));
-        search.debbugMode();
-        NewNode node = search.depthFirstSearch();
-        if(levels.get(currLevel).isFinish())
-            Printer.youWon(currLevel);
-        Printer.solution(node);
-
-    }
-
-    private static void startGameComputerIterativeDeepening(){
-        search = new SolveSearch(levels.get(currLevel));
-        search.debbugMode();
-        NewNode node = search.iterativeDeepeningSearch();
-        if(levels.get(currLevel).isFinish())
-            Printer.youWon(currLevel);
-        Printer.solution(node);
-
-    }
-
 }
