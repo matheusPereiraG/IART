@@ -23,56 +23,78 @@ public class Graph {
         Node rootNode = new Node();
 
         for(int k= 0; k < pieces.size(); k++) {
-            Node childNode = new Node(pieces.get(k));
+            Node childNode = new Node();
             Edge e = new Edge(rootNode,childNode,'n'); //null action
+            childNode.setChosenPiece(pieces.get(k));
+            ArrayList<Piece> rootList = rootNode.getSeqChosenPieces();
+            childNode.addToSequence(rootList);
             rootNode.addEdge(e);
-            childNode.addToSequence(pieces.get(k));
             addNode(childNode);
         }
 
         addNode(rootNode);
 
-        List<Node> e = this.getLeafs();
-
         boolean stop = true;
+        int graphDepth = pieces.size();
+        int counter = 0;
 
         while(stop) {
 
             //stop condition here?
+            counter++;
+            if(counter == graphDepth) stop = false;
+
 
             List<Node> leafs = this.getLeafs();
+            System.out.println(leafs.size());
+            for(Node n: leafs) n.printSequence();
 
             for(int i = 0; i < leafs.size(); i++) {
-                List<Piece> pieceSequence = leafs.get(i).getSeqChosenPieces();
+                ArrayList<Piece> pieceSequence = leafs.get(i).getSeqChosenPieces();
                 ArrayList<Piece> possibleOutcomes = Utils.getPossibleOutcomes(pieces,pieceSequence);
-
-                if(possibleOutcomes.isEmpty()) stop = false;
+                //System.out.println(possibleOutcomes.size());
 
                 for(int j=0; j < possibleOutcomes.size(); j++) {
-                    Node newChildNode1 = new Node(possibleOutcomes.get(j));
-                    Node newChildNode2 = new Node(possibleOutcomes.get(j));
-                    Node newChildNode3 = new Node(possibleOutcomes.get(j));
-                    Node newChildNode4 = new Node(possibleOutcomes.get(j));
+                    Node newChildNode1 = new Node();
+                    Node newChildNode2 = new Node();
+                    Node newChildNode3 = new Node();
+                    Node newChildNode4 = new Node();
+
+                    newChildNode1.setChosenPiece(possibleOutcomes.get(j));
+                    newChildNode2.setChosenPiece(possibleOutcomes.get(j));
+                    newChildNode3.setChosenPiece(possibleOutcomes.get(j));
+                    newChildNode4.setChosenPiece(possibleOutcomes.get(j));
 
                     Edge e1 = new Edge(leafs.get(i),newChildNode1,'U');
                     Edge e2 = new Edge(leafs.get(i),newChildNode2,'D');
                     Edge e3 = new Edge(leafs.get(i),newChildNode3,'L');
                     Edge e4 = new Edge(leafs.get(i),newChildNode4,'R');
 
+                    newChildNode1.addToSequence(pieceSequence);
+                    newChildNode2.addToSequence(pieceSequence);
+                    newChildNode3.addToSequence(pieceSequence);
+                    newChildNode4.addToSequence(pieceSequence);
+
                     leafs.get(i).addEdge(e1);
                     leafs.get(i).addEdge(e2);
                     leafs.get(i).addEdge(e3);
                     leafs.get(i).addEdge(e4);
 
+                    //add new children
                     addNode(newChildNode1);
                     addNode(newChildNode2);
                     addNode(newChildNode3);
                     addNode(newChildNode4);
+
+                    //finally update parent node in the array
+                    this.setNode(leafs.get(i));
                 }
             }
+
+
         }
         for(int t = 0; t < nodes.size(); t++) {
-            getNode(t).printInfo();
+            this.nodes.get(t).printInfo();
         }
     }
 
@@ -84,14 +106,17 @@ public class Graph {
         return nodes;
     }
 
-    public Node getNode(int iterator){
-        return nodes.get(iterator);
+    public void setNode(Node n){
+        for(int i = 0; i < this.nodes.size(); i++) {
+            if(this.nodes.get(i).getNodeID() == n.getNodeID())
+                this.nodes.set(i,n);
+        }
     }
 
     public List<Node> getLeafs() {
         List<Node> toReturn = new ArrayList<>();
         for(Node n: this.nodes) {
-            if(n.getChildren().size() == 0) toReturn.add(n);
+            if(n.getChildren().isEmpty()) toReturn.add(n);
         }
         return toReturn;
     }

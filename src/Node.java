@@ -2,72 +2,85 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class Node {
-    public Piece chosenPiece;
-    public List<Edge> children;
+    private int NodeID;
+    private static int count = 0;
+    private List<Edge> children;
+    private Piece chosenPiece;
 
-    public ArrayList<ArrayList<String>> stateOfTheBoard;
-    public ArrayList<Piece> seqChosenPieces; //sequence of chosen pieces till this node
+    private ArrayList<ArrayList<String>> stateOfTheBoard;
+    private ArrayList<Piece> seqChosenPieces; //sequence of chosen pieces including the piece of this node
 
 
-    public Node(Piece p) {
-        this.chosenPiece = p;
-        children = new ArrayList<>();
-        seqChosenPieces = new ArrayList<>();
+    public Node() {
+        this.NodeID = ++count;
+        this.children = new ArrayList<>();
+        this.seqChosenPieces = new ArrayList<>();
+        this.seqChosenPieces.clear();
     }
 
-    public Node(){
-        this.chosenPiece = null;
-        children = new ArrayList<>();
-        seqChosenPieces = new ArrayList<>();
-    }
-
-    public void addEdge(Edge newEdge){
-        children.add(newEdge);
+    public void addEdge(Edge newEdge) {
+        this.children.add(newEdge);
     }
 
     public void setSeqChosenPieces(ArrayList<Piece> seqChosenPieces) {
-        this.seqChosenPieces = seqChosenPieces;
+        this.seqChosenPieces.clear();
+        for(Piece p: seqChosenPieces) this.seqChosenPieces.add(p);
     }
 
-    public Piece getChosenPiece() {
-        return chosenPiece;
-    }
 
     public List<Edge> getChildren() {
-        return children;
+        return this.children;
     }
 
     public ArrayList<Piece> getSeqChosenPieces() {
-        return seqChosenPieces;
+        return this.seqChosenPieces;
     }
 
-    public void addToSequence(Piece p){
-        if(this.seqChosenPieces == null) {
-            this.seqChosenPieces = new ArrayList<>();
-            this.seqChosenPieces.add(p);
+    public void addToSequence(ArrayList<Piece> parentList) {
+        ArrayList<Piece> aux = parentList;
+        if(parentList.isEmpty()) this.seqChosenPieces.add(this.chosenPiece);
+        else {
+            aux.add(this.chosenPiece);
+            this.setSeqChosenPieces(aux);
         }
-        else this.seqChosenPieces.add(p);
     }
+
 
     public ArrayList<ArrayList<String>> getStateOfTheBoard() {
         return stateOfTheBoard;
     }
 
-    public void printInfo(){
+    public void printInfo() {
         System.out.println();
-        if(this.chosenPiece != null)
-                System.out.println("Node Piece: " + this.chosenPiece.toString());
+        if (this.NodeID != 1)
+            System.out.println("Node Piece: " + this.getChosenPiece().toString());
         else System.out.println("ROOT NODE");
 
-        if(!children.isEmpty()) {
+        if (!children.isEmpty()) {
             System.out.println("Children: ");
-            for(Edge e: this.children){
+            for (Edge e : this.children) {
                 System.out.println("Child Node Piece: " + e.getChild().getChosenPiece().toString());
                 System.out.println("Edge Action: " + e.getAction());
             }
-        }
-        else System.out.print("LEAF NODE");
+        } else System.out.print("LEAF NODE");
         System.out.println();
 
+    }
+
+    public void printSequence(){
+        for(Piece p: this.seqChosenPieces)
+            System.out.println(p.toString());
+        System.out.println();
+    }
+    public void setChosenPiece(Piece p){
+        this.chosenPiece = p;
+    }
+
+    public Piece getChosenPiece() {
+        return this.chosenPiece;
+    }
+
+    public int getNodeID() {
+        return this.NodeID;
     }
 }
