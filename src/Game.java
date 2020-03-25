@@ -19,7 +19,6 @@ public class Game {
     private static SolveSearch search;
     private static int currLevel;
     private static int NUM_LEVELS = 1;
-    private static boolean end;
 
     Game() {
         levels = new ArrayList<>();
@@ -28,22 +27,20 @@ public class Game {
         for(int i=1; i<=NUM_LEVELS; i++){
             levels.add(new Level("level" + i + ".txt"));
         }
-        end = false;
     }
 
     public void start(){
-
-        while(!end) {
+        while(true) {
             Printer.headline();
             int option = Printer.mainMenu();
+
+            if(option == 0) //sair do jogo
+                return;
+
             currLevel = Printer.selectLevel(NUM_LEVELS);
 
-
-            //sair do jogo
-            if(option == 0 || currLevel == 0){
-                end = true;
-                break;
-            }
+            if(currLevel == 0) //sair do jogo
+                return;
 
             levels.get(currLevel).reset();
             switch (option) {
@@ -51,24 +48,22 @@ public class Game {
                     startGameHuman();
                     break;
                 case 2:
-                    startGameComputer();
+                    startGameComputerBreadthFirst();
                     break;
                 case 3:
-                    startGameComputer();
+                    startGameComputerDepthFirst();
                     break;
                 case 4:
-                    startGameComputer();
+                    //startGameComputer();
                     break;
                 case 5:
-                    startGameComputer();
+                    //startGameComputer();
                     break;
                 case 6:
-                    startGameComputer();
+                    //startGameComputer();
                     break;
             }
         }
-
-
     }
 
     private static void startGameHuman() {
@@ -83,13 +78,19 @@ public class Game {
 
 
 
-    private static void startGameComputer(){
+    private static void startGameComputerBreadthFirst(){
         search = new SolveSearch(levels.get(currLevel));
-
-        //search.debugMode();
+        search.debbugMode();
         NewNode node = search.breadthFirstSearch();
-
         Printer.solution(node);
+    }
+
+    private static void startGameComputerDepthFirst(){
+        search = new SolveSearch(levels.get(currLevel));
+        search.debbugMode();
+        NewNode node = search.depthFirstSearch();
+        Printer.solution(node);
+
     }
 
 }

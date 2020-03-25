@@ -1,3 +1,4 @@
+import javax.swing.*;
 import javax.swing.plaf.synth.SynthOptionPaneUI;
 import java.util.ArrayList;
 import java.util.InputMismatchException;
@@ -6,9 +7,9 @@ import java.util.Scanner;
 public class Printer {
 
     public static void headline(){
-        System.out.println("::::::::::::::::::::::::::");
-        System.out.println("::         ZHED         ::");
-        System.out.println("::::::::::::::::::::::::::");
+        System.out.println("::::::::::::::::::::::::::::::::::");
+        System.out.println("::             ZHED             ::");
+        System.out.println("::::::::::::::::::::::::::::::::::");
         System.out.println();
     }
 
@@ -163,10 +164,10 @@ public class Printer {
 
     public static void youWon(int level) {
         System.out.println();
-        System.out.println("::::::::::::::::::::::::");
-        System.out.println("::  CONGRATULATIONS!  ::");
-        System.out.println("::  YOU WON LEVEL "+ level +"   ::");
-        System.out.println("::::::::::::::::::::::::");
+        System.out.println("::::::::::::::::::::::::::::::::::");
+        System.out.println("::       CONGRATULATIONS!       ::");
+        System.out.println("::       YOU WON LEVEL "+ level +"       ::");
+        System.out.println("::::::::::::::::::::::::::::::::::");
         System.out.println();
     }
 
@@ -193,6 +194,16 @@ public class Printer {
     }
 
     public static void solution(NewNode node){
+        if(node.getClass() == NewNodeNull.class){
+            System.out.println();
+            System.out.println("::::::::::::::::::::::::::::::::::");
+            System.out.println("::   This level is impossible!  ::");
+            System.out.println("::::::::::::::::::::::::::::::::::");
+            System.out.println();
+            System.out.println();
+            return;
+        }
+
         NewNode currNode = node;
         nodeInfo(currNode);
         do{
