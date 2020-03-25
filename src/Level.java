@@ -289,4 +289,38 @@ public class Level implements Cloneable{
             }
         }
     }
+
+    public void reset(){
+        this.finish = false;
+        level = new ArrayList<>();
+        //open file
+        try {
+            File myObj = new File(name);
+            Scanner myReader = new Scanner(myObj);
+            while (myReader.hasNextLine()) {
+                String data = myReader.nextLine();
+                String[] cells = data.split(" ");
+                ArrayList<String> line = new ArrayList<>(Arrays.asList(cells));
+                level.add(line);
+            }
+            myReader.close();
+        } catch (FileNotFoundException e) {
+            System.out.println("An error occurred loading level " + name + ".");
+            e.printStackTrace();
+            return;
+        }
+
+
+        // get pieces
+        pieces = new ArrayList<>();
+        for (int i = 0; i < height; i++) {
+            for (int j = 0; j < width; j++) {
+                String numSteps = level.get(i).get(j);
+                if (numSteps.matches("-?\\d+")) {
+                    Piece newPiece = new Piece(j+1, i+1, Integer.parseInt(numSteps));
+                    pieces.add(newPiece);
+                }
+            }
+        }
+    }
 }

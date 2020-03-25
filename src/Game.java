@@ -38,13 +38,14 @@ public class Game {
             int option = Printer.mainMenu();
             currLevel = Printer.selectLevel(NUM_LEVELS);
 
+
             //sair do jogo
             if(option == 0 || currLevel == 0){
                 end = true;
                 break;
             }
 
-
+            levels.get(currLevel).reset();
             switch (option) {
                 case 1:
                     startGameHuman();
