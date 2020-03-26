@@ -1,0 +1,6 @@
+   file    -> ZHED level
+
+level1.txt -> level 6 (4 Pieces)
+level2.txt -> level 7 (5 Pieces)
+level3.txt -> level 12 (6 Pieces)
+level4.txt -> level 40 (7 Pieces)

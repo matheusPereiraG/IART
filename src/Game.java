@@ -13,7 +13,7 @@ import java.util.ArrayList;
 public class Game {
     private static ArrayList<Level> levels;
     private static int currLevel;
-    private static int NUM_LEVELS = 1;
+    private static int NUM_LEVELS = 4;
     private static boolean DEBBUG = true;
 
     Game() {
