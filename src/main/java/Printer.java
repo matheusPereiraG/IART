@@ -34,13 +34,13 @@ public class Printer {
             System.out.println();
             System.out.println();
             option = mainMenu();
-        }
+        }/*
         if (option < 0 || option > 6){
             System.out.println("Input inválido.");
             System.out.println();
             System.out.println();
             option = mainMenu();
-        }
+        }*/
         return option;
     }
 
