@@ -1,9 +1,5 @@
-import java.io.File;
-import java.io.FileNotFoundException;
-import java.lang.reflect.Array;
 import java.util.ArrayList;
-import java.util.List;
-import java.util.Scanner;
+
 
 //TODO:
 //comparação  entre  métodos  de  pesquisa  não  informada (pesquisa  primeiro  em  largura,
@@ -16,10 +12,9 @@ import java.util.Scanner;
 
 public class Game {
     private static ArrayList<Level> levels;
-    private static Graph graph;
     private static int currLevel;
     private static int NUM_LEVELS = 1;
-    private static boolean end;
+    private static boolean DEBBUG = true;
 
     Game() {
         levels = new ArrayList<>();
@@ -28,52 +23,57 @@ public class Game {
         for(int i=1; i<=NUM_LEVELS; i++){
             levels.add(new Level("level" + i + ".txt"));
         }
-        end = false;
     }
 
     public void start(){
-
-
-        //tests
-        graph = new Graph(levels.get(currLevel));
-        graph.initGraph();
-
-        /*
-        while(!end) {
+        while(true) {
             Printer.headline();
             int option = Printer.mainMenu();
+
+            if(option == 0) //sair do jogo
+                return;
+
             currLevel = Printer.selectLevel(NUM_LEVELS);
 
-            //sair do jogo
-            if(option == 0 || currLevel == 0){
-                end = true;
-                break;
-            }
+            if(currLevel == 0) //sair do jogo
+                return;
 
+            levels.get(currLevel).reset();
 
-            switch (option) {
-                case 1:
-                    startGameHuman();
-                    break;
-                case 2:
-                    startGameComputer();
-                    break;
-                case 3:
-                    startGameComputer();
-                    break;
-                case 4:
-                    startGameComputer();
-                    break;
-                case 5:
-                    startGameComputer();
-                    break;
-                case 6:
-                    startGameComputer();
-                    break;
-            }
+            if(option==1)
+                startGameHuman();
+            else if (option < 5)
+                startSolveSearch(option);
+            else startHeuristics(option);
         }
-        */
+    }
 
+    private void startHeuristics(int option) {
+
+    }
+
+    private void startSolveSearch(int option) {
+        SolveSearch search = new SolveSearch(levels.get(currLevel));
+        search.debbugMode(DEBBUG);
+        NewNode node;
+
+        switch (option) {
+            case 2:
+                node = search.breadthFirstSearch();
+                break;
+            case 3:
+                node = search.depthFirstSearch();
+                break;
+            case 4:
+                node = search.iterativeDeepeningSearch();
+                break;
+            default:
+                return;
+        }
+
+        if(levels.get(currLevel).isFinish())
+            Printer.youWon(currLevel);
+        Printer.solution(node);
     }
 
     private static void startGameHuman() {
@@ -85,14 +85,4 @@ public class Game {
         Printer.board((levels.get(currLevel)));
         Printer.youWon(currLevel);
     }
-
-
-
-    private static void startGameComputer(){
-        graph = new Graph(levels.get(currLevel));
-        graph.initGraph();
-
-        Printer.board(levels.get(currLevel));
-    }
-
 }

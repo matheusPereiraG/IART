@@ -1,11 +1,8 @@
 import java.io.File;
 import java.io.FileNotFoundException;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Objects;
-import java.util.Scanner;
+import java.util.*;
 
-public class Level {
+public class Level implements Cloneable{
     private ArrayList<ArrayList<String>> level;
     private String name;
     private int width;
@@ -16,6 +13,8 @@ public class Level {
     public boolean isFinish() {
         return finish;
     }
+
+    public void finish() { this.finish = true; }
 
     enum Direction{
         NULL,
@@ -73,6 +72,34 @@ public class Level {
         }
     }
 
+    @Override
+    public Object clone() throws CloneNotSupportedException{
+        Level l = (Level)super.clone();
+
+        ArrayList<ArrayList<String>> levelClone = new ArrayList<>();
+
+        for (ArrayList<String> strings : this.level) {
+            Iterator<String> iterator = strings.iterator();
+            ArrayList<String> temp = new ArrayList<>();
+            while (iterator.hasNext()) {
+                temp.add(iterator.next());
+            }
+            levelClone.add(temp);
+        }
+
+        l.level = levelClone;
+
+        ArrayList<Piece> piecesClone = new ArrayList<>();
+        for (Piece piece : this.pieces) {
+            piecesClone.add((Piece) piece.clone());
+        }
+
+        l.pieces = piecesClone;
+
+        return l;
+
+    }
+
 
 
     public ArrayList<String> getLine(int i){
@@ -90,6 +117,10 @@ public class Level {
     public ArrayList<Piece> getAllPieces() {
 
         return pieces;
+    }
+
+    public int getNumPieces(){
+        return pieces.size();
     }
 
     private void setHouse(Position pos, String data){
@@ -130,9 +161,10 @@ public class Level {
         }
     }
 
-    private void expandPiece(Position pos, Direction dir){
+    public void expandPiece(Position pos, Direction dir){
         Piece currPiece;
-        for(Piece piece : pieces){
+        ArrayList<Piece> tempPieces = new ArrayList<>(pieces);
+        for(Piece piece : tempPieces){
             if(piece.getPos().equals(pos)){
                 currPiece = piece;
 
@@ -152,10 +184,11 @@ public class Level {
                     default:
                         break;
                 }
-                pieces.remove(piece);
+                tempPieces.remove(piece);
                 break;
             }
         }
+        pieces = new ArrayList<>(tempPieces);
 
     }
 
@@ -258,6 +291,40 @@ public class Level {
                 } else { //posicao ocupada
                     i--;
                     pos = new Position(pos.getX()-1, pos.getY());
+                }
+            }
+        }
+    }
+
+    public void reset(){
+        this.finish = false;
+        level = new ArrayList<>();
+        //open file
+        try {
+            File myObj = new File(name);
+            Scanner myReader = new Scanner(myObj);
+            while (myReader.hasNextLine()) {
+                String data = myReader.nextLine();
+                String[] cells = data.split(" ");
+                ArrayList<String> line = new ArrayList<>(Arrays.asList(cells));
+                level.add(line);
+            }
+            myReader.close();
+        } catch (FileNotFoundException e) {
+            System.out.println("An error occurred loading level " + name + ".");
+            e.printStackTrace();
+            return;
+        }
+
+
+        // get pieces
+        pieces = new ArrayList<>();
+        for (int i = 0; i < height; i++) {
+            for (int j = 0; j < width; j++) {
+                String numSteps = level.get(i).get(j);
+                if (numSteps.matches("-?\\d+")) {
+                    Piece newPiece = new Piece(j+1, i+1, Integer.parseInt(numSteps));
+                    pieces.add(newPiece);
                 }
             }
         }

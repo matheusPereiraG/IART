@@ -1,14 +1,15 @@
+import javax.swing.*;
 import javax.swing.plaf.synth.SynthOptionPaneUI;
-import java.util.ArrayList;
-import java.util.InputMismatchException;
-import java.util.Scanner;
+import java.util.*;
 
 public class Printer {
 
     public static void headline(){
-        System.out.println("::::::::::::::::::::::::::");
-        System.out.println("::         ZHED         ::");
-        System.out.println("::::::::::::::::::::::::::");
+        System.out.println();
+        System.out.println();
+        System.out.println("::::::::::::::::::::::::::::::::::");
+        System.out.println("::             ZHED             ::");
+        System.out.println("::::::::::::::::::::::::::::::::::");
         System.out.println();
     }
 
@@ -163,10 +164,74 @@ public class Printer {
 
     public static void youWon(int level) {
         System.out.println();
-        System.out.println("::::::::::::::::::::::::");
-        System.out.println("::  CONGRATULATIONS!  ::");
-        System.out.println("::  YOU WON LEVEL "+ level +"   ::");
-        System.out.println("::::::::::::::::::::::::");
+        System.out.println("::::::::::::::::::::::::::::::::::");
+        System.out.println("::       CONGRATULATIONS!       ::");
+        System.out.println("::       YOU WON LEVEL "+ level +"        ::");
+        System.out.println("::::::::::::::::::::::::::::::::::");
+        System.out.println();
+    }
+
+    public static void nodeInfo(NewNode node){
+
+        if (!node.isRoot()){
+            System.out.println();
+            System.out.println("Node: " + node);
+            System.out.println("Dad: " + node.getDad());
+            System.out.println("Last piece: " + node.getLastPiece());
+            System.out.println("Last operator: " + node.getLastOperator());
+            System.out.println("Depth: " + node.getDepth());
+            System.out.println("Cost: " + node.getCost());
+            System.out.println("State:");
+
+            compactBoard(node.getState());
+            node = node.getDad();
+        }
+        else {
+            System.out.println();
+            System.out.println("Root node: " + node);
+            compactBoard(node.getState());
+        }
+    }
+
+    public static void solution(NewNode node){
+        if(node.getClass() == NewNodeNull.class){
+            System.out.println();
+            System.out.println("::::::::::::::::::::::::::::::::::");
+            System.out.println("::   This level is impossible!  ::");
+            System.out.println("::::::::::::::::::::::::::::::::::");
+            System.out.println();
+            System.out.println();
+            return;
+        }
+
+        NewNode currNode = node;
+        nodeInfo(currNode);
+        do{
+            currNode = currNode.getDad();
+            nodeInfo(currNode);
+        }while (!currNode.isRoot());
+
+    }
+
+    public static void printNodesQueue(Queue<NewNode> nodesWaiting){
+        System.out.println();
+        System.out.println("::::::::::::::::::::::");
+        System.out.println("::   nodes wating   ::");
+
+        for (NewNode node : nodesWaiting)
+            System.out.println(":: "+node+" ::");
+        System.out.println("::::::::::::::::::::::");
+        System.out.println();
+    }
+
+    public static void printNodesStack(Stack<NewNode> nodesWaiting){
+        System.out.println();
+        System.out.println("::::::::::::::::::::::");
+        System.out.println("::   nodes wating   ::");
+
+        for (NewNode node : nodesWaiting)
+            System.out.println(":: "+node+" ::");
+        System.out.println("::::::::::::::::::::::");
         System.out.println();
     }
 }

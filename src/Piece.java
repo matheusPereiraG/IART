@@ -1,6 +1,8 @@
+import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.Objects;
 
-public class Piece {
+public class Piece implements Cloneable{
 
     private Position pos;
     private int numSteps;
@@ -29,5 +31,15 @@ public class Piece {
                 "y=" + pos.getY() + "," +
                 "numSteps=" + numSteps +
                 "}";
+    }
+
+    @Override
+    public Object clone() throws CloneNotSupportedException{
+        Piece p = (Piece)super.clone();
+
+        p.pos = getPos();
+
+        return p;
+
     }
 }
