@@ -9,12 +9,12 @@ public class SolveSearch {
         this.debug = false;
     }
 
-    public void debbugMode(boolean value){
+    public void debbugMode(boolean value) {
         this.debug = value;
     }
 
-    private Level.Direction changeDirection(Level.Direction dir){
-        switch (dir){
+    private Level.Direction changeDirection(Level.Direction dir) {
+        switch (dir) {
             case NULL:
             case RIGHT:
                 return Level.Direction.UP;
@@ -29,7 +29,7 @@ public class SolveSearch {
     }
 
     public NewNode breadthFirstSearch() {
-        Queue<NewNode> nodesWaiting = new LinkedList<>(); //queue for FIFO (First In First Out)
+        Queue<NewNode> nodesWaiting = new LinkedList<>(); // queue for FIFO (First In First Out)
         NewNode root = new NewNode(level);
         Level.Direction direction = Level.Direction.NULL;
         nodesWaiting.add(root);
@@ -37,17 +37,16 @@ public class SolveSearch {
         if (level.isFinish())
             return root;
 
-        while(true){
+        while (true) {
             try {
                 NewNode dad = nodesWaiting.remove();
 
                 ArrayList<Piece> pieces = dad.getState().getAllPieces();
 
-
-                for (Piece piece : pieces) { //percorre todas as pecas
+                for (Piece piece : pieces) { // percorre todas as pecas
                     for (int j = 0; j < 4; j++) { // percorre as 4 direcoes possiveis
                         NewNode node = new NewNode(dad, piece, direction = changeDirection(direction), 1);
-                        if(this.debug)
+                        if (this.debug)
                             Printer.nodeInfo(node);
 
                         if (node.getState().isFinish()) {
@@ -58,18 +57,16 @@ public class SolveSearch {
                     }
                 }
 
-                if(this.debug)
+                if (this.debug)
                     Printer.printNodesQueue(nodesWaiting);
-            }
-            catch (NoSuchElementException e){ // a fila chegou ao fim
+            } catch (NoSuchElementException e) { // a fila chegou ao fim
                 return new NewNodeNull(level);
             }
         }
     }
 
-
     public NewNode depthFirstSearch() {
-        Stack<NewNode> nodesWaiting = new Stack<>(); //stack for LIFO (Last In First Out)
+        Stack<NewNode> nodesWaiting = new Stack<>(); // stack for LIFO (Last In First Out)
         NewNode root = new NewNode(level);
         Level.Direction direction = Level.Direction.NULL;
         nodesWaiting.push(root);
@@ -77,17 +74,16 @@ public class SolveSearch {
         if (level.isFinish())
             return root;
 
-        while(true){
+        while (true) {
             try {
                 NewNode dad = nodesWaiting.pop();
 
                 ArrayList<Piece> pieces = dad.getState().getAllPieces();
 
-
-                for (Piece piece : pieces) { //percorre todas as pecas
+                for (Piece piece : pieces) { // percorre todas as pecas
                     for (int j = 0; j < 4; j++) { // percorre as 4 direcoes possiveis
                         NewNode node = new NewNode(dad, piece, direction = changeDirection(direction), 1);
-                        if(this.debug)
+                        if (this.debug)
                             Printer.nodeInfo(node);
                         if (node.getState().isFinish()) {
                             level.finish();
@@ -97,10 +93,9 @@ public class SolveSearch {
                     }
                 }
 
-                if(this.debug)
+                if (this.debug)
                     Printer.printNodesStack(nodesWaiting);
-            }
-            catch (EmptyStackException e){ // a fila chegou ao fim
+            } catch (EmptyStackException e) { // a fila chegou ao fim
                 return new NewNodeNull(level);
             }
         }
@@ -108,12 +103,12 @@ public class SolveSearch {
     }
 
     public NewNode iterativeDeepeningSearch() {
-        Stack<NewNode> nodesWaiting;  //stack for LIFO (Last In First Out)
-        NewNode root = new NewNode(level); //o root é sempre o mesmo
+        Stack<NewNode> nodesWaiting; // stack for LIFO (Last In First Out)
+        NewNode root = new NewNode(level); // o root é sempre o mesmo
         int maxDepthCounter = 1;
         int currDephtCounter;
 
-        while(true) {  //profundidade iterativa
+        while (true) { // profundidade iterativa
             nodesWaiting = new Stack<>();
             Level.Direction direction = Level.Direction.NULL;
             nodesWaiting.push(root);
@@ -121,26 +116,27 @@ public class SolveSearch {
             if (level.isFinish())
                 return root;
 
-            while(true) {
+            while (true) {
                 try {
                     NewNode dad = nodesWaiting.pop();
                     ArrayList<Piece> pieces = dad.getState().getAllPieces();
-                    currDephtCounter = dad.getDepth()+1;
+                    currDephtCounter = dad.getDepth() + 1;
 
-                    for (Piece piece : pieces) { //percorre todas as pecas
+                    for (Piece piece : pieces) { // percorre todas as pecas
                         for (int j = 0; j < 4; j++) { // percorre as 4 direcoes possiveis
                             NewNode node = new NewNode(dad, piece, direction = changeDirection(direction), 1);
                             if (this.debug)
                                 Printer.nodeInfo(node);
-                            if (node.getState().isFinish()) { //solucao encontrada
+                            if (node.getState().isFinish()) { // solucao encontrada
                                 level.finish();
                                 return node;
                             }
-                            if(currDephtCounter<maxDepthCounter) //apenas adiciona o nó a stack se nao estiver no limite de profundidade
+                            if (currDephtCounter < maxDepthCounter) // apenas adiciona o nó a stack se nao estiver no
+                                                                    // limite de profundidade
                                 nodesWaiting.push(node);
                         }
                     }
-                    if(this.debug)
+                    if (this.debug)
                         Printer.printNodesStack(nodesWaiting);
 
                 } catch (EmptyStackException e) { // a stack chegou ao fim
@@ -148,9 +144,9 @@ public class SolveSearch {
                 }
             }
 
-            maxDepthCounter++; //aumenta a profundidade da proxima tentativa
+            maxDepthCounter++; // aumenta a profundidade da proxima tentativa
 
-            if(maxDepthCounter > level.getNumPieces()) //nao existe solucao
+            if (maxDepthCounter > level.getNumPieces()) // nao existe solucao
                 return new NewNodeNull(level);
 
         }

@@ -7,6 +7,7 @@ public class NewNode {
     private Level.Direction lastOperator;
     private int depth;
     private int cost;
+    private static int nodeCounter;
 
     NewNode(Level state) {
         try {
@@ -15,6 +16,7 @@ public class NewNode {
             e.printStackTrace();
         }
         this.root = true;
+        NewNode.nodeCounter = 0;
     }
 
     NewNode(NewNode dad, Piece piece, Level.Direction operator, int cost) {
@@ -24,6 +26,7 @@ public class NewNode {
         this.lastOperator = operator;
         this.depth = dad.getDepth()+1;
         this.cost = dad.getCost()+cost;
+        NewNode.nodeCounter++;
         try {
             this.state = (Level)dad.getState().clone();
             this.state.expandPiece(piece.getPos(), operator);
@@ -58,5 +61,9 @@ public class NewNode {
 
     public boolean isRoot() {
         return root;
+    }
+
+    public int getNumberNodes(){
+        return NewNode.nodeCounter;
     }
 }

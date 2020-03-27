@@ -211,6 +211,7 @@ public class Printer {
             nodeInfo(currNode);
         }while (!currNode.isRoot());
 
+        System.out.println("Nodes usados: "+ node.getNumberNodes());
     }
 
     public static void printNodesQueue(Queue<NewNode> nodesWaiting){
