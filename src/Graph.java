@@ -48,23 +48,29 @@ public class Graph {
 
             List<Node> leafs = this.getLeafs();
             System.out.println(leafs.size());
-            for(Node n: leafs) n.printSequence();
+            //for(Node n: leafs) n.printSequence();
 
             for(int i = 0; i < leafs.size(); i++) {
                 HashSet<Piece> pieceSequence = leafs.get(i).getSeqChosenPieces();
                 ArrayList<Piece> possibleOutcomes = Utils.getPossibleOutcomes(pieces,pieceSequence);
-                //System.out.println(possibleOutcomes.size());
+
+                System.out.println("SEQUENCE: ");
+                for(Piece c: pieceSequence) System.out.println(c.toString());
+                System.out.println("OUTCOMES:");
+                for(Piece p: possibleOutcomes) System.out.println(p.toString());
+
 
                 for(int j=0; j < possibleOutcomes.size(); j++) {
+                    Piece chosenPiece = possibleOutcomes.get(j);
                     Node newChildNode1 = new Node();
                     Node newChildNode2 = new Node();
                     Node newChildNode3 = new Node();
                     Node newChildNode4 = new Node();
 
-                    newChildNode1.setChosenPiece(possibleOutcomes.get(j));
-                    newChildNode2.setChosenPiece(possibleOutcomes.get(j));
-                    newChildNode3.setChosenPiece(possibleOutcomes.get(j));
-                    newChildNode4.setChosenPiece(possibleOutcomes.get(j));
+                    newChildNode1.setChosenPiece(chosenPiece);
+                    newChildNode2.setChosenPiece(chosenPiece);
+                    newChildNode3.setChosenPiece(chosenPiece);
+                    newChildNode4.setChosenPiece(chosenPiece);
 
                     Edge e1 = new Edge(leafs.get(i),newChildNode1,'U');
                     Edge e2 = new Edge(leafs.get(i),newChildNode2,'D');
