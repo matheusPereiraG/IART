@@ -71,6 +71,8 @@ public class Game {
         search.debbugMode(DEBUG);
         NewNode node;
 
+        long startTime = System.currentTimeMillis();
+
         switch (option) {
             case 2:
                 node = search.breadthFirstSearch();
@@ -85,9 +87,12 @@ public class Game {
                 return;
         }
 
+        long endTime = System.currentTimeMillis();
+
         if(levels.get(currLevel).isFinish())
             Printer.youWon(currLevel);
         Printer.solution(node);
+        Printer.timeElapsed(currLevel,option,endTime-startTime);
     }
 
     private static void startGameHuman() {
