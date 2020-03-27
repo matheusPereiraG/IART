@@ -13,8 +13,8 @@ import java.util.ArrayList;
 public class Game {
     private static ArrayList<Level> levels;
     private static int currLevel;
-    private static int NUM_LEVELS = 1;
-    private static boolean DEBBUG = true;
+    private static int NUM_LEVELS = 4;
+    private static boolean DEBUG = false;
 
     Game() {
         levels = new ArrayList<>();
@@ -25,6 +25,13 @@ public class Game {
         }
     }
 
+    private void changeDebugMode(){
+        DEBUG = !DEBUG;
+        if(DEBUG)
+            System.out.println("Debug mode on.");
+        else System.out.println("Debug mode off.");
+    }
+
     public void start(){
         while(true) {
             Printer.headline();
@@ -32,6 +39,11 @@ public class Game {
 
             if(option == 0) //sair do jogo
                 return;
+
+            if(option == 9) {
+                changeDebugMode();
+                continue;
+            }
 
             currLevel = Printer.selectLevel(NUM_LEVELS);
 
@@ -44,7 +56,9 @@ public class Game {
                 startGameHuman();
             else if (option < 5)
                 startSolveSearch(option);
-            else startHeuristics(option);
+            else if (option < 7)
+                startHeuristics(option);
+            else System.out.println("Invalid input!");
         }
     }
 
@@ -54,8 +68,10 @@ public class Game {
 
     private void startSolveSearch(int option) {
         SolveSearch search = new SolveSearch(levels.get(currLevel));
-        search.debbugMode(DEBBUG);
+        search.debbugMode(DEBUG);
         NewNode node;
+
+        long startTime = System.currentTimeMillis();
 
         switch (option) {
             case 2:
@@ -71,9 +87,12 @@ public class Game {
                 return;
         }
 
+        long endTime = System.currentTimeMillis();
+
         if(levels.get(currLevel).isFinish())
             Printer.youWon(currLevel);
         Printer.solution(node);
+        Printer.timeElapsed(currLevel,option,endTime-startTime);
     }
 
     private static void startGameHuman() {
