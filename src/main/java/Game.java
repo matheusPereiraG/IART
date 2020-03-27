@@ -63,18 +63,18 @@ public class Game {
     }
 
     private void startHeuristics(int option) {
-        Heuristics heuristics = new Heuristics(levels.get(currLevel));
-        heuristics.debbugMode(DEBUG);
+        SolveSearch search = new SolveSearch(levels.get(currLevel));
+        search.debbugMode(DEBUG);
         NewNode node;
 
         long startTime = System.currentTimeMillis();
 
         switch (option) {
             case 5:
-                node = heuristics.greedySearch();
+                node = search.greedySearch();
                 break;
             case 6:
-                node = heuristics.AStarSearch();
+                node = search.AStarSearch();
                 break;
             default:
                 return;

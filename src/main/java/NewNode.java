@@ -1,3 +1,5 @@
+import java.util.Comparator;
+
 public class NewNode {
 
     private boolean root;
@@ -8,10 +10,11 @@ public class NewNode {
     private int depth;
     private int cost;
     private static int nodeCounter;
+    private double distanceToSolution;
 
     NewNode(Level state) {
         try {
-            this.state = (Level)state.clone();
+            this.state = (Level) state.clone();
         } catch (CloneNotSupportedException e) {
             e.printStackTrace();
         }
@@ -24,11 +27,12 @@ public class NewNode {
         this.dad = dad;
         this.lastPiece = piece;
         this.lastOperator = operator;
-        this.depth = dad.getDepth()+1;
-        this.cost = dad.getCost()+cost;
+        this.depth = dad.getDepth() + 1;
+        this.cost = dad.getCost() + cost;
         NewNode.nodeCounter++;
         try {
-            this.state = (Level)dad.getState().clone();
+            this.state = (Level) dad.getState().clone();
+            this.distanceToSolution = this.state.getDistanceToSol(piece);
             this.state.expandPiece(piece.getPos(), operator);
         } catch (CloneNotSupportedException e) {
             e.printStackTrace();
@@ -63,7 +67,21 @@ public class NewNode {
         return root;
     }
 
-    public int getNumberNodes(){
+    public int getNumberNodes() {
         return NewNode.nodeCounter;
     }
+
+    public double getDistanceToSol() {
+        return this.distanceToSolution;
+    }
+
+    public static Comparator<NewNode> distanceComparator = new Comparator<NewNode>() {
+        @Override
+
+        public int compare(NewNode n1, NewNode n2) {
+            return (int)n2.getDistanceToSol() - (int)n1.getDistanceToSol();
+        }
+
+    };
+
 }

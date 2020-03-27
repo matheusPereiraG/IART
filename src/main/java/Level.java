@@ -8,6 +8,7 @@ public class Level implements Cloneable{
     private int width;
     private int height;
     private ArrayList<Piece> pieces;
+    private Piece solutionPiece;
     private boolean finish;
 
     public boolean isFinish() {
@@ -68,6 +69,7 @@ public class Level implements Cloneable{
                     Piece newPiece = new Piece(j+1, i+1, Integer.parseInt(numSteps));
                     pieces.add(newPiece);
                 }
+                else if(numSteps.equals("W")) this.solutionPiece = new Piece(j+1,i+1,0);
             }
         }
     }
@@ -328,5 +330,14 @@ public class Level implements Cloneable{
                 }
             }
         }
+    }
+
+	public double getDistanceToSol(Piece piece) {
+    int x1 = piece.getPos().getX();
+    int x2 = this.solutionPiece.getPos().getX();
+    int y1 = piece.getPos().getY();
+    int y2 = this.solutionPiece.getPos().getY();
+
+	return Math.sqrt((y2 - y1) * (y2 - y1) + (x2 - x1) * (x2 - x1));
     }
 }

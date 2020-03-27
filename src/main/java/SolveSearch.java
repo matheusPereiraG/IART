@@ -6,7 +6,7 @@ public class SolveSearch {
 
     SolveSearch(Level level) {
         this.level = level;
-        this.debug = false;
+        this.debug = true;
     }
 
     public void debbugMode(boolean value) {
@@ -152,4 +152,40 @@ public class SolveSearch {
         }
 
     }
+
+    public NewNode greedySearch() {
+        PriorityQueue<NewNode> nodesWaiting = new PriorityQueue<>(NewNode.distanceComparator); //used to sort by distance
+        NewNode root = new NewNode(level);
+        Level.Direction direction = Level.Direction.NULL;
+        nodesWaiting.add(root);
+
+        if (level.isFinish())
+            return root;
+
+        while (true) {
+                NewNode dad = nodesWaiting.poll();
+
+                ArrayList<Piece> pieces = dad.getState().getAllPieces();
+
+                for (Piece piece : pieces) { // percorre todas as pecas
+                    for (int j = 0; j < 4; j++) { // percorre as 4 direcoes possiveis
+                        NewNode node = new NewNode(dad, piece, direction = changeDirection(direction), 1);
+                        if (this.debug)
+                            Printer.nodeInfo(node);
+                        if (node.getState().isFinish()) {
+                            level.finish();
+                            return node;
+                        }
+                        nodesWaiting.add(node);
+                    }
+                }
+                if (this.debug)
+                    Printer.printNodesQueue(nodesWaiting);
+        }
+    }
+
+    public NewNode AStarSearch() {
+        return null;
+    }
+
 }
