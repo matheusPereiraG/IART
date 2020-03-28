@@ -154,7 +154,7 @@ public class SolveSearch {
     }
 
     public NewNode greedySearch() {
-        PriorityQueue<NewNode> nodesWaiting = new PriorityQueue<>(NewNode.distanceComparator); //used to sort by distance
+        PriorityQueue<NewNode> nodesWaiting = new PriorityQueue<>(NewNode.depthComparator.thenComparing(NewNode.distanceComparator)); //used to sort by distance and depth
         NewNode root = new NewNode(level);
         Level.Direction direction = Level.Direction.NULL;
         nodesWaiting.add(root);

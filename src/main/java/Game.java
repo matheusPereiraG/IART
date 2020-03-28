@@ -14,7 +14,7 @@ public class Game {
     private static ArrayList<Level> levels;
     private static int currLevel;
     private static int NUM_LEVELS = 4;
-    private static boolean DEBUG = false;
+    private static boolean DEBUG = true;
 
     Game() {
         levels = new ArrayList<>();

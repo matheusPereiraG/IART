@@ -83,5 +83,11 @@ public class NewNode {
         }
 
     };
+	public static Comparator<NewNode> depthComparator = new Comparator<NewNode>() {
+        @Override
+        public int compare(NewNode n1, NewNode n2) {
+            return n2.getDepth() - n1.getDepth();
+        }
+    };
 
 }
