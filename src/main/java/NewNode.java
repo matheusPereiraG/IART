@@ -10,7 +10,11 @@ public class NewNode {
     private int depth;
     private int cost;
     private static int nodeCounter;
+    /* Heuristics */
     private double distanceToSolution;
+    private int interactingPieces; //number of pieces that can interact with the expanded piece
+    private int cellsExpanded; //number of cells expanded in the direction
+
 
     NewNode(Level state) {
         try {
@@ -33,7 +37,7 @@ public class NewNode {
         try {
             this.state = (Level) dad.getState().clone();
             this.distanceToSolution = this.state.getDistanceToSol(piece);
-            this.state.expandPiece(piece.getPos(), operator);
+            this.cellsExpanded= this.state.expandPiece(piece.getPos(), operator);
         } catch (CloneNotSupportedException e) {
             e.printStackTrace();
         }
