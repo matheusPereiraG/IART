@@ -68,7 +68,7 @@ public class Game {
 
     private void startSolveSearch(int option) {
         SolveSearch search = new SolveSearch(levels.get(currLevel));
-        search.debbugMode(DEBUG);
+        search.debugMode(DEBUG);
         NewNode node;
 
         long startTime = System.currentTimeMillis();

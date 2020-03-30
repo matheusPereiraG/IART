@@ -9,7 +9,7 @@ public class SolveSearch {
         this.debug = false;
     }
 
-    public void debbugMode(boolean value){
+    public void debugMode(boolean value){
         this.debug = value;
     }
 
