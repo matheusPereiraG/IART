@@ -66,12 +66,11 @@ public class NewNode {
             //this.distanceToSolution = this.state.getDistanceToSol(piece);
 
 
-            this.numberCellsExpanded = this.state.expandPiece(piece.getPos(), operator);
+            this.priority = this.state.expandPiece(piece.getPos(), operator) - lastPiece.getNumSteps();
 
         } catch (CloneNotSupportedException e) {
             e.printStackTrace();
         }
-        this.priority = this.calculatePriority();
 	}
 
 	public Level getState() {
@@ -163,12 +162,11 @@ public class NewNode {
 
     };
 
-
+/*
     public int calculatePriority() {
 
-        return this.numberCellsExpanded - lastPiece.getNumSteps();  // muito melhor do que o codigo comentado em baixo
 
-/*
+
         int priority = 0;
         Level l;
 
@@ -194,15 +192,16 @@ public class NewNode {
             }
         }
 
-        /*
-          priority = 0 => nó desprezável
-          priority > 0 => bom nó
-         *
+
+        //priority = 0 => nó desprezável
+        //priority > 0 => bom nó
+
 
         return priority;
 
-        */
+
     }
+ */
 
     public int getPriority() {
         return priority;
