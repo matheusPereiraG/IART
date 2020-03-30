@@ -161,7 +161,7 @@ public class SolveSearch {
 
             for (Piece piece : pieces) { // percorre todas as pecas
                 for (int j = 0; j < 4; j++) { // percorre as 4 direcoes possiveis
-                    NewNode node = new NewNode(dad, piece, direction = Level.changeDirection(direction), 1);
+                    NewNode node = new NewNode(dad, piece, direction = Level.changeDirection(direction), 0);
                     if (this.debug)
                         Printer.nodeInfo(node);
                     if (node.getState().isFinish()) {
@@ -178,10 +178,10 @@ public class SolveSearch {
         }
     }
 
-    public NewNode AStarSearch() {
+    public NewNode AStarSearch(int factor) {
         
         
-        PriorityQueue<NewNode> nodesWaiting = new PriorityQueue<>(NewNode.costComparator.thenComparing(NewNode.expandComparator)); //used to sort by distance and depth
+        PriorityQueue<NewNode> nodesWaiting = new PriorityQueue<>(NewNode.priorityComparator);
         NewNode root = new NewNode(level);
         Level.Direction direction = Level.Direction.NULL;
         nodesWaiting.add(root);
@@ -200,7 +200,7 @@ public class SolveSearch {
 
             for (Piece piece : pieces) { // percorre todas as pecas
                 for (int j = 0; j < 4; j++) { // percorre as 4 direcoes possiveis
-                    NewNode node = new NewNode(dad, piece, direction = Level.changeDirection(direction),1);
+                    NewNode node = new NewNode(dad, piece, direction = Level.changeDirection(direction),factor);
                     if (this.debug)
                         Printer.nodeInfo(node);
                     if (node.getState().isFinish()) {

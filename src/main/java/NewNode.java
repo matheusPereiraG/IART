@@ -9,13 +9,10 @@ public class NewNode {
     private Level.Direction lastOperator;
     private int depth;
     private static int nodeCounter;
+
     /* Heuristics */
     private int cost;
     private int priority;
-
-
-    private double distanceToSolution;
-    private int numberCellsExpanded; //number of cells expanded in the las operation
 
 
     NewNode(Level state) {
@@ -39,10 +36,6 @@ public class NewNode {
         NewNode.nodeCounter++;
         try {
             this.state = (Level) dad.getState().clone();
-
-            //this.distanceToSolution = this.state.getDistanceToSol(piece);
-
-            //////
             this.state.expandPiece(piece.getPos(), operator);
         } catch (CloneNotSupportedException e) {
             e.printStackTrace();
@@ -53,20 +46,23 @@ public class NewNode {
         return nodeCounter;
     }
 
-    public NewNode(NewNode dad, Piece piece, Level.Direction operator, int cost) { //constructor para heuristicas
+    public NewNode(NewNode dad, Piece piece, Level.Direction operator, int factor) { //constructor para heuristicas
         this.root = false;
         this.dad = dad;
         this.lastPiece = piece;
         this.lastOperator = operator;
         this.depth = dad.getDepth() + 1;
-        this.cost = dad.getCost() + cost;
+        this.cost = dad.getCost() + 1;
         NewNode.nodeCounter++;
         try {
             this.state = (Level) dad.getState().clone();
-            //this.distanceToSolution = this.state.getDistanceToSol(piece);
 
-
-            this.priority = this.state.expandPiece(piece.getPos(), operator) - lastPiece.getNumSteps();
+            if(factor == 0){  //no algoritmo ganancioso: priority = numCelulasExpandidas - valorPeça
+                this.priority = this.state.expandPiece(piece.getPos(), operator) - lastPiece.getNumSteps();
+            }
+            else{     // no algoritmo A*: priority = (numCelulasExpand - valorPeça) * factor - custo
+                this.priority = (this.state.expandPiece(piece.getPos(), operator) - lastPiece.getNumSteps()) * factor - this.cost;
+            }
 
         } catch (CloneNotSupportedException e) {
             e.printStackTrace();
@@ -101,107 +97,7 @@ public class NewNode {
         return root;
     }
 
-    public int getNumberCellsExpanded(){
-        return this.numberCellsExpanded;
-    }
-
-    public int getNumberNodes() {
-        return NewNode.nodeCounter;
-    }
-
-    public double getDistanceToSol() {
-        return this.distanceToSolution;
-    }
-
-    /*
-    public int calculateCost() throws CloneNotSupportedException {
-        return this.state.getInteractingPieces();
-    }
-    */
-
-
-    public static Comparator<NewNode> distanceComparator = new Comparator<NewNode>() {
-        @Override
-
-        public int compare(NewNode n1, NewNode n2) {
-            return (int)n2.getDistanceToSol() - (int)n1.getDistanceToSol();
-        }
-
-    };
-	public static Comparator<NewNode> depthComparator = new Comparator<NewNode>() {
-        @Override
-        public int compare(NewNode n1, NewNode n2) {
-            return n2.getDepth() - n1.getDepth();
-        }
-    };
-
-    public static Comparator<NewNode> expandComparator = new Comparator<NewNode>() {
-        @Override
-
-        public int compare(NewNode n1, NewNode n2) {
-            return n2.getNumberCellsExpanded() - n1.getNumberCellsExpanded();
-        }
-
-    };
-
-    public static Comparator<NewNode> costComparator = new Comparator<NewNode>() {
-        @Override
-
-        public int compare(NewNode n1, NewNode n2) {
-            return n2.getCost() - n1.getCost();
-        }
-
-    };
-
-    public static Comparator<NewNode> priorityComparator = new Comparator<NewNode>() {
-        @Override
-
-        public int compare(NewNode n1, NewNode n2) {
-            return n2.getPriority() - n1.getPriority();
-        }
-
-    };
-
-/*
-    public int calculatePriority() {
-
-
-
-        int priority = 0;
-        Level l;
-
-        Level.Direction dir = Level.Direction.NULL;
-
-        for(Piece p: this.state.getAllPieces()) {           //para cada uma das peças que faltam expandir neste nó
-            for(int i=0; i < 4 ; i++){                      //vamos ver se ajudamos a que elas cheguem "mais longe"
-                try {
-                    l = (Level) this.state.clone();         //criamos um level temporario
-                } catch (CloneNotSupportedException e) {
-                    e.printStackTrace();
-                    return 0;
-                }
-
-                // expandimos esse level para cada uma das peças que faltam,
-                // nas 4 direções, e comparamos o número de células expandidas
-                // com o valor da peça
-                int numberCellsExpanded = l.expandPiece(p.getPos(), dir = Level.changeDirection(dir));
-                int pieceValue = p.getNumSteps();
-                if(numberCellsExpanded > pieceValue){
-                    priority += numberCellsExpanded - pieceValue;                             //se esta condição for verdade, significa que neste nó expandimos uma peça numa boa direção!
-                }
-            }
-        }
-
-
-        //priority = 0 => nó desprezável
-        //priority > 0 => bom nó
-
-
-        return priority;
-
-
-    }
- */
+    public static Comparator<NewNode> priorityComparator = (n1, n2) -> n2.getPriority() - n1.getPriority();
 
     public int getPriority() {
         return priority;
