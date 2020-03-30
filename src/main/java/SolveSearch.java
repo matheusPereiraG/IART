@@ -13,20 +13,7 @@ public class SolveSearch {
         this.debug = value;
     }
 
-    private Level.Direction changeDirection(Level.Direction dir) {
-        switch (dir) {
-            case NULL:
-            case RIGHT:
-                return Level.Direction.UP;
-            case UP:
-                return Level.Direction.DOWN;
-            case DOWN:
-                return Level.Direction.LEFT;
-            case LEFT:
-                return Level.Direction.RIGHT;
-        }
-        return Level.Direction.NULL;
-    }
+    
 
     public NewNode breadthFirstSearch() {
         Queue<NewNode> nodesWaiting = new LinkedList<>(); // queue for FIFO (First In First Out)
@@ -45,7 +32,7 @@ public class SolveSearch {
 
                 for (Piece piece : pieces) { // percorre todas as pecas
                     for (int j = 0; j < 4; j++) { // percorre as 4 direcoes possiveis
-                        NewNode node = new NewNode(dad, piece, direction = changeDirection(direction), 1);
+                        NewNode node = new NewNode(dad, piece, direction = Level.changeDirection(direction), 1);
                         if (this.debug)
                             Printer.nodeInfo(node);
 
@@ -82,7 +69,7 @@ public class SolveSearch {
 
                 for (Piece piece : pieces) { // percorre todas as pecas
                     for (int j = 0; j < 4; j++) { // percorre as 4 direcoes possiveis
-                        NewNode node = new NewNode(dad, piece, direction = changeDirection(direction), 1);
+                        NewNode node = new NewNode(dad, piece, direction = Level.changeDirection(direction), 1);
                         if (this.debug)
                             Printer.nodeInfo(node);
                         if (node.getState().isFinish()) {
@@ -124,7 +111,7 @@ public class SolveSearch {
 
                     for (Piece piece : pieces) { // percorre todas as pecas
                         for (int j = 0; j < 4; j++) { // percorre as 4 direcoes possiveis
-                            NewNode node = new NewNode(dad, piece, direction = changeDirection(direction), 1);
+                            NewNode node = new NewNode(dad, piece, direction = Level.changeDirection(direction), 1);
                             if (this.debug)
                                 Printer.nodeInfo(node);
                             if (node.getState().isFinish()) { // solucao encontrada
@@ -169,7 +156,7 @@ public class SolveSearch {
 
                 for (Piece piece : pieces) { // percorre todas as pecas
                     for (int j = 0; j < 4; j++) { // percorre as 4 direcoes possiveis
-                        NewNode node = new NewNode(dad, piece, direction = changeDirection(direction), 1);
+                        NewNode node = new NewNode(dad, piece, direction = Level.changeDirection(direction), 1);
                         if (this.debug)
                             Printer.nodeInfo(node);
                         if (node.getState().isFinish()) {

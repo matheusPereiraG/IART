@@ -23,6 +23,21 @@ public class Level implements Cloneable {
         NULL, UP, DOWN, LEFT, RIGHT
     }
 
+    public static Direction changeDirection(Direction dir) {
+        switch (dir) {
+            case NULL:
+            case RIGHT:
+                return Direction.UP;
+            case UP:
+                return Direction.DOWN;
+            case DOWN:
+                return Direction.LEFT;
+            case LEFT:
+                return Direction.RIGHT;
+        }
+        return Direction.NULL;
+    }
+
     Level() { // contrutor do nivel 0 (vazio)
         level = new ArrayList<>();
         name = "level0";
@@ -112,7 +127,6 @@ public class Level implements Cloneable {
     }
 
     public ArrayList<Piece> getAllPieces() {
-
         return pieces;
     }
 
@@ -357,4 +371,23 @@ public class Level implements Cloneable {
 
         return Math.sqrt((y2 - y1) * (y2 - y1) + (x2 - x1) * (x2 - x1));
     }
+
+	public int getInteractingPieces() {
+        int interactingPieces = 0;
+        ArrayList<ArrayList<String>> originalLevel = this.level;
+        
+
+        for(Piece p: this.pieces) {
+            Direction dir = Direction.NULL;
+            for(int i=0; i < 4 ; i++){ //por cada peça e por cada direção verifica se a expansao é maior que o numero de passos, se sim aumenta em um o numero de peças que interagem
+                int expansionnumber = expandPiece(p.getPos(), changeDirection(dir));
+                if(expansionnumber > p.getNumSteps()) interactingPieces++;
+                //reset level depois de cada alteração
+                this.level = originalLevel;
+            }
+        } 
+        
+        this.level = originalLevel;
+        return interactingPieces;
+	}
 }

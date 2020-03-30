@@ -8,11 +8,10 @@ public class NewNode {
     private NewNode dad;
     private Level.Direction lastOperator;
     private int depth;
-    private int cost;
     private static int nodeCounter;
     /* Heuristics */
+    private int cost; //number of interacting pieces, in this case follows the path with greater cost
     private double distanceToSolution;
-    private int interactingPieces; //number of pieces that can interact with the expanded piece
     private int cellsExpanded; //number of cells expanded in the direction
 
 
@@ -24,6 +23,7 @@ public class NewNode {
         }
         this.root = true;
         NewNode.nodeCounter = 0;
+        this.cost = 0;
     }
 
     NewNode(NewNode dad, Piece piece, Level.Direction operator, int cost) {
@@ -32,12 +32,12 @@ public class NewNode {
         this.lastPiece = piece;
         this.lastOperator = operator;
         this.depth = dad.getDepth() + 1;
-        this.cost = dad.getCost() + cost;
         NewNode.nodeCounter++;
         try {
             this.state = (Level) dad.getState().clone();
             this.distanceToSolution = this.state.getDistanceToSol(piece);
             this.cellsExpanded= this.state.expandPiece(piece.getPos(), operator);
+            this.cost = dad.getCost() + this.calculateCost();
         } catch (CloneNotSupportedException e) {
             e.printStackTrace();
         }
@@ -77,6 +77,10 @@ public class NewNode {
 
     public double getDistanceToSol() {
         return this.distanceToSolution;
+    }
+
+    public int calculateCost(){
+        return this.state.getInteractingPieces();
     }
 
     public static Comparator<NewNode> distanceComparator = new Comparator<NewNode>() {
