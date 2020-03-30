@@ -181,6 +181,7 @@ public class Printer {
             System.out.println("Último operador: " + node.getLastOperator());
             System.out.println("Profundidade: " + node.getDepth());
             System.out.println("Custo: " + node.getCost());
+            System.out.println("Prioridade: " +node.getPriority());
             System.out.println("Estado:");
 
             compactBoard(node.getState());
@@ -210,7 +211,9 @@ public class Printer {
             currNode = currNode.getDad();
             nodeInfo(currNode);
         }while (!currNode.isRoot());
-
+        
+        System.out.println();
+        System.out.println("Nodes usados: "+ node.getNumberNodes());
     }
 
     public static void printNodesQueue(Queue<NewNode> nodesWaiting){
@@ -258,5 +261,6 @@ public class Printer {
 
         }
         System.out.println("Tempo gasto (ms): " + time);
+        System.out.println("Quantidade de nós criados: " + NewNode.getNodeCounter());
     }
 }

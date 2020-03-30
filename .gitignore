@@ -1,7 +1,7 @@
 .gradle/
 .idea/
-/build/
-gradle*
-*.gradle
-!build.gradle
-!README.md
+out/
+build/
+.classpath
+.project
+.settings/

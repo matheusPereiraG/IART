@@ -63,7 +63,29 @@ public class Game {
     }
 
     private void startHeuristics(int option) {
+        SolveSearch search = new SolveSearch(levels.get(currLevel));
+        search.debugMode(DEBUG);
+        NewNode node;
 
+        long startTime = System.currentTimeMillis();
+
+        switch (option) {
+            case 5:
+                node = search.greedySearch();
+                break;
+            case 6:
+                node = search.AStarSearch();
+                break;
+            default:
+                return;
+        }
+
+        long endTime = System.currentTimeMillis();
+
+        if(levels.get(currLevel).isFinish())
+            Printer.youWon(currLevel);
+        Printer.solution(node);
+        Printer.timeElapsed(currLevel,option,endTime-startTime);
     }
 
     private void startSolveSearch(int option) {

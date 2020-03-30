@@ -2,29 +2,43 @@ import java.io.File;
 import java.io.FileNotFoundException;
 import java.util.*;
 
-public class Level implements Cloneable{
+public class Level implements Cloneable {
     private ArrayList<ArrayList<String>> level;
     private String name;
     private int width;
     private int height;
     private ArrayList<Piece> pieces;
+    private Piece solutionPiece;
     private boolean finish;
 
     public boolean isFinish() {
         return finish;
     }
 
-    public void finish() { this.finish = true; }
-
-    enum Direction{
-        NULL,
-        UP,
-        DOWN,
-        LEFT,
-        RIGHT
+    public void finish() {
+        this.finish = true;
     }
 
-    Level(){ //contrutor do nivel 0 (vazio)
+    enum Direction {
+        NULL, UP, DOWN, LEFT, RIGHT
+    }
+
+    public static Direction changeDirection(Direction dir) {
+        switch (dir) {
+            case NULL:
+            case RIGHT:
+                return Direction.UP;
+            case UP:
+                return Direction.DOWN;
+            case DOWN:
+                return Direction.LEFT;
+            case LEFT:
+                return Direction.RIGHT;
+        }
+        return Direction.NULL;
+    }
+
+    Level() { // contrutor do nivel 0 (vazio)
         level = new ArrayList<>();
         name = "level0";
         width = 0;
@@ -38,7 +52,7 @@ public class Level implements Cloneable{
         finish = false;
         level = new ArrayList<>();
 
-        //open file
+        // open file
         try {
             File myObj = new File(name);
             Scanner myReader = new Scanner(myObj);
@@ -55,7 +69,6 @@ public class Level implements Cloneable{
             return;
         }
 
-
         this.height = level.size();
         this.width = level.get(0).size();
 
@@ -65,16 +78,17 @@ public class Level implements Cloneable{
             for (int j = 0; j < width; j++) {
                 String numSteps = level.get(i).get(j);
                 if (numSteps.matches("-?\\d+")) {
-                    Piece newPiece = new Piece(j+1, i+1, Integer.parseInt(numSteps));
+                    Piece newPiece = new Piece(j + 1, i + 1, Integer.parseInt(numSteps));
                     pieces.add(newPiece);
-                }
+                } else if (numSteps.equals("W"))
+                    this.solutionPiece = new Piece(j + 1, i + 1, 0);
             }
         }
     }
 
     @Override
-    public Object clone() throws CloneNotSupportedException{
-        Level l = (Level)super.clone();
+    public Object clone() throws CloneNotSupportedException {
+        Level l = (Level) super.clone();
 
         ArrayList<ArrayList<String>> levelClone = new ArrayList<>();
 
@@ -100,9 +114,7 @@ public class Level implements Cloneable{
 
     }
 
-
-
-    public ArrayList<String> getLine(int i){
+    public ArrayList<String> getLine(int i) {
         return level.get(i);
     }
 
@@ -115,23 +127,22 @@ public class Level implements Cloneable{
     }
 
     public ArrayList<Piece> getAllPieces() {
-
         return pieces;
     }
 
-    public int getNumPieces(){
+    public int getNumPieces() {
         return pieces.size();
     }
 
-    private void setHouse(Position pos, String data){
-        level.get(pos.getY()-1).set(pos.getX()-1, data);
+    private void setHouse(Position pos, String data) {
+        level.get(pos.getY() - 1).set(pos.getX() - 1, data);
     }
 
-    public void selectPiece(){
+    public void selectPiece() {
 
         Position pos = Printer.selectPiece();
-        for(Piece piece : pieces){
-            if(piece.getPos().equals(pos)){
+        for (Piece piece : pieces) {
+            if (piece.getPos().equals(pos)) {
                 selectDirection(pos);
                 return;
             }
@@ -142,8 +153,8 @@ public class Level implements Cloneable{
         selectPiece();
     }
 
-    public void selectDirection(Position pos){
-        switch (Printer.selectDirection()){
+    public void selectDirection(Position pos) {
+        switch (Printer.selectDirection()) {
             case 1:
                 expandPiece(pos, Direction.UP);
                 break;
@@ -161,25 +172,26 @@ public class Level implements Cloneable{
         }
     }
 
-    public void expandPiece(Position pos, Direction dir){
+    public int expandPiece(Position pos, Direction dir) {
+        int numberCellsExpanded = 0;
         Piece currPiece;
         ArrayList<Piece> tempPieces = new ArrayList<>(pieces);
-        for(Piece piece : tempPieces){
-            if(piece.getPos().equals(pos)){
+        for (Piece piece : tempPieces) {
+            if (piece.getPos().equals(pos)) {
                 currPiece = piece;
 
-                switch (dir){
+                switch (dir) {
                     case UP:
-                        expandPieceUP(currPiece);
+                        numberCellsExpanded = expandPieceUP(currPiece);
                         break;
                     case DOWN:
-                        expandPieceDOWN(currPiece);
+                        numberCellsExpanded = expandPieceDOWN(currPiece);
                         break;
                     case LEFT:
-                        expandPieceLEFT(currPiece);
+                        numberCellsExpanded = expandPieceLEFT(currPiece);
                         break;
                     case RIGHT:
-                        expandPieceRIGHT(currPiece);
+                        numberCellsExpanded = expandPieceRIGHT(currPiece);
                         break;
                     default:
                         break;
@@ -189,117 +201,139 @@ public class Level implements Cloneable{
             }
         }
         pieces = new ArrayList<>(tempPieces);
+        return numberCellsExpanded;
 
     }
 
-    private void expandPieceUP(Piece piece) {
-        //coloca a casa da peca a #
+    private int expandPieceUP(Piece piece) {
+        // coloca a casa da peca a #
         Position pos = new Position(piece.getPos().getX(), piece.getPos().getY());
         setHouse(pos, "#");
+        int numberCellsExpanded = 0;
 
-        //comaca a expansao
-        pos = new Position(pos.getX(), pos.getY()-1);
+        // comaca a expansao
+        pos = new Position(pos.getX(), pos.getY() - 1);
 
-        for(int i=0; i<piece.getNumSteps(); i++){
+        for (int i = 0; i < piece.getNumSteps(); i++) {
 
-            if(pos.getY() > 0) {//testa se esta dentro do tabuleiro
-                if (level.get(pos.getY()-1).get(pos.getX()-1).equals(".")) { //testa se esta vazio
+            if (pos.getY() > 0) {// testa se esta dentro do tabuleiro
+                if (level.get(pos.getY() - 1).get(pos.getX() - 1).equals(".")) { // testa se esta vazio
                     setHouse(pos, "#");
-                    pos = new Position(pos.getX(), pos.getY()-1);
-                } else if (level.get(pos.getY()-1).get(pos.getX()-1).equals("W")) { //testa se acabou o jogo
+                    pos = new Position(pos.getX(), pos.getY() - 1);
+                    numberCellsExpanded++;
+                } else if (level.get(pos.getY() - 1).get(pos.getX() - 1).equals("W")) { // testa se acabou o jogo
                     setHouse(pos, "#");
+                    numberCellsExpanded++;
                     finish = true;
-                    return;
-                } else { //posicao ocupada
+                    return numberCellsExpanded;
+                } else { // posicao ocupada
                     i--;
-                    pos = new Position(pos.getX(), pos.getY()-1);
+                    pos = new Position(pos.getX(), pos.getY() - 1);
+                    numberCellsExpanded++;
                 }
             }
         }
+
+        return numberCellsExpanded;
     }
 
-    private void expandPieceDOWN(Piece piece) {
-        //coloca a casa da peca a #
+    private int expandPieceDOWN(Piece piece) {
+        // coloca a casa da peca a #
         Position pos = new Position(piece.getPos().getX(), piece.getPos().getY());
         setHouse(pos, "#");
+        int numberCellsExpanded = 0;
 
-        //comaca a expansao
-        pos = new Position(pos.getX(), pos.getY()+1);
+        // comaca a expansao
+        pos = new Position(pos.getX(), pos.getY() + 1);
 
-        for(int i=0; i<piece.getNumSteps(); i++){
+        for (int i = 0; i < piece.getNumSteps(); i++) {
 
-            if(pos.getY() < height) {//testa se esta dentro do tabuleiro
-                if (level.get(pos.getY()-1).get(pos.getX()-1).equals(".")) { //testa se esta vazio
+            if (pos.getY() < height) {// testa se esta dentro do tabuleiro
+                if (level.get(pos.getY() - 1).get(pos.getX() - 1).equals(".")) { // testa se esta vazio
                     setHouse(pos, "#");
-                    pos = new Position(pos.getX(), pos.getY()+1);
-                } else if (level.get(pos.getY()-1).get(pos.getX()-1).equals("W")) { //testa se acabou o jogo
+                    pos = new Position(pos.getX(), pos.getY() + 1);
+                    numberCellsExpanded++;
+                } else if (level.get(pos.getY() - 1).get(pos.getX() - 1).equals("W")) { // testa se acabou o jogo
                     setHouse(pos, "#");
+                    numberCellsExpanded++;
                     finish = true;
-                    return;
-                } else { //posicao ocupada
+                    return numberCellsExpanded;
+                } else { // posicao ocupada
                     i--;
-                    pos = new Position(pos.getX(), pos.getY()+1);
+                    pos = new Position(pos.getX(), pos.getY() + 1);
+                    numberCellsExpanded++;
                 }
             }
         }
+        return numberCellsExpanded;
     }
 
-    private void expandPieceRIGHT(Piece piece) {
-        //coloca a casa da peca a #
+    private int expandPieceRIGHT(Piece piece) {
+        // coloca a casa da peca a #
         Position pos = new Position(piece.getPos().getX(), piece.getPos().getY());
         setHouse(pos, "#");
+        int numberCellsExpanded = 0;
 
-        //comaca a expansao
-        pos = new Position(pos.getX()+1, pos.getY());
+        // comaca a expansao
+        pos = new Position(pos.getX() + 1, pos.getY());
 
-        for(int i=0; i<piece.getNumSteps(); i++){
+        for (int i = 0; i < piece.getNumSteps(); i++) {
 
-            if(pos.getX() < width) {//testa se esta dentro do tabuleiro
-                if (level.get(pos.getY()-1).get(pos.getX()-1).equals(".")) { //testa se esta vazio
+            if (pos.getX() < width) {// testa se esta dentro do tabuleiro
+                if (level.get(pos.getY() - 1).get(pos.getX() - 1).equals(".")) { // testa se esta vazio
                     setHouse(pos, "#");
-                    pos = new Position(pos.getX()+1, pos.getY());
-                } else if (level.get(pos.getY()-1).get(pos.getX()-1).equals("W")) { //testa se acabou o jogo
+                    pos = new Position(pos.getX() + 1, pos.getY());
+                    numberCellsExpanded++;
+                } else if (level.get(pos.getY() - 1).get(pos.getX() - 1).equals("W")) { // testa se acabou o jogo
                     setHouse(pos, "#");
+                    numberCellsExpanded++;
                     finish = true;
-                    return;
-                } else { //posicao ocupada
+                    return numberCellsExpanded;
+                } else { // posicao ocupada
                     i--;
-                    pos = new Position(pos.getX()+1, pos.getY());
+                    pos = new Position(pos.getX() + 1, pos.getY());
+                    numberCellsExpanded++;
                 }
             }
         }
+        return numberCellsExpanded;
     }
 
-    private void expandPieceLEFT(Piece piece) {
-        //coloca a casa da peca a #
+    private int expandPieceLEFT(Piece piece) {
+        // coloca a casa da peca a #
         Position pos = new Position(piece.getPos().getX(), piece.getPos().getY());
         setHouse(pos, "#");
+        int numberCellsExpanded = 0;
 
-        //comaca a expansao
-        pos = new Position(pos.getX()-1, pos.getY());
+        // comaca a expansao
+        pos = new Position(pos.getX() - 1, pos.getY());
 
-        for(int i=0; i<piece.getNumSteps(); i++){
+        for (int i = 0; i < piece.getNumSteps(); i++) {
 
-            if(pos.getX() > 0) {//testa se esta dentro do tabuleiro
-                if (level.get(pos.getY()-1).get(pos.getX()-1).equals(".")) { //testa se esta vazio
+            if (pos.getX() > 0) {// testa se esta dentro do tabuleiro
+                if (level.get(pos.getY() - 1).get(pos.getX() - 1).equals(".")) { // testa se esta vazio
                     setHouse(pos, "#");
-                    pos = new Position(pos.getX()-1, pos.getY());
-                } else if (level.get(pos.getY()-1).get(pos.getX()-1).equals("W")) { //testa se acabou o jogo
+                    numberCellsExpanded++;
+                    pos = new Position(pos.getX() - 1, pos.getY());
+                } else if (level.get(pos.getY() - 1).get(pos.getX() - 1).equals("W")) { // testa se acabou o jogo
                     setHouse(pos, "#");
+                    numberCellsExpanded++;
                     finish = true;
-                    return;
-                } else { //posicao ocupada
+                    return numberCellsExpanded;
+                } else { // posicao ocupada
                     i--;
-                    pos = new Position(pos.getX()-1, pos.getY());
+                    pos = new Position(pos.getX() - 1, pos.getY());
+                    numberCellsExpanded++;
                 }
             }
         }
+        return numberCellsExpanded;
     }
 
-    public void reset(){
+    public void reset() {
         this.finish = false;
         level = new ArrayList<>();
-        //open file
+        // open file
         try {
             File myObj = new File(name);
             Scanner myReader = new Scanner(myObj);
@@ -316,17 +350,25 @@ public class Level implements Cloneable{
             return;
         }
 
-
         // get pieces
         pieces = new ArrayList<>();
         for (int i = 0; i < height; i++) {
             for (int j = 0; j < width; j++) {
                 String numSteps = level.get(i).get(j);
                 if (numSteps.matches("-?\\d+")) {
-                    Piece newPiece = new Piece(j+1, i+1, Integer.parseInt(numSteps));
+                    Piece newPiece = new Piece(j + 1, i + 1, Integer.parseInt(numSteps));
                     pieces.add(newPiece);
                 }
             }
         }
+    }
+
+    public double getDistanceToSol(Piece piece) { //retorna distancia em linha reta da solução
+        int x1 = piece.getPos().getX();
+        int x2 = this.solutionPiece.getPos().getX();
+        int y1 = piece.getPos().getY();
+        int y2 = this.solutionPiece.getPos().getY();
+
+        return Math.sqrt((y2 - y1) * (y2 - y1) + (x2 - x1) * (x2 - x1));
     }
 }
