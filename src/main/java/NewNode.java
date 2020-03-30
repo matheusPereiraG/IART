@@ -15,7 +15,7 @@ public class NewNode {
 
 
     private double distanceToSolution;
-    private int cellsExpanded; //number of cells expanded in the direction
+    private int numberCellsExpanded; //number of cells expanded in the las operation
 
 
     NewNode(Level state) {
@@ -66,7 +66,7 @@ public class NewNode {
             //this.distanceToSolution = this.state.getDistanceToSol(piece);
 
 
-            this.state.expandPiece(piece.getPos(), operator);
+            this.numberCellsExpanded = this.state.expandPiece(piece.getPos(), operator);
 
         } catch (CloneNotSupportedException e) {
             e.printStackTrace();
@@ -102,8 +102,8 @@ public class NewNode {
         return root;
     }
 
-    public int getExpandedCells(){
-        return this.cellsExpanded;
+    public int getNumberCellsExpanded(){
+        return this.numberCellsExpanded;
     }
 
     public int getNumberNodes() {
@@ -140,7 +140,7 @@ public class NewNode {
         @Override
 
         public int compare(NewNode n1, NewNode n2) {
-            return n2.getExpandedCells() - n1.getExpandedCells();
+            return n2.getNumberCellsExpanded() - n1.getNumberCellsExpanded();
         }
 
     };
@@ -165,6 +165,10 @@ public class NewNode {
 
 
     public int calculatePriority() {
+
+        return this.numberCellsExpanded - lastPiece.getNumSteps();  // muito melhor do que o codigo comentado em baixo
+
+/*
         int priority = 0;
         Level l;
 
@@ -193,9 +197,11 @@ public class NewNode {
         /*
           priority = 0 => nó desprezável
           priority > 0 => bom nó
-         */
+         *
 
         return priority;
+
+        */
     }
 
     public int getPriority() {
