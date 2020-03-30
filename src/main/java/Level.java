@@ -363,7 +363,7 @@ public class Level implements Cloneable {
         }
     }
 
-    public double getDistanceToSol(Piece piece) {
+    public double getDistanceToSol(Piece piece) { //retorna distancia em linha reta da solução
         int x1 = piece.getPos().getX();
         int x2 = this.solutionPiece.getPos().getX();
         int y1 = piece.getPos().getY();
@@ -372,22 +372,23 @@ public class Level implements Cloneable {
         return Math.sqrt((y2 - y1) * (y2 - y1) + (x2 - x1) * (x2 - x1));
     }
 
-	public int getInteractingPieces() {
+	public int getInteractingPieces() throws CloneNotSupportedException {
         int interactingPieces = 0;
-        ArrayList<ArrayList<String>> originalLevel = this.level;
-        
+        Level l = (Level) this.clone();
+        Direction dir = Direction.NULL;
 
-        for(Piece p: this.pieces) {
-            Direction dir = Direction.NULL;
+        for(Piece p: l.getAllPieces()) {
             for(int i=0; i < 4 ; i++){ //por cada peça e por cada direção verifica se a expansao é maior que o numero de passos, se sim aumenta em um o numero de peças que interagem
-                int expansionnumber = expandPiece(p.getPos(), changeDirection(dir));
-                if(expansionnumber > p.getNumSteps()) interactingPieces++;
+                int expansionnumber = l.expandPiece(p.getPos(), changeDirection(dir));
+                if(expansionnumber > p.getNumSteps()){
+                    interactingPieces++;
+                    l = (Level) this.clone();
+                    break;
+                } 
                 //reset level depois de cada alteração
-                this.level = originalLevel;
+                l = (Level) this.clone();
             }
         } 
-        
-        this.level = originalLevel;
         return interactingPieces;
 	}
 }

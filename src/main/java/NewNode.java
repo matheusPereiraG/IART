@@ -26,7 +26,23 @@ public class NewNode {
         this.cost = 0;
     }
 
-    NewNode(NewNode dad, Piece piece, Level.Direction operator, int cost) {
+    NewNode(NewNode dad, Piece piece, Level.Direction operator) {
+        this.root = false;
+        this.dad = dad;
+        this.lastPiece = piece;
+        this.lastOperator = operator;
+        this.depth = dad.getDepth() + 1;
+        NewNode.nodeCounter++;
+        try {
+            this.state = (Level) dad.getState().clone();
+            this.distanceToSolution = this.state.getDistanceToSol(piece);
+            this.cellsExpanded= this.state.expandPiece(piece.getPos(), operator);
+        } catch (CloneNotSupportedException e) {
+            e.printStackTrace();
+        }
+    }
+
+    public NewNode(NewNode dad, Piece piece, Level.Direction operator, Object object) { //constructor para A* (poupa recursos nos outros algoritmos já que nao necessitam de calcular custo) 
         this.root = false;
         this.dad = dad;
         this.lastPiece = piece;
@@ -41,9 +57,9 @@ public class NewNode {
         } catch (CloneNotSupportedException e) {
             e.printStackTrace();
         }
-    }
+	}
 
-    public Level getState() {
+	public Level getState() {
         return state;
     }
 
@@ -71,6 +87,10 @@ public class NewNode {
         return root;
     }
 
+    public int getExpandedCells(){
+        return this.cellsExpanded;
+    }
+
     public int getNumberNodes() {
         return NewNode.nodeCounter;
     }
@@ -79,7 +99,7 @@ public class NewNode {
         return this.distanceToSolution;
     }
 
-    public int calculateCost(){
+    public int calculateCost() throws CloneNotSupportedException {
         return this.state.getInteractingPieces();
     }
 
@@ -96,6 +116,24 @@ public class NewNode {
         public int compare(NewNode n1, NewNode n2) {
             return n2.getDepth() - n1.getDepth();
         }
+    };
+
+    public static Comparator<NewNode> expandComparator = new Comparator<NewNode>() {
+        @Override
+
+        public int compare(NewNode n1, NewNode n2) {
+            return n2.getExpandedCells() - n1.getExpandedCells();
+        }
+
+    };
+
+    public static Comparator<NewNode> costComparator = new Comparator<NewNode>() {
+        @Override
+
+        public int compare(NewNode n1, NewNode n2) {
+            return n2.getCost() - n1.getCost();
+        }
+
     };
 
 }

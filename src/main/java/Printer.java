@@ -182,6 +182,7 @@ public class Printer {
             System.out.println("Profundidade: " + node.getDepth());
             System.out.println("Custo: " + node.getCost());
             System.out.println("Distancia à solução: " +node.getDistanceToSol());
+            System.out.println("Casas ocupadas por celula expandida: " + node.getExpandedCells());
             System.out.println("Estado:");
 
             compactBoard(node.getState());
@@ -222,7 +223,7 @@ public class Printer {
         System.out.println("::   nós à espera   ::");
 
         for (NewNode node : nodesWaiting)
-            System.out.println(":: "+node+" ::");
+            System.out.println(":: "+node.getCost()+" :: " +node.getExpandedCells());
         System.out.println("::::::::::::::::::::::");
         System.out.println();
     }
