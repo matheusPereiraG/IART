@@ -372,22 +372,25 @@ public class Level implements Cloneable {
         return Math.sqrt((y2 - y1) * (y2 - y1) + (x2 - x1) * (x2 - x1));
     }
 
+
+    //TODO: not working
 	public int getInteractingPieces() throws CloneNotSupportedException {
         int interactingPieces = 0;
         Level l = (Level) this.clone();
         Direction dir = Direction.NULL;
 
-        for(Piece p: l.getAllPieces()) {
+        for(Piece p: this.pieces) {
             for(int i=0; i < 4 ; i++){ //por cada peça e por cada direção verifica se a expansao é maior que o numero de passos, se sim aumenta em um o numero de peças que interagem
                 int expansionnumber = l.expandPiece(p.getPos(), changeDirection(dir));
                 if(expansionnumber > p.getNumSteps()){
                     interactingPieces++;
-                    l = (Level) this.clone();
+                    //l = (Level) this.clone();
                     break;
                 } 
                 //reset level depois de cada alteração
-                l = (Level) this.clone();
+                
             }
+            l = (Level) this.clone();
         } 
         return interactingPieces;
 	}

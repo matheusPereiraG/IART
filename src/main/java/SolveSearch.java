@@ -204,5 +204,4 @@ public class SolveSearch {
                     Printer.printNodesQueue(nodesWaiting);
         }
     }
-
 }
