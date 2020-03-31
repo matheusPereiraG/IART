@@ -1,66 +1,79 @@
-# FEUP-IART
+# ZHED - FEUP - IART - 2019/2020
 
-## Projeto 1 
-**Temática 1: Métodos de Pesquisa Heurística para Resolução de Jogo do Tipo Solitário**
+## INSTRUÇÕES DE COMPILAÇÃO/EXECUÇÃO DO PROGRAMA
 
-Um jogo do tipo solitário caracteriza-se pelo tipo de tabuleiro e de peças, pelas regras de movimentação das peças (operadores/jogadas possíveis) e pelas condições de terminação do jogo com derrota (impossibilidade de resolver, número máximo de movimentos foi atingido, tempo limite foi atingido) ou vitória (solitário resolvido) e com a respetiva pontuação. Tipicamente, no caso de vitória é atribuída uma pontuação dependendo do número de movimentos, recursos gastos, bónus recolhidos e/ou tempo
-despendido.
+Este programa foi feito com integracao do sistema Gradle de 
+forma a automatizar o processo de compilação do programa.
 
-Para além de implementar um jogo do tipo solitário para um jogador humano, o programa deve ser capaz de resolver diferentes versões/quadros desse jogo, utilizando métodos de pesquisa adequados, focando na comparação entre métodos de pesquisa não informada (pesquisa primeiro em largura, primeiro em profundidade, aprofundamento progressivo, custo uniforme) e métodos de pesquisa heurística (pesquisa gulosa, A*), com diferentes funções heurísticas. Os métodos aplicados devem ser comparados a diversos níveis, com ênfase para a qualidade da solução obtida, número de operações analisadas e tempo despendido para obter a solução.
-
-A aplicação deve ter uma visualização em modo de texto ou gráfico para mostrar a evolução do tabuleiro e realizar a comunicação com o utilizador/jogador. Deve permitir um modo de jogo em que o PC resolve o solitário sozinho utilizando o método e sua configuração selecionado pelo utilizador. Poderá também, opcionalmente, permitir um modo de jogo Humano em que o utilizador pode resolver o jogo,
-eventualmente pedindo “dicas” ao PC. 
-
-
-## Checkpoint
-
-Cada grupo deve submeter no Moodle uma breve apresentação (máx. 5 slides), em formato PDF, que será
-utilizada na aula para analisar, em conjunto com o docente, o andamento do trabalho. A apresentação deve
-conter:
-
-1.  Especificação do trabalho a realizar (definição do jogo ou do problema de otimização a resolver);
-
-2. Trabalho relacionado com referências a trabalhos encontrados na pesquisa (artigos, páginas web e/ou
-código fonte);
-
-3. Formulação do problema como um problema de pesquisa (representação do estado, estado
-inicial, teste objetivo, operadores (nomes, pré-condições, efeitos e custos), heurísticas/função de avaliação)
-ou de otimização (representação da solução/indivíduo, funções de vizinhança/mutação e de cruzamento,
-restrições rígidas, funções de avaliação);
-
-4. Trabalho de implementação já realizado (linguagem de programação, ambiente de desenvolvimento, estruturas de dados, estrutura 
-de ficheiros, entre outros);
-
-
-## Entrega Final
-
-Cada grupo deve submeter no Moodle dois ficheiros: uma apresentação (máx. 10 slides), em formato PDF, e o código implementado, devidamente comentado, incluindo um ficheiro “readme.txt” com instruções sobre como o compilar, executar e utilizar. Com base na apresentação submetida, os estudantes devem realizar uma demonstração (cerca de 10 minutos) do trabalho, na aula prática, ou em outro período a designar pelos docentes da disciplina.
-O ficheiro com a apresentação final deve incluir, para além do já referido para a entrega intercalar (checkpoint), detalhes sobre:
-
-5. A abordagem (heurísticas, funções de avaliação, operadores, …);
-
-6. Algoritmos implementados (algoritmos de pesquisa, minimax, metaheurísticas);
-
-7. Resultados experimentais, recorrendo a tabelas/gráficos apropriados e comparando os diversos métodos, heurísticas, algoritmos e respetivas parametrizações para diferentes cenários/problemas;
-
-**A apresentação deve incluir um slide de conclusões e outro de referências consultadas e materiais utilizados (software, sítios web, artigos científicos, …).**
-
-
-## Compilar e correr o programa
-
-Para compilar basta executar o seguinte comando:
+Para compilar basta abrir o terminal na pasta do projeto e executar:
 ```
 gradle build
 ```
-Para correr o jogo existem duas opções:
+Para correr o programa basta executar em seguida:
 ```
 gradle run
 ```
+Uma alternativa que elimina a barra (verde) de progresso na parte 
+inferior do terminal seria executar com a seguinte opção ativada:
 ```
 gradle run --console=plain
 ```
-Sendo que esta segunda opção com ``--console=pain`` desativa a barra de progresso que aparece na parte inferior da consola.
 
+## INSTRUÇÕES DE UTILIZAÇÃO DO PROGRAMA
+
+Depois de iniciar o programa aparece o seguinte menu inicial:
+
+>> ::::::::::::::::::::::::::::::::::
+>> ::             ZHED             ::
+>> ::::::::::::::::::::::::::::::::::
+>>
+>> 1. Utilizador joga.
+>> 2. Computador joga 'pesquisa primeiro em largura'.
+>> 3. Computador joga 'pesquisa primeiro em profundidade'.
+>> 4. Computador joga 'aprofundamento progressivo'.
+>> 5. Computador joga 'heuristica: pesquisa gulosa'.
+>> 6. Computador joga 'heuristica: A* com fator 3'.
+>> 7. Computador joga 'heuristica: A* com fator 4'.
+>> 8. Computador joga 'heuristica: A* com fator 5'.
+>> 9. Ativar/Desativar mensagens debug.
+>> 0. Sair do jogo.
+>>
+>> Intruduza a sua opção:
+
+A partir daqui basta escrever o número da opção pretendida seguido
+de 'ENTER'.
+
+    A opção '1' permite que o utilizador jogue o nível selecionado de uma 
+    forma rudimentar (ou seja, não permite voltar atrás e o jogo apenas 
+    termina se vencer, por isso pense bem antes de jogar!)
+
+    As opções '2' a '8' resolvem o nível selecionado de forma automatica
+    utilizando o algoritmo selecionado.
+
+    A opcao '9' serve para ativar informacoes relevantes para fazer 
+    debug do programa. 
+
+    
+De seguida é encaminhado para o seguinte menu:
+
+>> Selecione o nivel que deseja jogar (1-7):
+
+Aqui deve intrduzir um número entre 1 a 7 que corresponde ao nivel que
+deseja resolver.
+
+        .....................................
+        :Informação sobre os níveis:        :
+        :nível 1 -> ZHED nível 6 (4 Peças)  :
+        :nível 2 -> ZHED nível 7 (5 Peças)  :
+        :nível 3 -> ZHED nível 12 (6 Peças) :
+        :nível 4 -> ZHED nível 40 (7 Peças) :
+        :nível 5 -> ZHED nível 44 (9 Peças) :
+        :nível 6 -> ZHED nível 77 (20 Peças):
+        :nível 7 -> ZHED nível 98 (39 Peças):
+        :...................................:
+        
+
+Apśs terminado o nível volta ao menu inicial.
 
 ## Autores
 
