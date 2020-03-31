@@ -24,7 +24,9 @@ gradle run --console=plain
 Depois de iniciar o programa aparece o seguinte menu inicial:
 
 > ::::::::::::::::::::::::::::::::::
+
 > ::             ZHED             ::
+
 > ::::::::::::::::::::::::::::::::::
 >
 > 1. Utilizador joga.
@@ -36,6 +38,7 @@ Depois de iniciar o programa aparece o seguinte menu inicial:
 > 7. Computador joga 'heuristica: A* com fator 4'.
 > 8. Computador joga 'heuristica: A* com fator 5'.
 > 9. Ativar/Desativar mensagens debug.
+
 > 0. Sair do jogo.
 >
 > Intruduza a sua opção:
