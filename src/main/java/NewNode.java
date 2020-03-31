@@ -8,9 +8,12 @@ public class NewNode {
     private NewNode dad;
     private Level.Direction lastOperator;
     private int depth;
-    private int cost;
     private static int nodeCounter;
-    private double distanceToSolution;
+
+    /* Heuristics */
+    private int cost;
+    private int priority;
+
 
     NewNode(Level state) {
         try {
@@ -20,26 +23,53 @@ public class NewNode {
         }
         this.root = true;
         NewNode.nodeCounter = 0;
+        this.cost = 0;
     }
 
-    NewNode(NewNode dad, Piece piece, Level.Direction operator, int cost) {
+    NewNode(NewNode dad, Piece piece, Level.Direction operator) { //construtor para pesquica cega
         this.root = false;
         this.dad = dad;
         this.lastPiece = piece;
         this.lastOperator = operator;
         this.depth = dad.getDepth() + 1;
-        this.cost = dad.getCost() + cost;
+        this.cost = dad.getCost() + 1;
         NewNode.nodeCounter++;
         try {
             this.state = (Level) dad.getState().clone();
-            this.distanceToSolution = this.state.getDistanceToSol(piece);
             this.state.expandPiece(piece.getPos(), operator);
         } catch (CloneNotSupportedException e) {
             e.printStackTrace();
         }
     }
 
-    public Level getState() {
+    public static int getNodeCounter(){
+        return nodeCounter;
+    }
+
+    public NewNode(NewNode dad, Piece piece, Level.Direction operator, int factor) { //constructor para heuristicas
+        this.root = false;
+        this.dad = dad;
+        this.lastPiece = piece;
+        this.lastOperator = operator;
+        this.depth = dad.getDepth() + 1;
+        this.cost = dad.getCost() + 1;
+        NewNode.nodeCounter++;
+        try {
+            this.state = (Level) dad.getState().clone();
+
+            if(factor == 0){  //no algoritmo ganancioso: priority = numCelulasExpandidas - valorPeça
+                this.priority = this.state.expandPiece(piece.getPos(), operator) - lastPiece.getNumSteps();
+            }
+            else{     // no algoritmo A*: priority = (numCelulasExpand - valorPeça) * factor - custo
+                this.priority = (this.state.expandPiece(piece.getPos(), operator) - lastPiece.getNumSteps()) * factor - this.cost;
+            }
+
+        } catch (CloneNotSupportedException e) {
+            e.printStackTrace();
+        }
+	}
+
+	public Level getState() {
         return state;
     }
 
@@ -67,27 +97,9 @@ public class NewNode {
         return root;
     }
 
-    public int getNumberNodes() {
-        return NewNode.nodeCounter;
+    public static Comparator<NewNode> priorityComparator = (n1, n2) -> n2.getPriority() - n1.getPriority();
+
+    public int getPriority() {
+        return priority;
     }
-
-    public double getDistanceToSol() {
-        return this.distanceToSolution;
-    }
-
-    public static Comparator<NewNode> distanceComparator = new Comparator<NewNode>() {
-        @Override
-
-        public int compare(NewNode n1, NewNode n2) {
-            return (int)n2.getDistanceToSol() - (int)n1.getDistanceToSol();
-        }
-
-    };
-	public static Comparator<NewNode> depthComparator = new Comparator<NewNode>() {
-        @Override
-        public int compare(NewNode n1, NewNode n2) {
-            return n2.getDepth() - n1.getDepth();
-        }
-    };
-
 }

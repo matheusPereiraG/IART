@@ -19,7 +19,10 @@ public class Printer {
         System.out.println("3. Computador joga 'pesquisa primeiro em profundidade'.");
         System.out.println("4. Computador joga 'aprofundamento progressivo'.");
         System.out.println("5. Computador joga 'heuristica: pesquisa gulosa'.");
-        System.out.println("6. Computador joga 'heuristica: A*'.");
+        System.out.println("6. Computador joga 'heuristica: A* com fator 3'.");
+        System.out.println("7. Computador joga 'heuristica: A* com fator 4'.");
+        System.out.println("8. Computador joga 'heuristica: A* com fator 5'.");
+        System.out.println("9. Ativar/Desativar mensagens debug.");
         System.out.println("0. Sair do jogo.");
         System.out.println();
         System.out.println("Intruduza a sua opção:");
@@ -28,6 +31,7 @@ public class Printer {
         int option;
         try {
             option = scanner.nextInt();
+            System.out.println(option);
         }
         catch (InputMismatchException e){
             System.out.println("Input inválido.");
@@ -52,12 +56,13 @@ public class Printer {
         int level;
         try {
             level = scanner.nextInt();
+            System.out.println(level);
         }
         catch (InputMismatchException e){
             System.out.println("Input inválido.");
             level = selectLevel(numLevels);
         }
-        if (level < 0 || level > numLevels){
+        if (level < 1 || level > numLevels){
             System.out.println("Input inválido.");
             level = selectLevel(numLevels);
         }
@@ -121,9 +126,11 @@ public class Printer {
         try {
             System.out.println("Selecione a linha:");
             xpos = myObj.nextInt();  // Read user input
+            System.out.println(xpos);
 
             System.out.println("Selecione a coluna:");
             ypos = myObj.nextInt();
+            System.out.println(ypos);
             return new Position(xpos, ypos);
         }
         catch (InputMismatchException e){
@@ -144,6 +151,7 @@ public class Printer {
             System.out.println("(1->Cima; 2->Baixo; 3->Esquerda; 4->Direita)");
             System.out.println("Direção:");
             dir = myObj.nextInt();
+            System.out.println(dir);
         }
         catch (InputMismatchException e){
             System.out.println("Input inválido.");
@@ -181,7 +189,7 @@ public class Printer {
             System.out.println("Último operador: " + node.getLastOperator());
             System.out.println("Profundidade: " + node.getDepth());
             System.out.println("Custo: " + node.getCost());
-            System.out.println("Distancia à solução: " +node.getDistanceToSol());
+            System.out.println("Prioridade: " +node.getPriority());
             System.out.println("Estado:");
 
             compactBoard(node.getState());
@@ -213,7 +221,7 @@ public class Printer {
         }while (!currNode.isRoot());
         
         System.out.println();
-        System.out.println("Nodes usados: "+ node.getNumberNodes());
+
     }
 
     public static void printNodesQueue(Queue<NewNode> nodesWaiting){
@@ -261,5 +269,6 @@ public class Printer {
 
         }
         System.out.println("Tempo gasto (ms): " + time);
+        System.out.println("Quantidade de nós criados: " + NewNode.getNodeCounter());
     }
 }

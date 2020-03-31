@@ -1,9 +1,10 @@
-*.class
-*.iml
+.gradle/
 .idea/
 out/
-.gradle/
 build/
 .classpath
 .project
 .settings/
+gradle/
+gradlew
+gradlew.bat

@@ -13,8 +13,8 @@ import java.util.ArrayList;
 public class Game {
     private static ArrayList<Level> levels;
     private static int currLevel;
-    private static int NUM_LEVELS = 4;
-    private static boolean DEBUG = true;
+    private static int NUM_LEVELS = 7;
+    private static boolean DEBUG = false;
 
     Game() {
         levels = new ArrayList<>();
@@ -47,24 +47,33 @@ public class Game {
 
             currLevel = Printer.selectLevel(NUM_LEVELS);
 
-            if(currLevel == 0) //sair do jogo
-                return;
-
             levels.get(currLevel).reset();
 
-            if(option==1)
-                startGameHuman();
-            else if (option < 5)
-                startSolveSearch(option);
-            else if (option < 7)
-                startHeuristics(option);
-            else System.out.println("Invalid input!");
+            switch (option){
+                case 1:
+                    startGameHuman();
+                    break;
+                case 2:
+                case 3:
+                case 4:
+                    startSolveSearch(option);
+                    break;
+                case 5:
+                case 6:
+                case 7:
+                case 8:
+                    startHeuristics(option);
+                    break;
+                default:
+                    System.out.println("Invalid input!");
+                    break;
+            }
         }
     }
 
     private void startHeuristics(int option) {
         SolveSearch search = new SolveSearch(levels.get(currLevel));
-        search.debbugMode(DEBUG);
+        search.debugMode(DEBUG);
         NewNode node;
 
         long startTime = System.currentTimeMillis();
@@ -74,7 +83,13 @@ public class Game {
                 node = search.greedySearch();
                 break;
             case 6:
-                node = search.AStarSearch();
+                node = search.AStarSearch(3);
+                break;
+            case 7:
+                node = search.AStarSearch(4);
+                break;
+            case 8:
+                node = search.AStarSearch(5);
                 break;
             default:
                 return;
@@ -90,7 +105,7 @@ public class Game {
 
     private void startSolveSearch(int option) {
         SolveSearch search = new SolveSearch(levels.get(currLevel));
-        search.debbugMode(DEBUG);
+        search.debugMode(DEBUG);
         NewNode node;
 
         long startTime = System.currentTimeMillis();
