@@ -23,22 +23,22 @@ gradle run --console=plain
 
 Depois de iniciar o programa aparece o seguinte menu inicial:
 
->> ::::::::::::::::::::::::::::::::::
->> ::             ZHED             ::
->> ::::::::::::::::::::::::::::::::::
->>
->> 1. Utilizador joga.
->> 2. Computador joga 'pesquisa primeiro em largura'.
->> 3. Computador joga 'pesquisa primeiro em profundidade'.
->> 4. Computador joga 'aprofundamento progressivo'.
->> 5. Computador joga 'heuristica: pesquisa gulosa'.
->> 6. Computador joga 'heuristica: A* com fator 3'.
->> 7. Computador joga 'heuristica: A* com fator 4'.
->> 8. Computador joga 'heuristica: A* com fator 5'.
->> 9. Ativar/Desativar mensagens debug.
->> 0. Sair do jogo.
->>
->> Intruduza a sua opção:
+> ::::::::::::::::::::::::::::::::::
+> ::             ZHED             ::
+> ::::::::::::::::::::::::::::::::::
+>
+> 1. Utilizador joga.
+> 2. Computador joga 'pesquisa primeiro em largura'.
+> 3. Computador joga 'pesquisa primeiro em profundidade'.
+> 4. Computador joga 'aprofundamento progressivo'.
+> 5. Computador joga 'heuristica: pesquisa gulosa'.
+> 6. Computador joga 'heuristica: A* com fator 3'.
+> 7. Computador joga 'heuristica: A* com fator 4'.
+> 8. Computador joga 'heuristica: A* com fator 5'.
+> 9. Ativar/Desativar mensagens debug.
+> 0. Sair do jogo.
+>
+> Intruduza a sua opção:
 
 A partir daqui basta escrever o número da opção pretendida seguido
 de 'ENTER'.
@@ -56,7 +56,7 @@ de 'ENTER'.
     
 De seguida é encaminhado para o seguinte menu:
 
->> Selecione o nivel que deseja jogar (1-7):
+> Selecione o nivel que deseja jogar (1-7):
 
 Aqui deve intrduzir um número entre 1 a 7 que corresponde ao nivel que
 deseja resolver.
@@ -73,7 +73,7 @@ deseja resolver.
         :...................................:
         
 
-Apśs terminado o nível volta ao menu inicial.
+Após terminado o nível volta ao menu inicial.
 
 ## Autores
 
