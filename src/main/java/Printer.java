@@ -38,13 +38,7 @@ public class Printer {
             System.out.println();
             System.out.println();
             option = mainMenu();
-        }/*
-        if (option < 0 || option > 6){
-            System.out.println("Input inválido.");
-            System.out.println();
-            System.out.println();
-            option = mainMenu();
-        }*/
+        }
         return option;
     }
 
@@ -246,7 +240,7 @@ public class Printer {
         System.out.println();
     }
 
-    public static void timeElapsed(int level, int option, long time) {
+    public static void performance(int level, int option, long time) {
         System.out.println();
         System.out.println("== Informação de performance ==" );
         System.out.println("Nivel jogado: " + level);
@@ -258,13 +252,17 @@ public class Printer {
                 System.out.println("Algoritmo utilizado: pesquisa primeiro em profundidade");
                 break;
             case 4:
-                System.out.println("Algoritmo utilizado: aprofundamento progressivo");
+                System.out.println("Algoritmo utilizado: pesquisa com aprofundamento progressivo");
                 break;
             case 5:
-                System.out.println("Algoritmo utilizado: heuristica: pesquisa gulosa");
+                System.out.println("Algoritmo utilizado: heuristica-> pesquisa gulosa");
                 break;
             case 6:
-                System.out.println("Algoritmo utilizado: heuristica: A*");
+                System.out.println("Algoritmo utilizado: heuristica-> A* com fator 3");
+            case 7:
+                System.out.println("Algoritmo utilizado: heuristica-> A* com fator 4");
+            case 8:
+                System.out.println("Algoritmo utilizado: heuristica-> A* com fator 5");
                 break;
 
         }

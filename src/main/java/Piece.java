@@ -20,10 +20,6 @@ public class Piece implements Cloneable{
         return numSteps;
     }
 
-    public void setNumSteps(int numSteps) {
-        this.numSteps = numSteps;
-    }
-
     @Override
     public String toString() {
         return "Piece{" +

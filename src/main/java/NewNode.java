@@ -24,6 +24,7 @@ public class NewNode {
         this.root = true;
         NewNode.nodeCounter = 0;
         this.cost = 0;
+        this.depth = 0;
     }
 
     NewNode(NewNode dad, Piece piece, Level.Direction operator) { //construtor para pesquica cega

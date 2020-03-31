@@ -8,7 +8,7 @@ public class Level implements Cloneable {
     private int width;
     private int height;
     private ArrayList<Piece> pieces;
-    private Piece solutionPiece;
+
     private boolean finish;
 
     public boolean isFinish() {
@@ -80,8 +80,7 @@ public class Level implements Cloneable {
                 if (numSteps.matches("-?\\d+")) {
                     Piece newPiece = new Piece(j + 1, i + 1, Integer.parseInt(numSteps));
                     pieces.add(newPiece);
-                } else if (numSteps.equals("W"))
-                    this.solutionPiece = new Piece(j + 1, i + 1, 0);
+                }
             }
         }
     }
@@ -139,18 +138,18 @@ public class Level implements Cloneable {
     }
 
     public void selectPiece() {
-
-        Position pos = Printer.selectPiece();
-        for (Piece piece : pieces) {
-            if (piece.getPos().equals(pos)) {
-                selectDirection(pos);
-                return;
+        while(true) {
+            Position pos = Printer.selectPiece();
+            for (Piece piece : pieces) {
+                if (piece.getPos().equals(pos)) {
+                    selectDirection(pos);
+                    return;
+                }
             }
-        }
 
-        System.out.println("Error: Invalid position!");
-        System.out.println();
-        selectPiece();
+            System.out.println("Error: Invalid position!");
+            System.out.println();
+        }
     }
 
     public void selectDirection(Position pos) {
@@ -361,14 +360,5 @@ public class Level implements Cloneable {
                 }
             }
         }
-    }
-
-    public double getDistanceToSol(Piece piece) { //retorna distancia em linha reta da solução
-        int x1 = piece.getPos().getX();
-        int x2 = this.solutionPiece.getPos().getX();
-        int y1 = piece.getPos().getY();
-        int y2 = this.solutionPiece.getPos().getY();
-
-        return Math.sqrt((y2 - y1) * (y2 - y1) + (x2 - x1) * (x2 - x1));
     }
 }

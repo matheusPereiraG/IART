@@ -100,7 +100,7 @@ public class Game {
         if(levels.get(currLevel).isFinish())
             Printer.youWon(currLevel);
         Printer.solution(node);
-        Printer.timeElapsed(currLevel,option,endTime-startTime);
+        Printer.performance(currLevel,option,endTime-startTime);
     }
 
     private void startSolveSearch(int option) {
@@ -129,7 +129,7 @@ public class Game {
         if(levels.get(currLevel).isFinish())
             Printer.youWon(currLevel);
         Printer.solution(node);
-        Printer.timeElapsed(currLevel,option,endTime-startTime);
+        Printer.performance(currLevel,option,endTime-startTime);
     }
 
     private static void startGameHuman() {
