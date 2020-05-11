@@ -1,5 +1,24 @@
 # ZHED - FEUP - IART - 2019/2020
 
+## Trabalho 2 - Aprendizagem Computacional
+
+Pretende-se neste trabalho usar aprendizagem computacional para, no nosso tema, ensinar um agente a solucionar um puzzle com base em **Aprendizagem por Reforço**.
+
+Devem  ser  experimentados  pelo  menos  dois  algoritmos  de  Aprendizagem  por  reforço  (Q-Learning, SARSA, Proximal Policy Optimization – PPO, Soft Actor-Critic – SAC, etc) e diferentes parametrizações dos algoritmos e processo de aprendizagem. Deve ser analisado o processo de aprendizagem ao longo do tempo e construídos gráficos da recompensa obtida ao longo do tempo e de outros parâmetros do processode aprendizagem. 
+
+### Checkpoint
+------
+
+Breve apresentação (máx. 5 slides), em formato PDF, que deve conter:
+
+1. Especificação   do   trabalho   a   realizar   (definição   do(s)   problema(s)   de   aprendizagem computacional a resolver);
+
+2. Trabalho relacionado com referências a trabalhos encontrados na pesquisa (artigos, páginas web e/ou código fonte);
+
+3. Descrição das ferramentas e algoritmos a utilizar no trabalho;
+
+4. Trabalho de implementação já realizado.
+
 ## INSTRUÇÕES DE COMPILAÇÃO/EXECUÇÃO DO PROGRAMA
 
 Este programa foi feito com integracao do sistema Gradle de 
