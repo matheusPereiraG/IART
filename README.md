@@ -6,7 +6,7 @@ Pretende-se neste trabalho usar aprendizagem computacional para, no nosso tema, 
 
 Devem  ser  experimentados  pelo  menos  dois  algoritmos  de  Aprendizagem  por  reforço  (Q-Learning, SARSA, Proximal Policy Optimization – PPO, Soft Actor-Critic – SAC, etc) e diferentes parametrizações dos algoritmos e processo de aprendizagem. Deve ser analisado o processo de aprendizagem ao longo do tempo e construídos gráficos da recompensa obtida ao longo do tempo e de outros parâmetros do processode aprendizagem. 
 
-## Checkpoint:
+### Checkpoint:
 ------
 
 Breve apresentação (máx. 5 slides), em formato PDF, que deve conter:
