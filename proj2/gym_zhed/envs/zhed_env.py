@@ -3,30 +3,46 @@ from gym import error, spaces, utils
 from gym.utils import seeding
 import numpy as np
 import matplotlib.pyplot as plt
+import math 
 
 class ZhedEnv(gym.Env):
   metadata = {'render.modes': ['human']}
 
-  def __init__(self, m, n, pieces, terminalState):
-    self.board = np.zeros((m,n))
-    self.m = m
-    self.n = n
+  def __init__(self, filename):
+    self.board = np.genfromtxt(filename, dtype =str)
+    self.r = len(self.board)
+    self.c = len(self.board[1,:])
     self.done = False
-    self.pieces = pieces
-    #for each piece 4 different movements thus being a multidiscrete space
-    aux_array = np.full(len(pieces), 4)
-    self.action_space = spaces.MultiDiscrete(aux_array)
-    print(self.action_space.sample())
-    self.observation_space
-    self.addPieces()
-    #self.action_space
+    self.pieces = self.getpieces()
+    print(self.pieces)
+    self.action_space = spaces.Discrete(4*len(self.pieces))
+    self.possible_moves = self.action_space
+    self.observation_space = spaces.Discrete(4^len(self.pieces))
+    #self.addPieces()
+
+  def getpieces(self):
+    pieces = np.array([[0,0,0]])
+    for i in range(0, self.r):
+      for j in range(0, self.c):
+          if self.board[i,j] != '.' and self.board[i,j] != 'W':
+            piece = [[self.board[i,j], i, j]]
+            pieces = np.append(pieces,piece, axis=0)
+    pieces = np.delete(pieces,0,0)
+    return pieces
+
 
   def step(self, action):
-    ...
+    pieceIndex = action // 4
+    pieceMove = action % 4
+    print(pieceIndex)
+    print(pieceMove)
+
   def reset(self):
-    ...
+    self.board = np.full((self.r,self.c),'*')
+
   def render(self, mode='human'):
-    ...
+    print(np.matrix(self.board))
+
   def close(self):
     ...
 
@@ -38,5 +54,6 @@ class ZhedEnv(gym.Env):
     
 
 if __name__== "__main__":
-  pieces = [[2,2,4], [2,4,5]] #level 4 of original zhed game
-  ZhedEnv(8,8,pieces,[4,2])
+  env = ZhedEnv("level1.txt")
+  env.render()
+  env.step(env.action_space.sample())
