@@ -27,16 +27,30 @@ class ZhedEnv(gym.Env):
 
   def step(self, action): #0-UP, 1-DOWN, 2-RIGHT, 3-LEFT
     
+    # verifica se a acao é possivel
     if self.possible_moves[action] == False:
+      print("impossible action ", action)
       return #state, reward, done, {}
+
+    # obtem a peça e a direção pretendidos
     pieceIndex = action // 4
     pieceMove = action % 4
     piece = self.pieces[pieceIndex]
+
+    # realiza a jogada
     diffExpansion = self.moveSwitcher(pieceMove, piece)
-    self.pieces = np.delete(self.pieces,piece,0)
-    print(self.action_space)
-    print(self.action_space)
-    print(diffExpansion)
+
+    # atualiza os valores de ações possiveis
+    self.pieces[pieceIndex] = [piece[0], piece[1], piece[2], True]
+    self.possible_moves[pieceIndex*4] = False
+    self.possible_moves[pieceIndex*4+1] = False
+    self.possible_moves[pieceIndex*4+2] = False
+    self.possible_moves[pieceIndex*4+3] = False
+
+
+    print(self.possible_moves)
+    print(self.pieces)
+    print("diffExpansion: ", diffExpansion)
 
     #return observation, reward, done, {}
 
@@ -81,9 +95,10 @@ class ZhedEnv(gym.Env):
     x = int(piece[2])
     y = int(piece[1])
     power = int(piece[0])
+    counter = power
     self.board[y,x] = '#'
-    for i in range(1,power+1):
-      print(i)
+    i = 1
+    while i <= counter:
       if y + i < self.r:
         if self.board[y+i,x] == '.':
           self.board[y+i,x] = '#'
@@ -95,7 +110,8 @@ class ZhedEnv(gym.Env):
           return numCellsExpanded - power
         else: 
           numCellsExpanded += 1
-          i -= 1
+          counter +=1
+      i+=1
     return numCellsExpanded - power
 
   def up(self,piece):
@@ -104,8 +120,10 @@ class ZhedEnv(gym.Env):
     x = int(piece[2])
     y = int(piece[1])
     power = int(piece[0])
+    counter = power
     self.board[y,x] = '#'
-    for i in range(1,power+1):
+    i = 1
+    while i <= counter:
       if y - i >= 0:
         if self.board[y-i,x] == '.':
           self.board[y-i,x] = '#'
@@ -117,7 +135,8 @@ class ZhedEnv(gym.Env):
           return numCellsExpanded - power
         else: 
           numCellsExpanded += 1
-          i -= 1
+          counter += 1
+      i+=1
     return numCellsExpanded - power
 
   def right(self,piece):
@@ -126,8 +145,10 @@ class ZhedEnv(gym.Env):
     x = int(piece[2])
     y = int(piece[1])
     power = int(piece[0])
+    counter = power
     self.board[y,x] = '#'
-    for i in range(1,power+1):
+    i = 1
+    while i <= counter:
       if x + i < self.c:
         if self.board[y,x +i] == '.':
           self.board[y,x +i] = '#'
@@ -139,7 +160,8 @@ class ZhedEnv(gym.Env):
           return numCellsExpanded - power
         else: 
           numCellsExpanded += 1
-          i -= 1
+          counter += 1
+      i+=1
     return numCellsExpanded - power
 
   def left(self,piece):
@@ -148,8 +170,10 @@ class ZhedEnv(gym.Env):
     x = int(piece[2])
     y = int(piece[1])
     power = int(piece[0])
+    counter = power
     self.board[y,x] = '#'
-    for i in range(1,power+1):
+    i = 1
+    while i <= counter:
       if x - i >= 0:
         if self.board[y,x-i] == '.':
           self.board[y,x-i] = '#'
@@ -161,8 +185,16 @@ class ZhedEnv(gym.Env):
           return numCellsExpanded - power
         else: 
           numCellsExpanded += 1
-          i -= 1
+          counter += 1
+      i+=1
     return numCellsExpanded - power
+
+  def hasMovesLeft(self):
+    for a in self.possible_moves:
+      if a:
+        return True
+    return False
+
 
 
 """
