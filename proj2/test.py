@@ -1,4 +1,5 @@
 import gym
+import numpy as np
 
 env = gym.make("gym_zhed:zhed-v0")
 
@@ -6,6 +7,11 @@ print(env.observation_space)
 print(env.observation_space.low)
 print(env.observation_space.high)
 print(env.observation_space.sample())
+
+#q_table = map()
+
+#q_table = np.zeros([env.board.tobytes(), env.action_space.n])
+
 
 #for i in range(40):
 """
