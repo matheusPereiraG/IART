@@ -18,22 +18,23 @@ class ZhedEnv(gym.Env):
     self.c = len(self.board[1,:])
     self.done = False
     self.pieces = self.getpieces()
-    self.action_space = spaces.Discrete(4) #[0,1,2,3,4,5,6,7]
-    self.possible_moves = self.action_space
+    print(self.pieces)
+    self.action_space = spaces.Discrete(len(self.pieces) *4) #[0,1,2,3,4,5,6,7]
+    self.possible_moves = np.full(self.action_space.n,True)
+    print(self.possible_moves)
     self.observation_space = spaces.Discrete(8*8) #spaces.Box(0,len(self.pieces))
 
 
   def step(self, action): #0-UP, 1-DOWN, 2-RIGHT, 3-LEFT
+    
+    if self.possible_moves[action] == False:
+      return #state, reward, done, {}
     pieceIndex = action // 4
     pieceMove = action % 4
     piece = self.pieces[pieceIndex]
     diffExpansion = self.moveSwitcher(pieceMove, piece)
     self.pieces = np.delete(self.pieces,piece,0)
     print(self.action_space)
-    self.action_space = np.delete(self.action_space,[pieceIndex],0)
-    self.action_space = np.delete(self.action_space,[pieceIndex+1],0)
-    self.action_space = np.delete(self.action_space,[pieceIndex+2],0)
-    self.action_space = np.delete(self.action_space,[pieceIndex+3],0)
     print(self.action_space)
     print(diffExpansion)
 
@@ -55,18 +56,16 @@ class ZhedEnv(gym.Env):
     ...
     
   def getpieces(self):
-    pieces = np.array([[0,0,0]])
+    pieces = np.array([[0,0,0,False]])
     for i in range(0, self.r):
       for j in range(0, self.c):
           if self.board[i,j] != '.' and self.board[i,j] != 'W':
-            piece = [[int(self.board[i,j]), int(i), int(j)]]
+            piece = [[int(self.board[i,j]), int(i), int(j), False]]
             pieces = np.append(pieces,piece, axis=0)
     pieces = np.delete(pieces,0,0)
     return pieces
 
   def moveSwitcher(self,argument,piece):
-    print(argument)
-    print(piece)
     switcher = {
       0: self.down,
       1: self.up,
