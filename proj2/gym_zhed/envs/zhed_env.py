@@ -22,7 +22,8 @@ class ZhedEnv(gym.Env):
     self.action_space = spaces.Discrete(len(self.pieces) *4) #[0,1,2,3,4,5,6,7]
     self.possible_moves = np.full(self.action_space.n,True)
     print(self.possible_moves)
-    self.observation_space = spaces.Discrete(8*8) #spaces.Box(0,len(self.pieces))
+    self.observation_space = spaces.Box(0, 1, [self.r,self.c],dtype=np.int) #spaces.Box(0,len(self.pieces))
+    self.observation_space.sample()
 
 
   def step(self, action): #0-UP, 1-DOWN, 2-RIGHT, 3-LEFT
