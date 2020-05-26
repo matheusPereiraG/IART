@@ -15,9 +15,9 @@ class ZhedEnv(gym.Env):
     self.c = len(self.board[1,:])
     self.done = False
     self.pieces = self.getpieces()
-    self.action_space = spaces.Discrete(4*len(self.pieces))
+    self.action_space = spaces.Discrete(4)
     self.possible_moves = self.action_space
-    self.observation_space = spaces.Discrete(4^len(self.pieces))
+    self.observation_space = spaces.Box(0,len(self.pieces))
 
 
   def step(self, action): #0-UP, 1-DOWN, 2-RIGHT, 3-LEFT
@@ -25,7 +25,16 @@ class ZhedEnv(gym.Env):
     pieceMove = action % 4
     piece = self.pieces[pieceIndex]
     diffExpansion = self.moveSwitcher(pieceMove, piece)
+    self.pieces = np.delete(self.pieces,piece,0)
+    print(self.action_space)
+    self.action_space = np.delete(self.action_space,[pieceIndex],0)
+    self.action_space = np.delete(self.action_space,[pieceIndex+1],0)
+    self.action_space = np.delete(self.action_space,[pieceIndex+2],0)
+    self.action_space = np.delete(self.action_space,[pieceIndex+3],0)
+    print(self.action_space)
     print(diffExpansion)
+
+    #return observation, reward, done, {}
 
   def reset(self):
     self.__init__(self.filename)
@@ -47,7 +56,7 @@ class ZhedEnv(gym.Env):
     for i in range(0, self.r):
       for j in range(0, self.c):
           if self.board[i,j] != '.' and self.board[i,j] != 'W':
-            piece = [[self.board[i,j], i, j]]
+            piece = [[int(self.board[i,j]), int(i), int(j)]]
             pieces = np.append(pieces,piece, axis=0)
     pieces = np.delete(pieces,0,0)
     return pieces
@@ -158,5 +167,10 @@ class ZhedEnv(gym.Env):
 if __name__== "__main__":
   env = ZhedEnv("level1.txt")
   env.render()
-  env.step(env.action_space.sample())
-  env.render()
+  while not env.done:
+    if len(env.pieces) == 0:
+      env.reset()
+    else:
+      env.step(env.action_space.sample())
+      env.render()
+  
