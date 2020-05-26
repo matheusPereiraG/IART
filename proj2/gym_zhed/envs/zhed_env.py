@@ -4,20 +4,23 @@ from gym.utils import seeding
 import numpy as np
 import matplotlib.pyplot as plt
 import math 
+import os
 
 class ZhedEnv(gym.Env):
   metadata = {'render.modes': ['human']}
 
   def __init__(self, filename):
+    path = os.getcwd()
+    os.path.abspath(os.path.join(path, filename))
     self.filename = filename
-    self.board = np.genfromtxt(filename, dtype =str)
+    self.board = np.genfromtxt(self.filename, dtype =str)
     self.r = len(self.board)
     self.c = len(self.board[1,:])
     self.done = False
     self.pieces = self.getpieces()
-    self.action_space = spaces.Discrete(4)
+    self.action_space = spaces.Discrete(4) #[0,1,2,3,4,5,6,7]
     self.possible_moves = self.action_space
-    self.observation_space = spaces.Box(0,len(self.pieces))
+    self.observation_space = spaces.Discrete(8*8) #spaces.Box(0,len(self.pieces))
 
 
   def step(self, action): #0-UP, 1-DOWN, 2-RIGHT, 3-LEFT
@@ -163,7 +166,7 @@ class ZhedEnv(gym.Env):
     return numCellsExpanded - power
 
 
-
+"""
 if __name__== "__main__":
   env = ZhedEnv("level1.txt")
   env.render()
@@ -173,4 +176,4 @@ if __name__== "__main__":
     else:
       env.step(env.action_space.sample())
       env.render()
-  
+"""  
