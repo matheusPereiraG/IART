@@ -45,7 +45,12 @@ for _ in range(episodes):
     
     while not done:
         state = env.encode()
-        action = np.argmax(q_table[state])
+        current_entry = []
+        for entry in q_table:
+            if entry[0] == state:
+                current_entry = np.delete(entry,0,0)
+                break
+        action = np.argmax(current_entry)
         state, reward, done, info = env.step(action)
 
         if reward < 0:

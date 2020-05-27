@@ -25,7 +25,7 @@ class ZhedEnv(gym.Env):
     self.pieces = self.getpieces()
     self.action_space = spaces.Discrete(len(self.pieces) *4) #[0,1,2,3,4,5,6,7]
     self.possible_moves = np.full(self.action_space.n,True)
-    self.observation_space = spaces.Discrete(pow(2,self.r*self.c))
+    self.observation_space = spaces.Discrete(math.factorial(len(self.pieces)) * pow(4,len(self.pieces))) #n!*4^n
 
 
   def step(self, action): #0-UP, 1-DOWN, 2-RIGHT, 3-LEFT
