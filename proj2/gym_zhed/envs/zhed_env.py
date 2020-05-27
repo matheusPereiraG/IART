@@ -7,6 +7,7 @@ import matplotlib.pyplot as plt
 import math 
 import os
 import random
+from colorama import Fore, Back, Style
 
 class ZhedEnv(gym.Env):
   metadata = {'render.modes': ['human']}
@@ -58,10 +59,19 @@ class ZhedEnv(gym.Env):
 
   def reset(self):
     self.__init__(self.filename)
-    #self.__init__(self.levels[random.randint(7)])
 
   def render(self, mode='human', close=False):
-    return np.matrix(self.board)
+    printString = ""
+    for i in range(self.r):
+      for j in range(self.c):
+        if self.board[i,j] == '.':
+          printString += f"{Fore.YELLOW}\u25A0{Style.BRIGHT} "
+        elif self.board[i,j] == '#':
+          printString += f"{Fore.RED}\u25A0{Style.BRIGHT} "
+        else:
+          printString += f"{Fore.RED}{self.board[i,j]} "
+      printString += f"\n{Style.RESET_ALL}"
+    return printString
 
   def close(self):
     ...

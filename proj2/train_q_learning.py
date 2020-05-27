@@ -43,9 +43,9 @@ except OSError: q_table = np.zeros([env.observation_space.n, env.action_space.n+
 print("Q_table fully generated.")
 
 # Hyperparameters
-alpha = 0.2     # learning rate (determina a importancia do reward atual)
-gamma = 0.6     # discount factor (determina a importancia de futuras rewards)
-epsilon = 0.4   # explore rate (determina se explora ações "piores" mais vezes)
+alpha = 0.9     # learning rate (determina a importancia do reward atual)
+gamma = 1     # discount factor (determina a importancia de futuras rewards)
+epsilon = 0.1   # explore rate (determina se explora ações "piores" mais vezes)
 
 
 frames = []
