@@ -2,14 +2,19 @@ import gym
 from gym import error, spaces, utils
 from gym.utils import seeding
 import numpy as np
+from numpy import random
 import matplotlib.pyplot as plt
 import math 
 import os
+import random
 
 class ZhedEnv(gym.Env):
   metadata = {'render.modes': ['human']}
 
+  levels = ["level1.txt", "level2.txt", "level3.txt", "level4.txt", "level5.txt", "level6.txt", "level7.txt"]
+
   def __init__(self, filename):
+    super().__init__()
     path = os.getcwd()
     os.path.abspath(os.path.join(path, filename))
     self.filename = filename
@@ -18,13 +23,10 @@ class ZhedEnv(gym.Env):
     self.c = len(self.board[1,:])
     self.done = False
     self.pieces = self.getpieces()
-    #print(self.pieces)
     self.action_space = spaces.Discrete(len(self.pieces) *4) #[0,1,2,3,4,5,6,7]
     self.possible_moves = np.full(self.action_space.n,True)
-    #print(self.possible_moves)
-    self.observation_space = spaces.Discrete(4^len(self.pieces))
+    self.observation_space = spaces.Discrete(pow(2,self.r*self.c))
     #self.observation_space = spaces.Box(0, 1, [self.r,self.c],dtype=np.int) #spaces.Box(0,len(self.pieces))
-    #self.observation_space.sample()
 
 
   def step(self, action): #0-UP, 1-DOWN, 2-RIGHT, 3-LEFT
@@ -32,7 +34,8 @@ class ZhedEnv(gym.Env):
     # verifica se a acao é possivel
     if self.possible_moves[action] == False:
       print("impossible action (", action, ")" ,sep="")
-      return #state, reward, done, {}
+      print("encode: ", self.encode())
+      return self.encode(), -100, False, {}
 
     # obtem a peça e a direção pretendidos
     pieceIndex = action // 4
@@ -54,22 +57,41 @@ class ZhedEnv(gym.Env):
     print("pieces: ", self.pieces)
     print("diffExpansion: ", diffExpansion)
 
-    #return observation, reward, done, {}
+    if(self.done):
+      reward = 100
+    else:
+      reward = diffExpansion * 10
+
+    print("encode: ", self.encode())
+    return self.encode(), reward, self.done, {}
 
   def reset(self):
     self.__init__(self.filename)
+    #self.__init__(self.levels[random.randint(7)])
 
-  def render(self, mode='human'):
+  def render(self, mode='human', close=False):
     print(np.matrix(self.board))
 
   def close(self):
     ...
 
-  def addPieces(self):
-    ...
+  def getPossibleRandomAction(self):
+    pass
+
+
+  def encode(self):
+    code = 0
+    num = 0
+    for i in range(self.r):
+      for j in range(self.c):
+        if(self.board[i,j] == '.'):
+          temp = 0
+        else:
+          temp = 1
+        code = code | (temp << num)
+        num += 1
+    return code
   
-  def calculateActionSpace(self):
-    ...
     
   def getpieces(self):
     pieces = np.array([[0,0,0,False]])
@@ -92,7 +114,6 @@ class ZhedEnv(gym.Env):
     return func(piece)
   
   def down(self,piece):
-    print("down")
     numCellsExpanded = 0
     x = int(piece[2])
     y = int(piece[1])
@@ -117,7 +138,6 @@ class ZhedEnv(gym.Env):
     return numCellsExpanded - power
 
   def up(self,piece):
-    print("up")
     numCellsExpanded = 0
     x = int(piece[2])
     y = int(piece[1])
@@ -142,7 +162,6 @@ class ZhedEnv(gym.Env):
     return numCellsExpanded - power
 
   def right(self,piece):
-    print("right")
     numCellsExpanded = 0
     x = int(piece[2])
     y = int(piece[1])
@@ -167,7 +186,6 @@ class ZhedEnv(gym.Env):
     return numCellsExpanded - power
 
   def left(self,piece):
-    print("left")
     numCellsExpanded = 0
     x = int(piece[2])
     y = int(piece[1])
@@ -196,17 +214,3 @@ class ZhedEnv(gym.Env):
       if a:
         return True
     return False
-
-
-
-"""
-if __name__== "__main__":
-  env = ZhedEnv("level1.txt")
-  env.render()
-  while not env.done:
-    if len(env.pieces) == 0:
-      env.reset()
-    else:
-      env.step(env.action_space.sample())
-      env.render()
-"""  
