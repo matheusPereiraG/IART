@@ -26,15 +26,12 @@ class ZhedEnv(gym.Env):
     self.action_space = spaces.Discrete(len(self.pieces) *4) #[0,1,2,3,4,5,6,7]
     self.possible_moves = np.full(self.action_space.n,True)
     self.observation_space = spaces.Discrete(pow(2,self.r*self.c))
-    #self.observation_space = spaces.Box(0, 1, [self.r,self.c],dtype=np.int) #spaces.Box(0,len(self.pieces))
 
 
   def step(self, action): #0-UP, 1-DOWN, 2-RIGHT, 3-LEFT
     
     # verifica se a acao é possivel
     if self.possible_moves[action] == False:
-      print("impossible action (", action, ")" ,sep="")
-      print("encode: ", self.encode())
       return self.encode(), -100, False, {}
 
     # obtem a peça e a direção pretendidos
@@ -52,17 +49,11 @@ class ZhedEnv(gym.Env):
     self.possible_moves[pieceIndex*4+2] = False
     self.possible_moves[pieceIndex*4+3] = False
 
-
-    print("possible moves: ", self.possible_moves)
-    print("pieces: ", self.pieces)
-    print("diffExpansion: ", diffExpansion)
-
     if(self.done):
       reward = 100
     else:
       reward = diffExpansion * 10
 
-    print("encode: ", self.encode())
     return self.encode(), reward, self.done, {}
 
   def reset(self):
@@ -70,7 +61,7 @@ class ZhedEnv(gym.Env):
     #self.__init__(self.levels[random.randint(7)])
 
   def render(self, mode='human', close=False):
-    print(np.matrix(self.board))
+    return np.matrix(self.board)
 
   def close(self):
     ...
