@@ -18,19 +18,20 @@ class ZhedEnv(gym.Env):
     self.c = len(self.board[1,:])
     self.done = False
     self.pieces = self.getpieces()
-    print(self.pieces)
+    #print(self.pieces)
     self.action_space = spaces.Discrete(len(self.pieces) *4) #[0,1,2,3,4,5,6,7]
     self.possible_moves = np.full(self.action_space.n,True)
-    print(self.possible_moves)
-    self.observation_space = spaces.Box(0, 1, [self.r,self.c],dtype=np.int) #spaces.Box(0,len(self.pieces))
-    self.observation_space.sample()
+    #print(self.possible_moves)
+    self.observation_space = spaces.Discrete(4^len(self.pieces))
+    #self.observation_space = spaces.Box(0, 1, [self.r,self.c],dtype=np.int) #spaces.Box(0,len(self.pieces))
+    #self.observation_space.sample()
 
 
   def step(self, action): #0-UP, 1-DOWN, 2-RIGHT, 3-LEFT
     
     # verifica se a acao é possivel
     if self.possible_moves[action] == False:
-      print("impossible action ", action)
+      print("impossible action (", action, ")" ,sep="")
       return #state, reward, done, {}
 
     # obtem a peça e a direção pretendidos
@@ -49,8 +50,8 @@ class ZhedEnv(gym.Env):
     self.possible_moves[pieceIndex*4+3] = False
 
 
-    print(self.possible_moves)
-    print(self.pieces)
+    print("possible moves: ", self.possible_moves)
+    print("pieces: ", self.pieces)
     print("diffExpansion: ", diffExpansion)
 
     #return observation, reward, done, {}
