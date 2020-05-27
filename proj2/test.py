@@ -4,6 +4,7 @@ import numpy as np
 from IPython.display import clear_output
 from time import sleep
 import random
+import os
 
 
 def print_frames(frames):
@@ -17,6 +18,16 @@ def print_frames(frames):
         print(f"Reward: {frame['reward']}")
         sleep(.1)
 
+algorithm = input("Enter algorithm to test: \n 1: SARSA \n 2: QLearning \n")
+
+if(int(algorithm) == 1):
+     q_table_path = "./tables/SARSA/"
+elif(int(algorithm) == 2):
+    q_table_path = "./tables/Qlearning/"
+else: 
+    print("Invalid input")
+    exit()
+
 filestr = "level"
 level_number = input("Enter Level : ")
 filestr += level_number
@@ -27,7 +38,8 @@ env = gym.make("gym_zhed:zhed-v0", filename=filestr)
 q_table_file = "q_table"
 q_table_file += level_number
 q_table_file += ".txt"
-try: q_table = np.genfromtxt(q_table_file, dtype=float)
+q_table_path += q_table_file
+try: q_table = np.genfromtxt(q_table_path, dtype=float)
 except OSError:
     print("Q table does not exist, please train your agent first")
     exit()
