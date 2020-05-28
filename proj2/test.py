@@ -42,11 +42,12 @@ q_table_file = "q_table"
 q_table_file += level_number
 q_table_file += ".txt"
 q_table_path += q_table_file
+print("Getting Q_table...")
 try: q_table = np.genfromtxt(q_table_path, dtype=float)
 except OSError:
     print("Q table does not exist, please train your agent first")
     exit()
-
+print("Q table loaded")
 
 ### Test q_table
 
@@ -79,6 +80,7 @@ for _ in range(episodes):
             endEpisode = True
 
         if not env.hasMovesLeft():
+            print(env.render())
             env.reset()
             endEpisode = True
     

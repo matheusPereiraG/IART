@@ -32,8 +32,6 @@ def pick_action(state):
 def get_entry(state):
     selectedEntry = []
     for entry in q_table:
-        if entry[0] == 0:
-                break
         if(entry[0] == state):
             selectedEntry = entry
             return selectedEntry
@@ -79,9 +77,9 @@ except OSError:
 print("Sarsa fully generated.")
 
 # Hyperparameters
-alpha = 0.5     # learning rate (determina a importancia do reward atual)
-gamma = 0.8     # discount factor (determina a importancia de futuras rewards)
-epsilon = 0.5   # explore rate (determina se explora ações "piores" mais vezes)
+alpha = 0.9     # learning rate (determina a importancia do reward atual)
+gamma = 0.2     # discount factor (determina a importancia de futuras rewards)
+epsilon = 0.6   # explore rate (determina se explora ações "piores" mais vezes)
 
 
 frames = []
@@ -133,8 +131,8 @@ for i in range(1, train_number):
         s, a = s_, a_
 
         if reward < 0:
-            penalties += reward
-            total_penalties += reward
+            penalties += 1
+            total_penalties += 1
 
         print()
         print(env.render())

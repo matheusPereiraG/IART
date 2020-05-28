@@ -46,8 +46,8 @@ print("Q_table fully generated.")
 
 # Hyperparameters
 alpha = 0.9     # learning rate (determina a importancia do reward atual)
-gamma = 1     # discount factor (determina a importancia de futuras rewards)
-epsilon = 0.1   # explore rate (determina se explora ações "piores" mais vezes)
+gamma = 0.2     # discount factor (determina a importancia de futuras rewards)
+epsilon = 0.6   # explore rate (determina se explora ações "piores" mais vezes) menos valor mais experimentação
 
 
 frames = []
@@ -123,7 +123,6 @@ for i in range(1, train_number):
             if entry[0] == state:
                 entry[action+1] = new_value
                 break
-        #q_table[state, action] = new_value
 
         if reward < 0:
             penalties += reward
@@ -141,7 +140,7 @@ for i in range(1, train_number):
         total_steps += 1
 
         if not env.hasMovesLeft():
-            env.reset()
+            done = True
 
 
 print("\n\n")
