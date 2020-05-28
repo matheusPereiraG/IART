@@ -6,8 +6,6 @@ from time import sleep
 import random
 import os
 
-train_number = 2
-
 
 def print_frames(frames):
     for i, frame in enumerate(frames):
@@ -25,6 +23,8 @@ level_number = input("Enter Level : ")
 filestr += level_number
 filestr += ".txt"
 filepath = "levels/" + filestr
+
+train_number = int(input("Enter number of episodes to train: "))
 
 env = gym.make("gym_zhed:zhed-v0", filename=filepath)
 
@@ -129,24 +129,14 @@ for i in range(1, train_number):
         print(f"Reward: {reward}")
         print(f"Episode: {i}")
 
-        """
-        frames.append({
-            'frame': env.render(),
-            'state': state,
-            'action': action,
-            'reward': reward
-        })
-        """
-
         steps += 1
         total_steps += 1
 
         if not env.hasMovesLeft():
             env.reset()
 
-print("Timesteps taken: {}".format(steps))
-print("Penalties incurred: {}".format(penalties))
 
+print("\n\n")
 print(f"Results after {train_number} train sections:")
 print(f"Total timesteps: {total_steps}")
 print(f"Total penalties: {total_penalties}")
@@ -154,5 +144,3 @@ print(f"Average timesteps per episode: {total_steps / train_number}")
 print(f"Average penalties per episode: {total_penalties / train_number}")
 
 np.savetxt(q_table_path,q_table)
-
-#print_frames(frames)

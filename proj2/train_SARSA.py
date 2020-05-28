@@ -6,8 +6,6 @@ from time import sleep
 import random
 import os
 
-train_number = 200
-
 
 def pick_action(state):
     if random.uniform(0, 1) < epsilon:
@@ -54,6 +52,8 @@ filestr += level_number
 filestr += ".txt"
 filepath = "levels/" + filestr
 
+train_number = int(input("Enter number of episodes to train: "))
+
 env = gym.make("gym_zhed:zhed-v0", filename=filepath)
 
 sarsa_table_file = "q_table"
@@ -74,9 +74,9 @@ except OSError:
 print("Sarsa fully generated.")
 
 # Hyperparameters
-alpha = 0.1     # learning rate (determina a importancia do reward atual)
-gamma = 0.6     # discount factor (determina a importancia de futuras rewards)
-epsilon = 0.2   # explore rate (determina se explora ações "piores" mais vezes)
+alpha = 0.5     # learning rate (determina a importancia do reward atual)
+gamma = 0.8     # discount factor (determina a importancia de futuras rewards)
+epsilon = 0.5   # explore rate (determina se explora ações "piores" mais vezes)
 
 
 frames = []
@@ -113,7 +113,7 @@ for i in range(1, train_number):
             save_entry(s, a, new_value)
             print()
             print(env.render())
-            print(f"Episode: {i}")
+            print(f"Episode: {i+1}")
             print(f"Timestep: {steps}")
             print(f"State: {s}")
             print(f"Action: {a}")
@@ -145,9 +145,8 @@ for i in range(1, train_number):
         if not env.hasMovesLeft():
             endEpisode = True
 
-print("Timesteps taken: {}".format(steps))
-print("Penalties incurred: {}".format(penalties))
 
+print("\n\n")
 print(f"Results after {train_number} train sections:")
 print(f"Total timesteps: {total_steps}")
 print(f"Total penalties: {total_penalties}")
@@ -156,4 +155,3 @@ print(f"Average penalties per episode: {total_penalties / train_number}")
 
 
 np.savetxt(sarsa_table_path, q_table)
-

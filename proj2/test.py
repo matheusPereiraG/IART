@@ -29,11 +29,14 @@ else:
     exit()
 
 filestr = "level"
-level_number = input("Enter Level : ")
+level_number = input("Enter Level: ")
 filestr += level_number
 filestr += ".txt"
+filepath = "levels/" +filestr
 
-env = gym.make("gym_zhed:zhed-v0", filename=filestr)
+episodes = int(input("Enter number of episodes: "))
+
+env = gym.make("gym_zhed:zhed-v0", filename=filepath)
 
 q_table_file = "q_table"
 q_table_file += level_number
@@ -48,14 +51,13 @@ except OSError:
 ### Test q_table
 
 total_epochs, total_penalties = 0, 0
-episodes = 200
 
 for _ in range(episodes):
     epochs, penalties, reward = 0, 0, 0
     
-    done = False
+    endEpisode = False
     
-    while not done:
+    while not endEpisode:
         state = env.encode()
         current_entry = []
         for entry in q_table:
@@ -71,12 +73,14 @@ for _ in range(episodes):
         epochs += 1
 
         if done:
-            print(env.render())
-
-        if not env.hasMovesLeft():
-            print("No solution")
+            print("Found solution")
             print(env.render())
             env.reset()
+            endEpisode = True
+
+        if not env.hasMovesLeft():
+            env.reset()
+            endEpisode = True
     
     total_penalties += penalties
     total_epochs += epochs
