@@ -5,6 +5,7 @@ from IPython.display import clear_output
 from time import sleep
 import random
 import os
+import matplotlib.pyplot as plt
 
 
 def print_frames(frames):
