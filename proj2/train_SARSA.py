@@ -8,17 +8,25 @@ import os
 
 train_number = 10
 
+def pick_action():
+    if random.uniform(0, 1) < epsilon:
+        action = env.action_space.sample()  # Explore
+    else:
+        selectedEntry = []
+        for entry in q_table:
+            if(entry[0] == state):
+                selectedEntry = entry
+                break
+        if len(selectedEntry) == 0:
+            for entry in q_table:
+                if(entry[0] == 0):
+                    entry[0] = state
+                    selectedEntry = entry
+                    break
+        entry = np.delete(selectedEntry, 0, 0)
+        action = np.argmax(entry)  # Exploit
+    return action
 
-def print_frames(frames):
-    for i, frame in enumerate(frames):
-        clear_output(wait=True)
-        print()
-        print(frame['frame'])
-        print(f"Timestep: {i + 1}")
-        print(f"State: {frame['state']}")
-        print(f"Action: {frame['action']}")
-        print(f"Reward: {frame['reward']}")
-        sleep(.1)
 
 filestr = "level"
 level_number = input("Enter Level : ")
@@ -38,8 +46,10 @@ if not os.path.exists(sarsa_table_path):
 sarsa_table_path += sarsa_table_file
 
 print("start generating Sarsa table.")
-try: q_table = np.genfromtxt(sarsa_table_path)
-except OSError: q_table = np.zeros([env.observation_space.n, env.action_space.n+1])
+try:
+    q_table = np.genfromtxt(sarsa_table_path)
+except OSError:
+    q_table = np.zeros([env.observation_space.n, env.action_space.n+1])
 print("Sarsa fully generated.")
 
 # Hyperparameters
@@ -53,65 +63,58 @@ frames = []
 total_steps = 0
 total_penalties = 0
 
-### training agent
+# training agent
 for i in range(1, train_number):
 
     steps, penalties, reward = 0, 0, 0
+    env.reset()
+    s = env.encode()
+    a = pick_action()
     done = False
     while not done:
-        state = env.encode()
         
-        if random.uniform(0,1) < epsilon:
-            action = env.action_space.sample() #Explore
-        else: 
-            selectedEntry = []
-            for entry in q_table:
-                if(entry[0] == state):
-                    selectedEntry = entry
-                    break
-            if len(selectedEntry) == 0:
-                for entry in q_table:
-                    if(entry[0] == 0):
-                        entry[0] = state
-                        selectedEntry = entry
-                        break
-            entry = np.delete(selectedEntry,0,0)
-            action = np.argmax(entry) #Exploit
+        # do first action and get next state
+        s_, reward, done, info = env.step(a)
 
-        next_state, reward, done, info = env.step(action)
-
+        #go get q-values for that state, if does not exist get an entry with values to fill (where state == 0)
         selectedEntry = []
         for entry in q_table:
-            if(entry[0] == state):
+            if(entry[0] == s):
                 selectedEntry = entry
                 break
         if len(selectedEntry) == 0:
             for entry in q_table:
                 if entry[0] == 0:
-                    entry[0] = state
+                    entry[0] = s
                     selectedEntry = entry
                     break
 
-        old_value = selectedEntry[action+1]
+        old_value = selectedEntry[a+1]
 
+        #perform next action
+        
         selectedNextEntry = []
         for entry in q_table:
-            if(entry[0] == next_state):
+            if(entry[0] == s_):
                 selectedNextEntry = entry
                 break
         if len(selectedNextEntry) == 0:
-            print(q_table)
-            print("next_state:", next_state)
             for entry in q_table:
                 if entry[0] == 0:
-                    entry[0] = next_state
+                    entry[0] = s_
                     selectedNextEntry = entry
                     break
-        
-        entry = np.delete(selectedNextEntry,0,0)
+        entry = np.delete(selectedNextEntry, 0, 0)
+        """
+        if done: 
+            new_value += alpha * (reward - old_value)
+        else:
+            new_value += alpha * (reward + (gamma * ))
+        """
         next_max = np.max(entry)
 
-        new_value = (1 - alpha) * old_value + alpha * (reward + gamma * next_max)
+        new_value = (1 - alpha) * old_value + alpha * \
+            (reward + gamma * next_max)
 
         for entry in q_table:
             if entry[0] == state:
@@ -142,7 +145,7 @@ for i in range(1, train_number):
         total_steps += 1
 
         if not env.hasMovesLeft():
-            env.reset()
+            done = True
 
 print("Timesteps taken: {}".format(steps))
 print("Penalties incurred: {}".format(penalties))
@@ -154,6 +157,7 @@ print(f"Average timesteps per episode: {total_steps / train_number}")
 print(f"Average penalties per episode: {total_penalties / train_number}")
 
 
-np.savetxt(sarsa_table_path,q_table)
+np.savetxt(sarsa_table_path, q_table)
 
-#print_frames(frames)
+
+
