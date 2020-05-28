@@ -68,6 +68,8 @@ for i in range(1, train_number):
         else: 
             selectedEntry = []
             for entry in q_table:
+                if entry[0] == 0:
+                    break
                 if(entry[0] == state):
                     selectedEntry = entry
                     break
@@ -84,6 +86,8 @@ for i in range(1, train_number):
 
         selectedEntry = []
         for entry in q_table:
+            if entry[0] == 0:
+                break
             if(entry[0] == state):
                 selectedEntry = entry
                 break
@@ -98,6 +102,8 @@ for i in range(1, train_number):
 
         selectedNextEntry = []
         for entry in q_table:
+            if entry[0] == 0:
+                break
             if(entry[0] == next_state):
                 selectedNextEntry = entry
                 break
@@ -116,6 +122,7 @@ for i in range(1, train_number):
         for entry in q_table:
             if entry[0] == state:
                 entry[action+1] = new_value
+                break
         #q_table[state, action] = new_value
 
         if reward < 0:

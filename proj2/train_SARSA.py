@@ -13,6 +13,8 @@ def pick_action(state):
     else:
         selectedEntry = []
         for entry in q_table:
+            if entry[0] == 0:
+                break
             if(entry[0] == state):
                 selectedEntry = entry
                 break
@@ -30,6 +32,8 @@ def pick_action(state):
 def get_entry(state):
     selectedEntry = []
     for entry in q_table:
+        if entry[0] == 0:
+                break
         if(entry[0] == state):
             selectedEntry = entry
             return selectedEntry
@@ -44,6 +48,7 @@ def save_entry(state, action, value):
     for entry in q_table:
         if entry[0] == state:
             entry[action+1] = value
+            break
 
 
 filestr = "level"
