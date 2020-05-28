@@ -70,7 +70,12 @@ for _ in range(episodes):
 
         epochs += 1
 
+        if done:
+            print(env.render())
+
         if not env.hasMovesLeft():
+            print("No solution")
+            print(env.render())
             env.reset()
     
     total_penalties += penalties

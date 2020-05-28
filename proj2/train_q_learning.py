@@ -24,8 +24,9 @@ filestr = "level"
 level_number = input("Enter Level : ")
 filestr += level_number
 filestr += ".txt"
+filepath = "levels/" + filestr
 
-env = gym.make("gym_zhed:zhed-v0", filename=filestr)
+env = gym.make("gym_zhed:zhed-v0", filename=filepath)
 
 q_table_file = "q_table"
 q_table_file += level_number

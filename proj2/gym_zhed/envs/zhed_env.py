@@ -12,8 +12,6 @@ from colorama import Fore, Back, Style
 class ZhedEnv(gym.Env):
   metadata = {'render.modes': ['human']}
 
-  levels = ["level1.txt", "level2.txt", "level3.txt", "level4.txt", "level5.txt", "level6.txt", "level7.txt"]
-
   def __init__(self, filename):
     super().__init__()
     path = os.getcwd()
