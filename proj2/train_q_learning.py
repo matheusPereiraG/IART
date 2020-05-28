@@ -61,6 +61,10 @@ for i in range(1, train_number):
     steps, penalties, reward = 0, 0, 0
     done = False
     while not done:
+        
+        steps += 1
+        total_steps += 1
+        
         state = env.encode()
         
         if random.uniform(0,1) < epsilon:
@@ -125,8 +129,8 @@ for i in range(1, train_number):
                 break
 
         if reward < 0:
-            penalties += reward
-            total_penalties += reward
+            penalties += 1
+            total_penalties += 1
 
         print()
         print(env.render())
@@ -136,10 +140,8 @@ for i in range(1, train_number):
         print(f"Reward: {reward}")
         print(f"Episode: {i}")
 
-        steps += 1
-        total_steps += 1
-
         if not env.hasMovesLeft():
+            env.reset()
             done = True
 
 
