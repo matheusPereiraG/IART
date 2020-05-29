@@ -1,4 +1,5 @@
 import gym
+import sys
 
 import numpy as np
 from IPython.display import clear_output
@@ -47,15 +48,19 @@ def save_entry(state, action, value):
         if entry[0] == state:
             entry[action+1] = value
             break
+        
+if(len(sys.argv) != 3):
+    print("Usage: python3 train_SARSA.py <level_number> <number_of_practices>")
+    exit()
 
 
 filestr = "level"
-level_number = input("Enter Level : ")
+level_number = sys.argv[1] #input("Enter Level : ")
 filestr += level_number
 filestr += ".txt"
 filepath = "levels/" + filestr
 
-train_number = int(input("Enter number of episodes to train: "))
+train_number = int(sys.argv[2]) #int(input("Enter number of episodes to train: "))
 
 env = gym.make("gym_zhed:zhed-v0", filename=filepath)
 
@@ -165,6 +170,7 @@ print(f"Total penalties: {total_penalties}")
 print(f"Total solutions found: {total_solutions_found}")
 print(f"Average timesteps per episode: {total_steps / train_number}")
 print(f"Average penalties per episode: {total_penalties / train_number}")
+print(f"Percentage of solutions found: {total_solutions_found / train_number}")
 
 
 np.savetxt(sarsa_table_path, q_table)
