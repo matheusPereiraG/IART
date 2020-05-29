@@ -8,17 +8,6 @@ import os
 import matplotlib.pyplot as plt
 
 
-def print_frames(frames):
-    for i, frame in enumerate(frames):
-        clear_output(wait=True)
-        print()
-        print(frame['frame'])
-        print(f"Timestep: {i + 1}")
-        print(f"State: {frame['state']}")
-        print(f"Action: {frame['action']}")
-        print(f"Reward: {frame['reward']}")
-        sleep(.1)
-
 filestr = "level"
 level_number = input("Enter Level : ")
 filestr += level_number
@@ -45,15 +34,16 @@ except OSError: q_table = np.zeros([env.observation_space.n, env.action_space.n+
 print("Q_table fully generated.")
 
 # Hyperparameters
-alpha = 0.9     # learning rate (determina a importancia do reward atual)
-gamma = 0.2     # discount factor (determina a importancia de futuras rewards)
-epsilon = 0.6   # explore rate (determina se explora ações "piores" mais vezes) menos valor mais experimentação
+alpha = 0.8     # learning rate (determina a importancia do reward atual)
+gamma = 1     # discount factor (determina a importancia de futuras rewards)
+epsilon = 0.2   # explore rate (determina se explora ações "piores" mais vezes) 
 
 
 frames = []
 
 total_steps = 0
 total_penalties = 0
+total_solutions_found = 0
 
 ### training agent
 for i in range(1, train_number):
@@ -61,6 +51,9 @@ for i in range(1, train_number):
     steps, penalties, reward = 0, 0, 0
     done = False
     while not done:
+        
+        print()
+        print(env.render())
         
         steps += 1
         total_steps += 1
@@ -85,6 +78,7 @@ for i in range(1, train_number):
                         break
             entry = np.delete(selectedEntry,0,0)
             action = np.argmax(entry) #Exploit
+        
 
         next_state, reward, done, info = env.step(action)
 
@@ -132,13 +126,15 @@ for i in range(1, train_number):
             penalties += 1
             total_penalties += 1
 
-        print()
-        print(env.render())
+        
         print(f"Timestep: {steps}")
         print(f"State: {state}")
         print(f"Action: {action}")
         print(f"Reward: {reward}")
         print(f"Episode: {i}")
+        
+        if done:
+            total_solutions_found += 1;
 
         if not env.hasMovesLeft():
             env.reset()
@@ -149,6 +145,7 @@ print("\n\n")
 print(f"Results after {train_number} train sections:")
 print(f"Total timesteps: {total_steps}")
 print(f"Total penalties: {total_penalties}")
+print(f"Total solutions found: {total_solutions_found}")
 print(f"Average timesteps per episode: {total_steps / train_number}")
 print(f"Average penalties per episode: {total_penalties / train_number}")
 

@@ -77,15 +77,16 @@ except OSError:
 print("Sarsa fully generated.")
 
 # Hyperparameters
-alpha = 0.9     # learning rate (determina a importancia do reward atual)
-gamma = 0.2     # discount factor (determina a importancia de futuras rewards)
-epsilon = 0.6   # explore rate (determina se explora ações "piores" mais vezes)
+alpha = 0.8     # learning rate (determina a importancia do reward atual)
+gamma = 1     # discount factor (determina a importancia de futuras rewards)
+epsilon = 0.1   # explore rate (determina se explora ações "piores" mais vezes)
 
 
 frames = []
 
 total_steps = 0
 total_penalties = 0
+total_solutions_found = 0
 
 # training agent
 for i in range(1, train_number):
@@ -96,9 +97,19 @@ for i in range(1, train_number):
     a = pick_action(s)
     endEpisode = False
     while not endEpisode:
+        
+        print()
+        print(env.render())
+        print(f"Episode: {i}")
+        print(f"Timestep: {steps}")
+        print(f"State: {s}")
+        print(f"Action: {a}")
+        print(f"Reward: {reward}")
 
         # do first action and get next state
         s_, reward, done, info = env.step(a)
+        steps += 1
+        total_steps += 1
 
         # go get q-values for that state, if does not exist get an entry with values to fill (where state == 0)
         selectedEntry = get_entry(s)
@@ -112,6 +123,7 @@ for i in range(1, train_number):
         new_value = old_value
         if done:
             new_value += alpha * (reward - old_value)
+            total_solutions_found += 1
             endEpisode = True
             save_entry(s, a, new_value)
             print()
@@ -133,26 +145,24 @@ for i in range(1, train_number):
         if reward < 0:
             penalties += 1
             total_penalties += 1
-
-        print()
-        print(env.render())
-        print(f"Episode: {i}")
-        print(f"Timestep: {steps}")
-        print(f"State: {s}")
-        print(f"Action: {a}")
-        print(f"Reward: {reward}")
-
-        steps += 1
-        total_steps += 1
-
+        
         if not env.hasMovesLeft():
             endEpisode = True
+            
+    print()
+    print(env.render())
+    print(f"Episode: {i}")
+    print(f"Timestep: {steps}")
+    print(f"State: {s}")
+    print(f"Action: {a}")
+    print(f"Reward: {reward}")
 
 
 print("\n\n")
 print(f"Results after {train_number} train sections:")
 print(f"Total timesteps: {total_steps}")
 print(f"Total penalties: {total_penalties}")
+print(f"Total solutions found: {total_solutions_found}")
 print(f"Average timesteps per episode: {total_steps / train_number}")
 print(f"Average penalties per episode: {total_penalties / train_number}")
 

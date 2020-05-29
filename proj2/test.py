@@ -7,17 +7,6 @@ import random
 import os
 
 
-def print_frames(frames):
-    for i, frame in enumerate(frames):
-        clear_output(wait=True)
-        print()
-        print(frame['frame'])
-        print(f"Timestep: {i + 1}")
-        print(f"State: {frame['state']}")
-        print(f"Action: {frame['action']}")
-        print(f"Reward: {frame['reward']}")
-        sleep(.1)
-
 algorithm = input("Enter algorithm to test: \n 1: SARSA \n 2: QLearning \n")
 
 if(int(algorithm) == 1):
@@ -34,8 +23,6 @@ filestr += level_number
 filestr += ".txt"
 filepath = "levels/" +filestr
 
-episodes = int(input("Enter number of episodes: "))
-
 env = gym.make("gym_zhed:zhed-v0", filename=filepath)
 
 q_table_file = "q_table"
@@ -51,44 +38,38 @@ print("Q table loaded")
 
 ### Test q_table
 
-total_epochs, total_penalties = 0, 0
 
-for _ in range(episodes):
-    epochs, penalties, reward = 0, 0, 0
-    
-    endEpisode = False
-    
-    while not endEpisode:
-        state = env.encode()
-        current_entry = []
-        for entry in q_table:
-            if entry[0] == state:
-                current_entry = np.delete(entry,0,0)
-                break
-        action = np.argmax(current_entry)
-        state, reward, done, info = env.step(action)
+epochs, penalties, reward = 0, 0, 0
 
-        if reward < 0:
-            penalties += reward/10
+done = False
 
-        epochs += 1
+while not done:
+    print()
+    print("Move: ", epochs)
+    print(env.render())
+    state = env.encode()
+    current_entry = []
+    for entry in q_table:
+        if entry[0] == state:
+            current_entry = np.delete(entry,0,0)
+            break
+    action = np.argmax(current_entry)
+    state, reward, done, info = env.step(action)
 
-        if done:
-            print("Found solution")
-            print(env.render())
-            env.reset()
-            endEpisode = True
+    if reward < 0:
+        penalties += 1
 
-        if not env.hasMovesLeft():
-            print(env.render())
-            env.reset()
-            endEpisode = True
-    
-    total_penalties += penalties
-    total_epochs += epochs
+    epochs += 1
 
-print(f"Results after {episodes} episodes:")
-print(f"Total timesteps: {total_epochs}")
-print(f"Total penalties: {total_penalties}")
-print(f"Average timesteps per episode: {total_epochs / episodes}")
-print(f"Average penalties per episode: {total_penalties / episodes}")
+    if done:
+        print()
+        print("Move: ", epochs)
+        print(env.render())
+        print("Congratulations! Your agent found the solution.")
+
+    elif not env.hasMovesLeft():
+        print()
+        print("Move: ", epochs)
+        print(env.render())
+        print("Your agent is dumber than you. Practice more.")
+        done = True

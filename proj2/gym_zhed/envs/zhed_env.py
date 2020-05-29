@@ -31,7 +31,7 @@ class ZhedEnv(gym.Env):
     
     # verifica se a acao é possivel
     if self.possible_moves[action] == False:
-      return self.encode(), -100, False, {}
+      return self.encode(), -1, False, {}
 
     # obtem a peça e a direção pretendidos
     pieceIndex = action // 4
@@ -49,9 +49,12 @@ class ZhedEnv(gym.Env):
     self.possible_moves[pieceIndex*4+3] = False
 
     if(self.done):
-      reward = 100
+      reward = 1000
     else:
-      reward = diffExpansion * 10
+        if(diffExpansion>0):
+            reward = diffExpansion * 50
+        else:
+            reward = diffExpansion * 10
 
     return self.encode(), reward, self.done, {}
 
